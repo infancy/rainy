@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\geometry.h" />
+    <ClInclude Include="core\platform.h" />
+    <ClInclude Include="core\scene.h" />
+    <ClInclude Include="core\stencil.h" />
+    <ClInclude Include="core\stringprint.h" />
+    <ClInclude Include="core\valley.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\geometry.cpp" />
+    <ClCompile Include="core\scene.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B9C2F1B9-C53E-44A4-ADEA-95BB06B41885}</ProjectGuid>
@@ -40,7 +52,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -101,6 +113,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\wyh32\Desktop\Core\Valley\Valley\core;C:\Users\wyh32\Desktop\Core\Valley\Valley;C:\Users\wyh32\Desktop\Library\glog\src;C:\Users\wyh32\Desktop\Library\build\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,12 +151,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="core\scene.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="core\scene.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

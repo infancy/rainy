@@ -6,21 +6,37 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="core">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <UniqueIdentifier>{5ec68b2c-46c4-43e0-aacd-b303bc00086d}</UniqueIdentifier>
     </Filter>
     <Filter Include="integrators">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <UniqueIdentifier>{1759e932-e7b3-4eb9-9717-567069255357}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\scene.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="core\geometry.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\platform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\stencil.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\valley.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\stringprint.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\scene.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\geometry.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
