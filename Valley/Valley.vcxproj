@@ -19,16 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\geometry.h" />
     <ClInclude Include="core\platform.h" />
     <ClInclude Include="core\scene.h" />
     <ClInclude Include="core\stencil.h" />
-    <ClInclude Include="core\stringprint.h" />
     <ClInclude Include="core\valley.h" />
+    <ClInclude Include="pbrt\error.h" />
+    <ClInclude Include="pbrt\geometry.h" />
+    <ClInclude Include="pbrt\quaternion.h" />
+    <ClInclude Include="pbrt\stringprint.h" />
+    <ClInclude Include="pbrt\transform.h" />
+    <ClInclude Include="pbrt\pbrt.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\geometry.cpp" />
     <ClCompile Include="core\scene.cpp" />
+    <ClCompile Include="pbrt\error.cpp" />
+    <ClCompile Include="pbrt\geometry.cpp" />
+    <ClCompile Include="pbrt\quaternion.cpp" />
+    <ClCompile Include="pbrt\transform.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

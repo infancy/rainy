@@ -11,12 +11,12 @@
     <Filter Include="integrators">
       <UniqueIdentifier>{1759e932-e7b3-4eb9-9717-567069255357}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pbrt">
+      <UniqueIdentifier>{f2c8c2ee-a6f1-466f-a774-7de9085ce0ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\scene.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\geometry.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\platform.h">
@@ -28,16 +28,40 @@
     <ClInclude Include="core\valley.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\stringprint.h">
-      <Filter>core</Filter>
+    <ClInclude Include="pbrt\quaternion.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pbrt\transform.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pbrt\geometry.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pbrt\stringprint.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pbrt\pbrt.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pbrt\error.h">
+      <Filter>pbrt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\scene.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="core\geometry.cpp">
-      <Filter>core</Filter>
+    <ClCompile Include="pbrt\quaternion.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="pbrt\transform.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="pbrt\geometry.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="pbrt\error.cpp">
+      <Filter>pbrt</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

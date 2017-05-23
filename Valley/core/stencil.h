@@ -9,12 +9,12 @@
 namespace valley
 {
 
-}
+}	//namespace valley
 
 namespace pbrt
 {
 
-}
+}	//pbrt
 
 
 #endif //VALLEY_CORE_STENCIL_H

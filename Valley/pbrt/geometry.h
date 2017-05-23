@@ -39,14 +39,11 @@
 #define PBRT_CORE_GEOMETRY_H
 
 // core/geometry.h*
-//#include "pbrt.h"
-#include"valley.h"
+#include "pbrt.h"
 #include "stringprint.h"
 #include <iterator>
 
 namespace pbrt {
-
-using namespace valley;
 
 template <typename T>
 inline bool isNaN(const T x) {
