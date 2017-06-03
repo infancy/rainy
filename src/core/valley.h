@@ -51,6 +51,27 @@ namespace valley
 	//
 #endif
 
+//the math module of pbrt
+template <typename T>
+class Vector2;
+template <typename T>
+class Vector3;
+template <typename T>
+class Point3;
+template <typename T>
+class Point2;
+template <typename T>
+class Normal3;
+class Ray;
+class RayDifferential;
+template <typename T>
+class Bounds2;
+template <typename T>
+class Bounds3;
+class Transform;
+struct Matrix4x4;
+class ProgressReporter;
+
 // Global Forward Declarations
 class Scene;
 class Integrator;
@@ -93,13 +114,15 @@ class AreaLight;
 struct Distribution1D;
 class Distribution2D;
 class RNG;
+/*
 class MemoryArena;
 template <typename T, int logBlockSize = 2>
 class BlockedArray;
 class ParamSet;
 template <typename T>
 struct ParamSetItem;
-struct Options {
+struct Options 
+{
     int nThreads = 0;
     bool quickRender = false;
     bool quiet = false;
@@ -109,7 +132,7 @@ struct Options {
 
 extern Options PbrtOptions;
 class TextureParams;
-
+*/
 }	//namespace valley
 
 #endif //VALLEY_CORE_VALLEY_H

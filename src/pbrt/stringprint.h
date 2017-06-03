@@ -49,7 +49,9 @@
 #pragma GCC diagnostic ignored "-Wformat-security"
 #endif  // __GNUG__
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 inline void stringPrintfRecursive(std::string *s, const char *fmt) {
     const char *c = fmt;

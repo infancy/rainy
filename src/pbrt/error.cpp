@@ -39,7 +39,9 @@
 // Error Reporting Includes
 #include <stdarg.h>
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 const char *findWordEnd(const char *buf) {
     while (*buf != '\0' && !isspace(*buf)) ++buf;

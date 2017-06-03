@@ -44,7 +44,9 @@
 #include "geometry.h"
 #include "quaternion.h"
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 // Matrix4x4 Declarations
 struct Matrix4x4 {

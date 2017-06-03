@@ -43,7 +43,9 @@
 #include "stringprint.h"
 #include <iterator>
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 template <typename T>
 inline bool isNaN(const T x) {

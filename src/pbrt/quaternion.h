@@ -43,7 +43,9 @@
 #include "stringprint.h"
 #include "geometry.h"
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 // Quaternion Declarations
 struct Quaternion {

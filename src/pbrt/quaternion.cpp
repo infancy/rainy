@@ -35,7 +35,9 @@
 #include "quaternion.h"
 #include "transform.h"
 
-namespace pbrt {
+//namespace pbrt
+namespace valley
+{
 
 // Quaternion Method Definitions
 Transform Quaternion::ToTransform() const {

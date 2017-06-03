@@ -9,14 +9,14 @@
 #if defined(_WIN32) || defined(_WIN64)
 	#define VALLEY_IN_WINDOWS
 	#if defined(_MSC_VER)
-	#define VALLEY_IN_MSVC
+		#define VALLEY_IN_MSVC
 	#elif defined(__MINGW32__)  
-	#define VALLEY_IN_MINGW
+		#define VALLEY_IN_MINGW
 	#endif
 #elif defined(__linux__)
-#define VALLEY_IN_LINUX
+	#define VALLEY_IN_LINUX
 #elif defined(__APPLE__)
-#define VALLEY_IN_OSX
+	#define VALLEY_IN_OSX
 #endif
 
 /*

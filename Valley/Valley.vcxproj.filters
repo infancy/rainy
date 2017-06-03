@@ -1,67 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="io">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="core">
-      <UniqueIdentifier>{5ec68b2c-46c4-43e0-aacd-b303bc00086d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="integrators">
+    <Filter Include="integrator">
       <UniqueIdentifier>{1759e932-e7b3-4eb9-9717-567069255357}</UniqueIdentifier>
     </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{2026d86b-f245-4aa7-8140-4084bd0f0567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="image">
+      <UniqueIdentifier>{afe31edd-cf9d-4f8f-acff-a237722a0788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{ace364ee-9bbe-4494-b58d-25ffecb79fce}</UniqueIdentifier>
+    </Filter>
     <Filter Include="pbrt">
-      <UniqueIdentifier>{f2c8c2ee-a6f1-466f-a774-7de9085ce0ba}</UniqueIdentifier>
+      <UniqueIdentifier>{8080fc69-b79d-490a-8e0e-938370402a2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\scene.h">
+    <ClCompile Include="..\src\pbrt\error.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbrt\geometry.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbrt\quaternion.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pbrt\transform.cpp">
+      <Filter>pbrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\scene.cpp">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\platform.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\stencil.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\valley.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\quaternion.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\transform.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\geometry.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\stringprint.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\pbrt.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
-    <ClInclude Include="pbrt\error.h">
-      <Filter>pbrt</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\scene.cpp">
+    <ClInclude Include="..\src\pbrt\error.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbrt\geometry.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbrt\pbrt.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbrt\quaternion.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbrt\stringprint.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pbrt\transform.h">
+      <Filter>pbrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\camera.h">
       <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="pbrt\quaternion.cpp">
-      <Filter>pbrt</Filter>
-    </ClCompile>
-    <ClCompile Include="pbrt\transform.cpp">
-      <Filter>pbrt</Filter>
-    </ClCompile>
-    <ClCompile Include="pbrt\geometry.cpp">
-      <Filter>pbrt</Filter>
-    </ClCompile>
-    <ClCompile Include="pbrt\error.cpp">
-      <Filter>pbrt</Filter>
-    </ClCompile>
+    </ClInclude>
+    <ClInclude Include="..\src\core\platform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\scene.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\stencil.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\valley.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,18 +3,17 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_STENCIL_H
-#define VALLEY_CORE_STENCIL_H
+#ifndef VALLEY_CORE_T_T_H
+#define VALLEY_CORE_T_T_H
+
+#include "valley.h"
 
 namespace valley
 {
 
+
+
 }	//namespace valley
-
-namespace pbrt
-{
-
-}	//pbrt
 
 
 #endif //VALLEY_CORE_STENCIL_H

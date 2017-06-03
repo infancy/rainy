@@ -38,32 +38,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef PBRT_CORE_PBRT_H
 #define PBRT_CORE_PBRT_H
 
-#include"valley.h"
+#include "valley.h"
 
-namespace pbrt
+//namespace pbrt
+namespace valley
 {
-
-using namespace valley;
-
-template <typename T>
-class Vector2;
-template <typename T>
-class Vector3;
-template <typename T>
-class Point3;
-template <typename T>
-class Point2;
-template <typename T>
-class Normal3;
-class Ray;
-class RayDifferential;
-template <typename T>
-class Bounds2;
-template <typename T>
-class Bounds3;
-class Transform;
-struct Matrix4x4;
-class ProgressReporter;
 
 // Global Constants
 #ifdef _MSC_VER
