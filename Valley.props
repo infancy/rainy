@@ -3,11 +3,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_PropertySheetDisplayName>Valley_inc</_PropertySheetDisplayName>
+    <_PropertySheetDisplayName>Valley</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\wyh32\Desktop\Core\Valley\Valley\pbrt;C:\Users\wyh32\Desktop\Core\Valley\Valley\core;C:\Users\wyh32\Desktop\Core\Valley\Valley;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wyh32\Desktop\Core\Valley\src\utilities;C:\Users\wyh32\Desktop\Core\Valley\src\core;C:\Users\wyh32\Desktop\Core\Valley\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

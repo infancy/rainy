@@ -39,7 +39,7 @@
 namespace valley
 {
 
-//#define VALLEY_FLOAT_AS_DOUBLE
+#define VALLEY_FLOAT_AS_DOUBLE
 #ifdef VALLEY_FLOAT_AS_DOUBLE
 	using Float = double;
 #else
@@ -57,9 +57,9 @@ class Vector2;
 template <typename T>
 class Vector3;
 template <typename T>
-class Point3;
-template <typename T>
 class Point2;
+template <typename T>
+class Point3;
 template <typename T>
 class Normal3;
 class Ray;
@@ -70,23 +70,19 @@ template <typename T>
 class Bounds3;
 class Transform;
 struct Matrix4x4;
-class ProgressReporter;
 
 // Global Forward Declarations
+class Color4f;
+class Image;
 class Scene;
 class Integrator;
 class SamplerIntegrator;
-struct Interaction;
-class SurfaceInteraction;
+struct Isect;
+class SurfaceIsect;
 class Shape;
 class Primitive;
 class GeometricPrimitive;
-template <int nSpectrumSamples>
-class CoefficientSpectrum;
-class RGBSpectrum;
-class SampledSpectrum;
-typedef RGBSpectrum Spectrum;
-// typedef SampledSpectrum Spectrum;
+
 class Camera;
 struct CameraSample;
 class ProjectiveCamera;
@@ -102,25 +98,14 @@ class Material;
 template <typename T>
 class Texture;
 class Medium;
-class MediumInteraction;
-struct MediumInterface;
-class BSSRDF;
-class SeparableBSSRDF;
-class TabulatedBSSRDF;
-struct BSSRDFTable;
+
 class Light;
 class VisibilityTester;
 class AreaLight;
 struct Distribution1D;
 class Distribution2D;
 class RNG;
-/*
-class MemoryArena;
-template <typename T, int logBlockSize = 2>
-class BlockedArray;
-class ParamSet;
-template <typename T>
-struct ParamSetItem;
+
 struct Options 
 {
     int nThreads = 0;
@@ -130,9 +115,6 @@ struct Options
     std::string imageFile;
 };
 
-extern Options PbrtOptions;
-class TextureParams;
-*/
 }	//namespace valley
 
 #endif //VALLEY_CORE_VALLEY_H

@@ -19,24 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\core\film.cpp" />
+    <ClCompile Include="..\src\core\image.cpp" />
+    <ClCompile Include="..\src\core\integrator.cpp" />
     <ClCompile Include="..\src\core\scene.cpp" />
-    <ClCompile Include="..\src\pbrt\error.cpp" />
-    <ClCompile Include="..\src\pbrt\geometry.cpp" />
-    <ClCompile Include="..\src\pbrt\quaternion.cpp" />
-    <ClCompile Include="..\src\pbrt\transform.cpp" />
+    <ClCompile Include="..\src\core\transform.cpp" />
+    <ClCompile Include="..\src\test\test_depth.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\camera\ThinLens.h" />
     <ClInclude Include="..\src\core\camera.h" />
+    <ClInclude Include="..\src\core\color.h" />
+    <ClInclude Include="..\src\core\film.h" />
+    <ClInclude Include="..\src\core\geometry.h" />
+    <ClInclude Include="..\src\core\image.h" />
+    <ClInclude Include="..\src\core\integrator.h" />
+    <ClInclude Include="..\src\core\intersection.h" />
+    <ClInclude Include="..\src\core\pbrt.h" />
     <ClInclude Include="..\src\core\platform.h" />
     <ClInclude Include="..\src\core\scene.h" />
     <ClInclude Include="..\src\core\stencil.h" />
+    <ClInclude Include="..\src\core\transform.h" />
     <ClInclude Include="..\src\core\valley.h" />
-    <ClInclude Include="..\src\pbrt\error.h" />
-    <ClInclude Include="..\src\pbrt\geometry.h" />
-    <ClInclude Include="..\src\pbrt\pbrt.h" />
-    <ClInclude Include="..\src\pbrt\quaternion.h" />
-    <ClInclude Include="..\src\pbrt\stringprint.h" />
-    <ClInclude Include="..\src\pbrt\transform.h" />
+    <ClInclude Include="..\src\shape\sphere.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -60,13 +65,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -86,10 +91,12 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Valley.props" />
+    <Import Project="..\..\..\Library\global_64d.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Valley.props" />
+    <Import Project="..\..\..\Library\global_64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,6 +166,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
