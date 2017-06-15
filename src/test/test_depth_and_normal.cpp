@@ -4,8 +4,9 @@
 #include"shape/sphere.h"
 using namespace valley;
 
-int main()
+int main(int argc, char** argv)
 {
+	google::InitGoogleLogging(argv[0]);
 	std::unique_ptr<Sphere> sphere{new Sphere{Point3f{0.f, 0.f, 100.f}, 50.f}};
 	Film* film{ new Film(800, 600, 100) };
 	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
@@ -31,8 +32,9 @@ int main()
 
 			if (sphere->intersect(ray, isect))
 			{
-				float depth = 2.f - isect.p.z / maxDepth;
-				camera->film->operator()(x, y) = Color4f(depth);
+				//float depth = 2.f - isect.p.z / maxDepth;
+				Normal3f n = Normalize(isect.normal);
+				camera->film->operator()(x, y) = Color4f((n.x + 1)/2, (n.y + 1) / 2, (n.z + 1) / 2);
 			}
 		}
 	}

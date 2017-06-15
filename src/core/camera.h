@@ -45,35 +45,45 @@ public:
 		   Float imageDistance, Film* film)
 		: Camera(film), eye(eye), imageDistance(imageDistance)
 	{
-		//生成camera_to_world矩阵
 		forward = Normalize(target - eye);
-		right   = Normalize(Cross(up, forward));	//左手叉乘
+		CHECK(!(up.x == forward.x && up.z == forward.z));		
+		right   = Normalize(Cross(up, forward));			//左手叉乘
 		upward  = Cross(forward, right);
+
+		Matrix4x4 c2w(right.x, upward.x, forward.x, eye.x,
+					  right.y, upward.y, forward.y, eye.y,
+					  right.z, upward.z, forward.z, eye.z,
+					0, 0, 0, 1);
+		camera_to_world = c2w;
 
 		//车祸现场
 		//Float pixelSize = 1.f / std::sqrt(film->resolution);
 		Float a = std::sqrt(film->resolution);
 		//Float pixelSize = 1.f / a;
 		pixelSize = 1.f / a;
+
+		//raster_to_camera
 	}
 
 	Float generate_ray(const CameraSample& sample, Ray* ray) const
 	{
-		Point3f pFilm = Point3f(sample.pFilm.x, sample.pFilm.y, 0);	
-		Point3f pCamera(pixelSize * (pFilm.x - film->width / 2),
-						pixelSize * (film->height / 2 - pFilm.y),
-						imageDistance);
-		//Vec3 dir = p.x * u + p.y * v + vpd * w;
-		Vector3f dir = forward * pCamera.z + right * pCamera.x + upward * pCamera.y;
+		Point3f pFilm(sample.pFilm.x, sample.pFilm.y, 0);	
+		Vector3f dir(pixelSize * (pFilm.x - film->width / 2),		//dir - (0,0,0)
+					 pixelSize * (film->height / 2 - pFilm.y),
+					 imageDistance);
+
+		//Vector3f dir = forward * pCamera.z + right * pCamera.x + upward * pCamera.y;
+		dir = camera_to_world(dir);
 		*ray = Ray(eye, Normalize(dir));
 
-		//*ray = camera_to_world(*ray);
 		return 1;
 	}
 
 private:
 	Point3f eye;
 	Vector3f forward, right, upward;
+
+	Transform camera_to_world;
 
 	Float imageDistance, pixelSize;	//图像平面到针孔的距离、像素实际尺寸
 };

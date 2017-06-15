@@ -24,7 +24,7 @@
     <ClCompile Include="..\src\core\integrator.cpp" />
     <ClCompile Include="..\src\core\scene.cpp" />
     <ClCompile Include="..\src\core\transform.cpp" />
-    <ClCompile Include="..\src\test\test_depth.cpp" />
+    <ClCompile Include="..\src\test\test_depth_and_normal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\camera\ThinLens.h" />

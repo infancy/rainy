@@ -33,7 +33,7 @@
     <ClCompile Include="..\src\core\transform.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\test\test_depth.cpp">
+    <ClCompile Include="..\src\test\test_depth_and_normal.cpp">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
