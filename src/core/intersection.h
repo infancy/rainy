@@ -91,8 +91,9 @@ public:
 							  const Normal3f& dndu, const Normal3f& dndv, 
 							  bool orientationIsAuthoritative);
 
-	void compute_scattering(const RayDifferential& ray,
-							TransportMode mode = TransportMode::Radiance);
+	void compute_scattering(const RayDifferential& ray, 
+							TransportMode mode = TransportMode::Radiance, 
+							bool allowMultipleLobes = true);
 
 	//void compute_differentials(const RayDifferential &r) const;
 

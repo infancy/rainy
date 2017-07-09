@@ -62,11 +62,13 @@ void SurfaceIsect::set_shading_geometry(const Vector3f &dpdus,
 	shading.dndv = dndvs;
 }
 
-void SurfaceIsect::compute_scattering(const RayDifferential& ray, TransportMode mode)
+
+void SurfaceIsect::compute_scattering(const RayDifferential &ray, TransportMode mode,
+									  bool allowMultipleLobes)
 {
 	//compute_differentials(ray);
 
-	primitive->compute_scattering(this, mode);
+	primitive->compute_scattering(this, mode, allowMultipleLobes);
 }
 
 }

@@ -18,7 +18,7 @@ class LambertianReflection : public BxDF
 public:
 	// LambertianReflection Public Methods
 	LambertianReflection(const Color4f& R)
-		: BxDF(BxDF_type(BxDF_type::reflection | BxDF_type::diffuse)), R(R) {}
+		: BxDF(BxDF_type(BxDF_type::Reflection | BxDF_type::Diffuse)), R(R) {}
 
 	Color4f f(const Vector3f& wo, const Vector3f& wi) const { return R * InvPi; }
 	Color4f rho(const Vector3f&, int, const Point2f*) const { return R; }
@@ -34,7 +34,7 @@ class LambertianTransmission : public BxDF {
 public:
 	// LambertianTransmission Public Methods
 	LambertianTransmission(const Color4f& T)
-		: BxDF(BxDF_type(BxDF_type::transmission | BxDF_type::diffuse)), T(T) {}
+		: BxDF(BxDF_type(BxDF_type::Transmission | BxDF_type::Diffuse)), T(T) {}
 
 	Color4f f(const Vector3f& wo, const Vector3f& wi) const { return T * InvPi; }
 	Color4f rho(const Vector3f&, int, const Point2f*) const { return T; }

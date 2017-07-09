@@ -110,8 +110,8 @@ Color4f BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags) &&
-		    ((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::reflection)) ||
-			(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::transmission))))
+		    ((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Reflection)) ||
+			(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Transmission))))
 			f += bxdfs[i]->f(wo, wi);
 	return f;
 }
@@ -166,20 +166,20 @@ Color4f BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	*wiWorld = local_to_world(wi);
 
 	// Compute overall PDF with all matching _BxDF_s
-	if (!static_cast<bool>(bxdf->type & BxDF_type::specular) && matchingComps > 1)
+	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i] != bxdf && bxdfs[i]->match(type))
 				*pdf += bxdfs[i]->pdf(wo, wi);
 	if (matchingComps > 1) *pdf /= matchingComps;
 
 	// Compute value of BSDF for sampled direction
-	if (!static_cast<bool>(bxdf->type & BxDF_type::specular) && matchingComps > 1) {
+	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1) {
 		bool reflect = Dot(*wiWorld, ng) * Dot(woWorld, ng) > 0;
 		f = 0.;
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i]->match(type) &&
-				((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::reflection)) ||
-				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::transmission))))
+				((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Reflection)) ||
+				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Transmission))))
 				f += bxdfs[i]->f(wo, wi);
 	}
 	/*

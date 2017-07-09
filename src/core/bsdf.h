@@ -53,12 +53,12 @@ inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z 
 
 enum class BxDF_type 
 {
-	reflection   = 1 << 0,
-	transmission = 1 << 1,
-	diffuse		 = 1 << 2,
-	glossy		 = 1 << 3,
-	specular	 = 1 << 4,
-	all			 = reflection | transmission | diffuse | glossy | specular
+	Reflection   = 1 << 0,
+	Transmission = 1 << 1,
+	Diffuse		 = 1 << 2,
+	Glossy		 = 1 << 3,
+	Specular	 = 1 << 4,
+	All			 = Reflection | Transmission | Diffuse | Glossy | Specular
 };
 
 constexpr BxDF_type operator&(BxDF_type a, BxDF_type b)
@@ -105,24 +105,24 @@ public:
 	~BSDF() {}				//使用系统的 new 和 delete
 
 	void add_BxDF(BxDF* b);
-	int components_num(BxDF_type flags = BxDF_type::all) const;
+	int components_num(BxDF_type flags = BxDF_type::All) const;
 
 	Vector3f world_to_local(const Vector3f& v) const;
 	Vector3f local_to_world(const Vector3f& v) const;
 
 	//针对给定方向返回分布函数值
 	Color4f f(const Vector3f& woW, const Vector3f& wiW,
-			  BxDF_type flags = BxDF_type::all) const;
+			  BxDF_type flags = BxDF_type::All) const;
 	Color4f sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u, Float* pdf,
-					 BxDF_type type = BxDF_type::all, BxDF_type* sampledType = nullptr) const;
+					 BxDF_type type = BxDF_type::All, BxDF_type* sampledType = nullptr) const;
 
 	Color4f rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
-				BxDF_type flags = BxDF_type::all) const;
+				BxDF_type flags = BxDF_type::All) const;
 	Color4f rho(const Vector3f& wo, int nSamples, const Point2f* samples,
-				BxDF_type flags = BxDF_type::all) const;
+				BxDF_type flags = BxDF_type::All) const;
 
 	Float pdf(const Vector3f& wo, const Vector3f& wi,
-			  BxDF_type flags = BxDF_type::all) const;
+			  BxDF_type flags = BxDF_type::All) const;
 	//std::string ToString() const;
 
 public:
