@@ -72,7 +72,7 @@ class Transform;
 struct Matrix4x4;
 
 // Global Forward Declarations
-class Color4f;
+class Color;
 class Image;
 class Scene;
 class Integrator;

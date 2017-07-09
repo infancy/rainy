@@ -6,7 +6,7 @@
 namespace valley
 {
 
-Matte::Matte(const std::shared_ptr<Texture<Color4f>>& kd,
+Matte::Matte(const std::shared_ptr<Texture<Color>>& kd,
 	const std::shared_ptr<Texture<Float>>& sigma,   //´Ö²Ú¶È
 	const std::shared_ptr<Texture<Float>>& bumpMap)
 	: kd(kd), sigma(sigma), bumpMap(bumpMap) {}
@@ -19,7 +19,7 @@ void Matte::compute_scattering(SurfaceIsect* si, TransportMode mode,
 
 	// Evaluate textures for _MatteMaterial_ material and allocate BRDF
 	si->bsdf.reset(new BSDF(*si));
-	Color4f r = kd->evaluate(*si).clamp();
+	Color r = kd->evaluate(*si).clamp();
 	Float sig = Clamp(sigma->evaluate(*si), 0, 90);
 	if (!r.is_black())
 	{

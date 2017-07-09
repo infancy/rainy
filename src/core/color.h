@@ -13,53 +13,53 @@
 namespace valley
 {
 
-class Color4f
+class Color
 {
 public:
 	float r, g, b, a;
 
 public:
-	Color4f(float f = 0.f) : r(f), g(f), b(f), a(1.f) { DCHECK(!hasNaNs()); }
-	Color4f(float r, float g, float b, float a = 1.f)
+	Color(float f = 0.f) : r(f), g(f), b(f), a(1.f) { DCHECK(!hasNaNs()); }
+	Color(float r, float g, float b, float a = 1.f)
 		: r(r), g(g), b(b), a(a) { DCHECK(!hasNaNs()); }
-	Color4f(const Color4f& c) : r(c.r), g(c.g), b(c.b), a(c.a) { DCHECK(!hasNaNs()); }
-	Color4f operator=(const Color4f& c) {
+	Color(const Color& c) : r(c.r), g(c.g), b(c.b), a(c.a) { DCHECK(!hasNaNs()); }
+	Color operator=(const Color& c) {
 		if (this != &c) {
 			DCHECK(!c.hasNaNs());
 			r = c.r; g = c.g; b = c.b; a = c.a; }
 		return *this;}
-	~Color4f(){}
+	~Color(){}
 
-	Color4f& operator=(float x) { r = g = b = x; return *this; }
+	Color& operator=(float x) { r = g = b = x; return *this; }
 
-	bool operator==(const Color4f& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
-	bool operator!=(const Color4f& c) const { return !operator==(c); }
+	bool operator==(const Color& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
+	bool operator!=(const Color& c) const { return !operator==(c); }
 
-	Color4f operator+(const Color4f& c) const { return Color4f(r + c.r, g + c.g, b + c.b, a + c.a); }
-	Color4f operator-(const Color4f& c) const { return Color4f(r - c.r, g - c.g, b - c.b, a - c.a); }
+	Color operator+(const Color& c) const { return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
+	Color operator-(const Color& c) const { return Color(r - c.r, g - c.g, b - c.b, a - c.a); }
 
-	Color4f operator*(const float f) const { return Color4f(r * f, g * f, b * f, a * f); }
-	Color4f operator/(const float f) const { return operator*(1.f / f); }
+	Color operator*(const float f) const { return Color(r * f, g * f, b * f, a * f); }
+	Color operator/(const float f) const { return operator*(1.f / f); }
 
-	Color4f& operator+=(const Color4f& c) { r += c.r; g += c.g; b += c.b; a += c.a; return *this; }
-	Color4f& operator-=(const Color4f& c) { r -= c.r; g -= c.g; b -= c.b; a -= c.a; return *this; }
-	Color4f& operator*=(const float f) { r *= f; g *= f; b *= f; a *= f; return *this; }
-	Color4f& operator/=(const float f) { return operator*=(1.f / f); }
+	Color& operator+=(const Color& c) { r += c.r; g += c.g; b += c.b; a += c.a; return *this; }
+	Color& operator-=(const Color& c) { r -= c.r; g -= c.g; b -= c.b; a -= c.a; return *this; }
+	Color& operator*=(const float f) { r *= f; g *= f; b *= f; a *= f; return *this; }
+	Color& operator/=(const float f) { return operator*=(1.f / f); }
 
 	bool is_black() const { return r == 0.f && g == 0.f && b == 0.f; }
 
-	Color4f normalize() const
+	Color normalize() const
 	{
 		float length = sqrtf(r * r + g * g + b * b);
 		float factor = 0.f;
 		if (length > 0.f)
 			factor = 1.f / length;
-		return Color4f((r * factor), (g * factor), (b * factor), a);
+		return Color((r * factor), (g * factor), (b * factor), a);
 	}
 
-	Color4f clamp(Float low = 0, Float high = Infinity) const
+	Color clamp(Float low = 0, Float high = Infinity) const
 	{
-		Color4f ret;
+		Color ret;
 		
 		ret.r = Clamp(r, low, high);
 		ret.g = Clamp(g, low, high);
@@ -70,23 +70,23 @@ public:
 	}
 
 	/*
-	Color4f Mix(Color4f& c)
+	Color Mix(Color& c)
 	{
-		return Color4f(r * c.r, g * c.g, b * c.b);
+		return Color(r * c.r, g * c.g, b * c.b);
 	}
 
-	Color4f mix_f(float f, Color4f& c)
+	Color mix_f(float f, Color& c)
 	{
 		return ((*this * f) + (c * (1 - f)));
 	}
 
-	inline Color4f saturate()
+	inline Color saturate()
 	{
 
 		r = max(min(r, (T)255), (T)0);
 		g = max(min(g, (T)255), (T)0);
 		b = max(min(b, (T)255), (T)0);
-		return Color4f(r, g, b);
+		return Color(r, g, b);
 	}
 	*/
 private:

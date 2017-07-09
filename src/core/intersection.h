@@ -97,7 +97,7 @@ public:
 
 	//void compute_differentials(const RayDifferential &r) const;
 
-	Color4f Le(const Vector3f& w) const;
+	Color Le(const Vector3f& w) const;
 
 public:
 	Point2f uv;				//基于表面参数化的UV坐标

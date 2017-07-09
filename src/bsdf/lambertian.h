@@ -17,37 +17,37 @@ class LambertianReflection : public BxDF
 {
 public:
 	// LambertianReflection Public Methods
-	LambertianReflection(const Color4f& R)
+	LambertianReflection(const Color& R)
 		: BxDF(BxDF_type(BxDF_type::Reflection | BxDF_type::Diffuse)), R(R) {}
 
-	Color4f f(const Vector3f& wo, const Vector3f& wi) const { return R * InvPi; }
-	Color4f rho(const Vector3f&, int, const Point2f*) const { return R; }
-	Color4f rho(int, const Point2f*, const Point2f*) const  { return R; }
+	Color f(const Vector3f& wo, const Vector3f& wi) const { return R * InvPi; }
+	Color rho(const Vector3f&, int, const Point2f*) const { return R; }
+	Color rho(int, const Point2f*, const Point2f*) const  { return R; }
 	//std::string ToString() const;
 
 private:
 	// LambertianReflection Private Data
-	const Color4f R;
+	const Color R;
 };
 
 class LambertianTransmission : public BxDF {
 public:
 	// LambertianTransmission Public Methods
-	LambertianTransmission(const Color4f& T)
+	LambertianTransmission(const Color& T)
 		: BxDF(BxDF_type(BxDF_type::Transmission | BxDF_type::Diffuse)), T(T) {}
 
-	Color4f f(const Vector3f& wo, const Vector3f& wi) const { return T * InvPi; }
-	Color4f rho(const Vector3f&, int, const Point2f*) const { return T; }
-	Color4f rho(int, const Point2f*, const Point2f*) const  { return T; }
+	Color f(const Vector3f& wo, const Vector3f& wi) const { return T * InvPi; }
+	Color rho(const Vector3f&, int, const Point2f*) const { return T; }
+	Color rho(int, const Point2f*, const Point2f*) const  { return T; }
 
-	Color4f sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
+	Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 					 Float* pdf, BxDF_type* sampledType) const;
 	Float pdf(const Vector3f& wo, const Vector3f& wi) const;
 	//std::string ToString() const;
 
 private:
 	// LambertianTransmission Private Data
-	Color4f T;
+	Color T;
 };
 
 }	//namespace valley

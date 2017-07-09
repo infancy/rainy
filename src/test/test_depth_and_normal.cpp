@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 			{
 				//float depth = 2.f - isect.p.z / maxDepth;
 				Normal3f n = Normalize(isect.n);
-				camera->film->operator()(x, y) = Color4f((n.x + 1)/2, (n.y + 1) / 2, (n.z + 1) / 2);
+				camera->film->operator()(x, y) = Color((n.x + 1)/2, (n.y + 1) / 2, (n.z + 1) / 2);
 			}
 		}
 	}

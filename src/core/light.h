@@ -65,14 +65,14 @@ public:
 	Light(int flags, const Transform& LightToWorld, int nSamples = 1);
 	virtual ~Light();
 
-	virtual Color4f sample_Li(const Isect& ref, const Point2f& u,
+	virtual Color sample_Li(const Isect& ref, const Point2f& u,
 		Vector3f *wi, Float *pdf, Visibility* vis) const = 0;
 
-	virtual Color4f power() const = 0;
+	virtual Color power() const = 0;
 	virtual void Preprocess(const Scene &scene) {}
-	virtual Color4f Le(const RayDifferential &r) const;
+	virtual Color Le(const RayDifferential &r) const;
 	virtual Float Pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
-	virtual Color4f Sample_Le(const Point2f &u1, const Point2f &u2, Float time,
+	virtual Color Sample_Le(const Point2f &u1, const Point2f &u2, Float time,
 		Ray *ray, Normal3f *nLight, Float *pdfPos,
 		Float *pdfDir) const = 0;
 	virtual void Pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
@@ -98,7 +98,7 @@ public:
 	const Interaction &P0() const { return p0; }
 	const Interaction &P1() const { return p1; }
 	bool Unoccluded(const Scene &scene) const;
-	Color4f Tr(const Scene &scene, Sampler &sampler) const;
+	Color Tr(const Scene &scene, Sampler &sampler) const;
 
 private:
 	Interaction p0, p1;
@@ -109,7 +109,7 @@ public:
 	// AreaLight Interface
 	AreaLight(const Transform &LightToWorld, const MediumInterface &medium,
 		int nSamples);
-	virtual Color4f L(const Interaction &intr, const Vector3f &w) const = 0;
+	virtual Color L(const Interaction &intr, const Vector3f &w) const = 0;
 };
 */
 

@@ -18,7 +18,7 @@ class Matte : public Material
 {
 public:
 	// MatteMaterial Public Methods
-	Matte(const std::shared_ptr<Texture<Color4f>>& kd,
+	Matte(const std::shared_ptr<Texture<Color>>& kd,
 		  const std::shared_ptr<Texture<Float>>& sigma,   //粗糙度
 		  const std::shared_ptr<Texture<Float>>& bumpMap);
 
@@ -26,7 +26,7 @@ public:
 		bool allowMultipleLobes) const override;
 
 private:
-	std::shared_ptr<Texture<Color4f>> kd;
+	std::shared_ptr<Texture<Color>> kd;
 	std::shared_ptr<Texture<Float>> sigma, bumpMap;	//sigma代表了粗糙度
 };
 

@@ -40,7 +40,7 @@ namespace valley
 
 // BxDF Method Definitions
 
-Color4f BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
+Color BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 					   Float* Pdf, BxDF_type* sampledType) const
 {
 	// Cosine-sample the hemisphere, flipping the direction if necessary
@@ -50,26 +50,26 @@ Color4f BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 	return f(wo, *wi);
 }
 
-Color4f BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
-	Color4f r(0.);
+Color BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
+	Color r(0.);
 	for (int i = 0; i < nSamples; ++i) {
 		// Estimate one term of $\rho_\roman{hd}$
 		Vector3f wi;
 		Float pdf = 0;
-		Color4f f = sample_f(w, &wi, u[i], &pdf);
+		Color f = sample_f(w, &wi, u[i], &pdf);
 		if (pdf > 0) r += f * AbsCosTheta(wi) / pdf;
 	}
 	return r / nSamples;
 }
 
-Color4f BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const {
-	Color4f r(0.f);
+Color BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const {
+	Color r(0.f);
 	for (int i = 0; i < nSamples; ++i) {
 		// Estimate one term of $\rho_\roman{hh}$
 		Vector3f wo, wi;
 		wo = uniform_sample_hemisphere(u1[i]);
 		Float pdfo = uniform_hemisphere_pdf(), pdfi = 0;
-		Color4f f = sample_f(wo, &wi, u2[i], &pdfi);
+		Color f = sample_f(wo, &wi, u2[i], &pdfi);
 		if (pdfi > 0)
 			r += f * AbsCosTheta(wi) * AbsCosTheta(wo) / (pdfo * pdfi);
 	}
@@ -99,14 +99,14 @@ int BSDF::components_num(BxDF_type flags) const
 	return num;
 }
 
-Color4f BSDF::f(const Vector3f &woW, const Vector3f &wiW,
+Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 				BxDF_type flags) const 
 {
 	Vector3f wi = world_to_local(wiW), wo = world_to_local(woW);
 	if (wo.z == 0.f) return 0.f;
 
 	bool reflect = Dot(wiW, ng) * Dot(woW, ng) > 0;	//处理着色法线的缺陷
-	Color4f f(0.f);
+	Color f(0.f);
 
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags) &&
@@ -116,7 +116,7 @@ Color4f BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 	return f;
 }
 
-Color4f BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
+Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 					   const Point2f& u, Float *pdf, BxDF_type type,
 					   BxDF_type* sampledType) const
 {
@@ -126,7 +126,7 @@ Color4f BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	if (matchingComps == 0) {
 		*pdf = 0;
 		if (sampledType) *sampledType = BxDF_type(0);
-		return Color4f(0);
+		return Color(0);
 	}
 	int comp =
 		std::min((int)std::floor(u[0] * matchingComps), matchingComps - 1);
@@ -153,10 +153,10 @@ Color4f BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	if (wo.z == 0) return 0.;
 	*pdf = 0;
 	if (sampledType) *sampledType = bxdf->type;
-	Color4f f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
+	Color f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
 	/*
 	VLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
-	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Color4f(0.))
+	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Color(0.))
 	<< ", wi = " << wi;
 	*/
 	if (*pdf == 0) {
@@ -184,25 +184,25 @@ Color4f BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	}
 	/*
 	VLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
-	<< ((*pdf > 0) ? (f / *pdf) : Color4f(0.));
+	<< ((*pdf > 0) ? (f / *pdf) : Color(0.));
 	*/
 	return f;
 }
 
-Color4f BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
+Color BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
 				  BxDF_type flags) const
 {
-	Color4f ret(0.f);
+	Color ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags))
 			ret += bxdfs[i]->rho(nSamples, samples1, samples2);
 	return ret;
 }
 
-Color4f BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
+Color BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
 				  BxDF_type flags) const 
 {
-	Color4f ret(0.f);
+	Color ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags))
 			ret += bxdfs[i]->rho(wo, nSamples, samples);

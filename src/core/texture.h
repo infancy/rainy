@@ -34,7 +34,7 @@ private:
 };
 
 //using constant = Texture<Float>;
-//using Color4 = Texture<Color4f>;
+//using Color4 = Texture<Color>;
 
 }	//namespace valley
 

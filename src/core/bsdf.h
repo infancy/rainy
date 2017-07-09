@@ -80,16 +80,16 @@ public:
 	bool match(BxDF_type t) const { return (t & type) == type; }	
 
 	//针对给定方向返回分布函数值
-	virtual Color4f f(const Vector3f& wo, const Vector3f& wi) const = 0;
+	virtual Color f(const Vector3f& wo, const Vector3f& wi) const = 0;
 	//略复杂
-	virtual Color4f sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
+	virtual Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
 							 Float* Pdf, BxDF_type* sampledType = nullptr) const;
 
 	//rho_hemisphere_direction
-	virtual Color4f rho(const Vector3f& wo, int nSamples,
+	virtual Color rho(const Vector3f& wo, int nSamples,
 						const Point2f* samples) const;
 	//rho_hemisphere_hemisphere
-	virtual Color4f rho(int nSamples, const Point2f* samples1,
+	virtual Color rho(int nSamples, const Point2f* samples1,
 						const Point2f* samples2) const;
 
 	virtual Float pdf(const Vector3f& wo, const Vector3f& wi) const;
@@ -111,14 +111,14 @@ public:
 	Vector3f local_to_world(const Vector3f& v) const;
 
 	//针对给定方向返回分布函数值
-	Color4f f(const Vector3f& woW, const Vector3f& wiW,
+	Color f(const Vector3f& woW, const Vector3f& wiW,
 			  BxDF_type flags = BxDF_type::All) const;
-	Color4f sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u, Float* pdf,
+	Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u, Float* pdf,
 					 BxDF_type type = BxDF_type::All, BxDF_type* sampledType = nullptr) const;
 
-	Color4f rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
+	Color rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
 				BxDF_type flags = BxDF_type::All) const;
-	Color4f rho(const Vector3f& wo, int nSamples, const Point2f* samples,
+	Color rho(const Vector3f& wo, int nSamples, const Point2f* samples,
 				BxDF_type flags = BxDF_type::All) const;
 
 	Float pdf(const Vector3f& wo, const Vector3f& wi,
