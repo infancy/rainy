@@ -65,20 +65,20 @@ public:
 	Light(int flags, const Transform& LightToWorld, int nSamples = 1);
 	virtual ~Light();
 
-	virtual Color sample_Li(const Isect& ref, const Point2f& u,
-		Vector3f *wi, Float *pdf, Visibility* vis) const = 0;
-
 	virtual Color power() const = 0;
 	virtual void Preprocess(const Scene &scene) {}
-	virtual Color Le(const RayDifferential &r) const;
-	virtual Float Pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
-	virtual Color Sample_Le(const Point2f &u1, const Point2f &u2, Float time,
-		Ray *ray, Normal3f *nLight, Float *pdfPos,
-		Float *pdfDir) const = 0;
-	virtual void Pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
-		Float *pdfDir) const = 0;
 
-	// Light Public Data
+	virtual Color Le(const RayDifferential &r) const;
+
+	virtual Float Pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
+	virtual void Pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
+						Float *pdfDir) const = 0;
+
+	virtual Color sample_Li(const Isect& ref, const Point2f& u,
+							Vector3f *wi, Float *pdf, Visibility* vis) const = 0;
+	virtual Color Sample_Le(const Point2f &u1, const Point2f &u2, Float time,
+							Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const = 0;
+
 	const int flags;
 	const int nSamples;
 	//const MediumInterface mediumInterface;
@@ -88,30 +88,32 @@ protected:
 	const Transform LightToWorld, WorldToLight;
 };
 
-/*
-class VisibilityTester {
+
+class Visibility
+{
 public:
-	VisibilityTester() {}
+	Visibility() {}
 	// VisibilityTester Public Methods
-	VisibilityTester(const Interaction &p0, const Interaction &p1)
+	Visibility(const Isect& p0, const Isect& p1)
 		: p0(p0), p1(p1) {}
-	const Interaction &P0() const { return p0; }
-	const Interaction &P1() const { return p1; }
-	bool Unoccluded(const Scene &scene) const;
+
+	const Isect& P0() const { return p0; }
+	const Isect& P1() const { return p1; }
+
+	bool unoccluded(const Scene &scene) const;
 	Color Tr(const Scene &scene, Sampler &sampler) const;
 
 private:
-	Interaction p0, p1;
+	Isect p0, p1;
 };
 
-class AreaLight : public Light {
+class AreaLight : public Light 
+{
 public:
 	// AreaLight Interface
-	AreaLight(const Transform &LightToWorld, const MediumInterface &medium,
-		int nSamples);
-	virtual Color L(const Interaction &intr, const Vector3f &w) const = 0;
+	AreaLight(const Transform& LightToWorld, int nSamples);
+	virtual Color L(const Isect& intr, const Vector3f& w) const = 0;
 };
-*/
 
 }	//namespace valley
 
