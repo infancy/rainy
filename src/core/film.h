@@ -14,7 +14,7 @@
 namespace valley
 {
 
-class Film
+class Film	//: public Image
 {
 public:
 	Film(int width = 800, int height = 600, Float resolution = 1.f) 
@@ -34,7 +34,7 @@ public:
 
 public:
 	int width, height;
-	Float resolution;	////分辨率为单位面积的上的像素数量
+	Float resolution;	//分辨率为单位面积的上的像素数量
 
 private:
 	std::unique_ptr<Color4f[]> pixels;

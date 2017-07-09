@@ -41,7 +41,7 @@ public:
 			if (t > kEpsilon)
 			{
 				//tmin = t;										//光线原点在球体内部时应翻转法线
-				isect.normal = (v + t * ray.d) / radius;			//返回的并不是单位向量
+				isect.n = (v + t * ray.d) / radius;			//返回的并不是单位向量
 				isect.p = ray.o + t * ray.d;
 				return true;
 			}
@@ -50,7 +50,7 @@ public:
 			if (t > kEpsilon)
 			{
 				//tmin = t;
-				isect.normal = (v + t * ray.d) / radius;
+				isect.n = (v + t * ray.d) / radius;
 				isect.p = ray.o + t * ray.d;
 				return true;
 			}

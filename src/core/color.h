@@ -7,6 +7,7 @@
 #define VALLEY_CORE_COLOR_H
 
 #include"valley.h"
+#include"pbrt.h"
 //#include"geometry.h"
 
 namespace valley
@@ -31,21 +32,21 @@ public:
 
 	Color4f& operator=(float x) { r = g = b = x; return *this; }
 
-	bool operator==(const Color4f& c) { return r == c.r && g == c.g && b == c.b && a == c.a; }
-	bool operator!=(const Color4f& c) { return !operator==(c); }
+	bool operator==(const Color4f& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
+	bool operator!=(const Color4f& c) const { return !operator==(c); }
 
-	Color4f operator+(Color4f& c) { return Color4f(r + c.r, g + c.g, b + c.b, a + c.a); }
-	Color4f operator-(Color4f& c) { return Color4f(r - c.r, g - c.g, b - c.b, a - c.a); }
+	Color4f operator+(const Color4f& c) const { return Color4f(r + c.r, g + c.g, b + c.b, a + c.a); }
+	Color4f operator-(const Color4f& c) const { return Color4f(r - c.r, g - c.g, b - c.b, a - c.a); }
 
-	Color4f operator*(float f) { return Color4f(r * f, g * f, b * f, a * f); }
-	Color4f operator/(float f) { return operator*(1.f / f); }
+	Color4f operator*(const float f) const { return Color4f(r * f, g * f, b * f, a * f); }
+	Color4f operator/(const float f) const { return operator*(1.f / f); }
 
 	Color4f& operator+=(const Color4f& c) { r += c.r; g += c.g; b += c.b; a += c.a; return *this; }
 	Color4f& operator-=(const Color4f& c) { r -= c.r; g -= c.g; b -= c.b; a -= c.a; return *this; }
 	Color4f& operator*=(const float f) { r *= f; g *= f; b *= f; a *= f; return *this; }
 	Color4f& operator/=(const float f) { return operator*=(1.f / f); }
 
-	bool is_black() { return r == 0.f && g == 0.f && b == 0.f; }
+	bool is_black() const { return r == 0.f && g == 0.f && b == 0.f; }
 
 	Color4f normalize() const
 	{
@@ -54,6 +55,18 @@ public:
 		if (length > 0.f)
 			factor = 1.f / length;
 		return Color4f((r * factor), (g * factor), (b * factor), a);
+	}
+
+	Color4f clamp(Float low = 0, Float high = Infinity) const
+	{
+		Color4f ret;
+		
+		ret.r = Clamp(r, low, high);
+		ret.g = Clamp(g, low, high);
+		ret.b = Clamp(b, low, high);
+
+		DCHECK(!ret.hasNaNs());
+		return ret;
 	}
 
 	/*
@@ -66,7 +79,7 @@ public:
 	{
 		return ((*this * f) + (c * (1 - f)));
 	}
-	
+
 	inline Color4f saturate()
 	{
 

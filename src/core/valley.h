@@ -39,7 +39,7 @@
 namespace valley
 {
 
-#define VALLEY_FLOAT_AS_DOUBLE
+//#define VALLEY_FLOAT_AS_DOUBLE
 #ifdef VALLEY_FLOAT_AS_DOUBLE
 	using Float = double;
 #else
@@ -77,7 +77,7 @@ class Image;
 class Scene;
 class Integrator;
 class SamplerIntegrator;
-struct Isect;
+class Isect;
 class SurfaceIsect;
 class Shape;
 class Primitive;
@@ -91,16 +91,15 @@ class Filter;
 class Film;
 class FilmTile;
 class BxDF;
-class BRDF;
-class BTDF;
 class BSDF;
+//class BSSRDF;
 class Material;
 template <typename T>
 class Texture;
 class Medium;
 
 class Light;
-class VisibilityTester;
+class Visibility;
 class AreaLight;
 struct Distribution1D;
 class Distribution2D;

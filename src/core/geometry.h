@@ -1455,7 +1455,7 @@ inline bool Bounds3<T>::IntersectP(const Ray &ray, const Vector3f &invDir,
     if (tzMax < tMax) tMax = tzMax;
     return (tMin < ray.tMax) && (tMax > 0);
 }
-
+/*
 inline Point3f OffsetRayOrigin(const Point3f &p, const Vector3f &pError,
                                const Normal3f &n, const Vector3f &w) {
     Float d = Dot(Abs(n), pError);
@@ -1477,6 +1477,7 @@ inline Point3f OffsetRayOrigin(const Point3f &p, const Vector3f &pError,
     }
     return po;
 }
+*/
 
 inline Vector3f SphericalDirection(Float sinTheta, Float cosTheta, Float phi) {
     return Vector3f(sinTheta * std::cos(phi), sinTheta * std::sin(phi),

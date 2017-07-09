@@ -10,11 +10,20 @@
     <Filter Include="core">
       <UniqueIdentifier>{ace364ee-9bbe-4494-b58d-25ffecb79fce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="test">
-      <UniqueIdentifier>{a6d5bd0e-90b7-4ae6-95c8-3ffdc8f46339}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shape">
       <UniqueIdentifier>{ccec1b05-8b7f-4168-9e6a-9c08ece15a8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="camera">
+      <UniqueIdentifier>{78c6deb0-5f7c-49ea-bad0-26f1c2f0001c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bsdf">
+      <UniqueIdentifier>{e04a47fa-0c31-47b5-9894-b47034d4f633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="material">
+      <UniqueIdentifier>{b636931a-f5a0-4d89-8d93-59b9a01954a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{fc5140d4-3145-466b-9cb5-3a6c72d2cab2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +40,30 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\transform.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\bsdf.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\intersection.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bsdf\lambertian.cpp">
+      <Filter>bsdf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\sampling.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\stencil.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\material.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\material\matte.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\shape.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\test\test_depth_and_normal.cpp">
@@ -80,6 +113,35 @@
     <ClInclude Include="..\src\core\camera.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\camera\ThinLens.h" />
+    <ClInclude Include="..\src\camera\ThinLens.h">
+      <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\bsdf.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bsdf\lambertian.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\primitive.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\texture.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\material.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\sampling.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\rng.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\material\matte.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\shape.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
