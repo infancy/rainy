@@ -6,7 +6,7 @@ namespace valley
 {
 
 // GeometricPrimitive Method Definitions
-Bounds3f GeometricPrimitive::WorldBound() const { return shape->WorldBound(); }
+Bounds3f GeometricPrimitive::world_bound() const { return shape->WorldBound(); }
 
 bool GeometricPrimitive::intersectP(const Ray &r) const { return shape->IntersectP(r); }
 

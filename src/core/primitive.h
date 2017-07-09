@@ -18,7 +18,7 @@ class Primitive
 public:
 	virtual ~Primitive() {}
 
-	virtual Bounds3f WorldBound() const = 0;
+	virtual Bounds3f world_bound() const = 0;
 	virtual bool intersect(const Ray &r, SurfaceIsect*) const = 0;
 	virtual bool intersectP(const Ray &r) const = 0;
 	virtual const AreaLight* get_AreaLight() const = 0;
@@ -43,7 +43,7 @@ public:
 	  //mediumInterface(mediumInterface)
 	{}
 
-	virtual Bounds3f WorldBound() const;
+	virtual Bounds3f world_bound() const;
 
 	virtual bool intersect(const Ray& r, SurfaceIsect* isect) const;
 	virtual bool intersectP(const Ray& r) const;

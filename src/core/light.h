@@ -66,17 +66,17 @@ public:
 	virtual ~Light();
 
 	virtual Color power() const = 0;
-	virtual void Preprocess(const Scene &scene) {}
+	virtual void preprocess(const Scene &scene) {}
 
 	virtual Color Le(const RayDifferential &r) const;
 
-	virtual Float Pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
-	virtual void Pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
+	virtual Float pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
+	virtual void pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
 						Float *pdfDir) const = 0;
 
 	virtual Color sample_Li(const Isect& ref, const Point2f& u,
 							Vector3f *wi, Float *pdf, Visibility* vis) const = 0;
-	virtual Color Sample_Le(const Point2f &u1, const Point2f &u2, Float time,
+	virtual Color sample_Le(const Point2f &u1, const Point2f &u2, Float time,
 							Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const = 0;
 
 	const int flags;

@@ -155,19 +155,21 @@ class Vector2 {
     // Vector2 Public Data
     T x, y;
 };
-/*
+
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v) {
     os << "[ " << v.x << ", " << v.y << " ]";
     return os;
 }
 
+/*
 template <>
 inline std::ostream &operator<<(std::ostream &os, const Vector2<Float> &v) {
     os << StringPrintf("[ %f, %f ]", v.x, v.y);
     return os;
 }
 */
+
 template <typename T>
 class Vector3 {
   public:
@@ -270,19 +272,21 @@ class Vector3 {
     // Vector3 Public Data
     T x, y, z;
 };
-/*
+
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Vector3<T> &v) {
     os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
     return os;
 }
 
+/*
 template <>
 inline std::ostream &operator<<(std::ostream &os, const Vector3<Float> &v) {
     os << StringPrintf("[ %f, %f, %f ]", v.x, v.y, v.z);
     return os;
 }
 */
+
 typedef Vector2<Float> Vector2f;
 typedef Vector2<int> Vector2i;
 typedef Vector3<Float> Vector3f;
@@ -409,19 +413,21 @@ class Point2 {
     // Point2 Public Data
     T x, y;
 };
-/*
+
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Point2<T> &v) {
     os << "[ " << v.x << ", " << v.y << " ]";
     return os;
 }
 
+/*
 template <>
 inline std::ostream &operator<<(std::ostream &os, const Point2<Float> &v) {
     os << StringPrintf("[ %f, %f ]", v.x, v.y);
     return os;
 }
 */
+
 template <typename T>
 class Point3 {
   public:
@@ -541,19 +547,21 @@ class Point3 {
     // Point3 Public Data
     T x, y, z;
 };
-/*
+
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Point3<T> &v) {
     os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
     return os;
 }
 
+/*
 template <>
 inline std::ostream &operator<<(std::ostream &os, const Point3<Float> &v) {
     os << StringPrintf("[ %f, %f, %f ]", v.x, v.y, v.z);
     return os;
 }
 */
+
 typedef Point2<Float> Point2f;
 typedef Point2<int> Point2i;
 typedef Point3<Float> Point3f;
@@ -673,19 +681,21 @@ class Normal3 {
     // Normal3 Public Data
     T x, y, z;
 };
-/*
+
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Normal3<T> &v) {
     os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
     return os;
 }
 
+/*
 template <>
 inline std::ostream &operator<<(std::ostream &os, const Normal3<Float> &v) {
     os << StringPrintf("[ %f, %f, %f ]", v.x, v.y, v.z);
     return os;
 }
 */
+
 typedef Normal3<Float> Normal3f;
 
 // Bounds Declarations
