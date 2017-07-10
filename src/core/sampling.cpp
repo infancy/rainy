@@ -3,6 +3,14 @@
 namespace valley
 {
 
+Vector3f uniform_sample_Sphere(const Point2f &u)
+{
+	Float z = 1 - 2 * u[0];
+	Float r = std::sqrt(std::max((Float)0, (Float)1 - z * z));
+	Float phi = 2 * Pi * u[1];
+	return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
+}
+
 Vector3f uniform_sample_hemisphere(const Point2f& u)
 {
 	Float z = u[0];
@@ -10,8 +18,6 @@ Vector3f uniform_sample_hemisphere(const Point2f& u)
 	Float phi = 2 * Pi * u[1];
 	return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
-
-Float uniform_hemisphere_pdf() { return Inv2Pi; }
 
 Point2f ConcentricSampleDisk(const Point2f& u) {
 	// Map uniform random numbers to $[-1,1]^2$

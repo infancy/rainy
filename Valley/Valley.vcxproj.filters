@@ -78,6 +78,9 @@
     <ClCompile Include="..\src\core\primitive.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\light\point.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\platform.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\light.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\light\point.h">
+      <Filter>light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,8 +12,11 @@
 namespace valley
 {
 
+Vector3f uniform_sample_Sphere(const Point2f &u);
 Vector3f uniform_sample_hemisphere(const Point2f& u);
-Float    uniform_hemisphere_pdf();
+
+inline Float uniform_sphere_pdf()     { return Inv4Pi; }
+inline Float uniform_hemisphere_pdf() { return Inv2Pi; }
 
 Point2f ConcentricSampleDisk(const Point2f &u);
 
@@ -23,7 +26,7 @@ inline Vector3f cosine_sample_hemisphere(const Point2f &u)
 	Float z = std::sqrt(std::max((Float)0, 1 - d.x * d.x - d.y * d.y));
 	return Vector3f(d.x, d.y, z);
 }
-inline Float cosine_hemisphere_pdf(Float cosTheta) { return cosTheta * InvPi; }
+inline Float    cosine_hemisphere_pdf(Float cosTheta) { return cosTheta * InvPi; }
 
 }	//namespace valley
 

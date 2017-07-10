@@ -19,6 +19,11 @@ class Isect
 {
 public:
 	Isect(Float maxDist = Infinity) : dist(maxDist) {}
+	Isect(const Point3f &p  /*const MediumInterface &mediumInterface*/)
+		: p(p) /*mediumInterface(mediumInterface)*/ {}
+	Isect(const Point3f &p, const Vector3f &wo 
+		/*const MediumInterface &mediumInterface*/)
+		: p(p), wo(wo) /*mediumInterface(mediumInterface)*/ {}
 	Isect(const Point3f &p, const Normal3f &n, const Vector3f &pError,
 		const Vector3f &wo, Float maxDist = Infinity);
 
