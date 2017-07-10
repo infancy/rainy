@@ -31,6 +31,7 @@ bool Scene::intersectTr(Ray ray, Sampler& sampler, SurfaceIsect* isect, Color* T
 		if (!hitSurface) return false;
 		if (isect->primitive->get_material() != nullptr) return true;
 		ray = isect->generate_ray(ray.d);
+		// return true; //Ä¬ÈÏ·µ»Øtrue
 	}
 }
 

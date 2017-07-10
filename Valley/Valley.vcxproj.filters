@@ -25,6 +25,9 @@
     <Filter Include="test">
       <UniqueIdentifier>{fc5140d4-3145-466b-9cb5-3a6c72d2cab2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="light">
+      <UniqueIdentifier>{de9f1e36-ba5b-4ed0-8f46-77861023914a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\scene.cpp">

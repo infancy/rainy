@@ -44,11 +44,11 @@ Color Visibility::Tr(const Scene &scene, Sampler &sampler) const {
 
 Color Light::Le(const RayDifferential &ray) const { return Color(0.f); }
 
-AreaLight::AreaLight(const Transform &LightToWorld,
-	//const MediumInterface &medium,
-	int nSamples)
-	: Light((int)Light_type::Area, LightToWorld, 
-		//medium, 
-		nSamples) {}
+AreaLight::AreaLight(const Transform& LightToWorld,
+  //const MediumInterface& medium,
+	int nSamples) : 
+	Light((int)Light_type::Area, LightToWorld, 
+	//medium, 
+	nSamples) {}
 
 }	//namespace valley

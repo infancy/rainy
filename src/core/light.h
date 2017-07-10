@@ -62,7 +62,9 @@ inline bool is_delta_light(int flags)
 class Light
 {
 public:
-	Light(int flags, const Transform& LightToWorld, int nSamples = 1);
+	Light(int flags, const Transform& LightToWorld, 
+	  //const MediumInterface &mediumInterface,
+		int nSamples = 1);
 	virtual ~Light();
 
 	virtual Color power() const = 0;
@@ -76,15 +78,15 @@ public:
 
 	virtual Color sample_Li(const Isect& ref, const Point2f& u,
 							Vector3f *wi, Float *pdf, Visibility* vis) const = 0;
-	virtual Color sample_Le(const Point2f &u1, const Point2f &u2, Float time,
-							Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const = 0;
+	virtual Color sample_Le(const Point2f &u1, const Point2f &u2,  Ray *ray, 
+							Normal3f *nLight, Float *pdfPos, Float *pdfDir) const = 0;
 
+public:
 	const int flags;
 	const int nSamples;
-	//const MediumInterface mediumInterface;
+	//const MediumInterface mi;
 
 protected:
-	// Light Protected Data
 	const Transform LightToWorld, WorldToLight;
 };
 
@@ -111,7 +113,9 @@ class AreaLight : public Light
 {
 public:
 	// AreaLight Interface
-	AreaLight(const Transform& LightToWorld, int nSamples);
+	AreaLight(const Transform& LightToWorld, 
+	  //const MediumInterface &medium,
+		int nSamples);
 	virtual Color L(const Isect& intr, const Vector3f& w) const = 0;
 };
 

@@ -688,14 +688,6 @@ inline std::ostream &operator<<(std::ostream &os, const Normal3<T> &v) {
     return os;
 }
 
-/*
-template <>
-inline std::ostream &operator<<(std::ostream &os, const Normal3<Float> &v) {
-    os << StringPrintf("[ %f, %f, %f ]", v.x, v.y, v.z);
-    return os;
-}
-*/
-
 typedef Normal3<Float> Normal3f;
 
 // Bounds Declarations
@@ -898,12 +890,6 @@ class Ray {
         : o(o), d(d), tMax(tMax), time(time), medium(medium) {}
     Point3f operator()(Float t) const { return o + d * t; }
     bool HasNaNs() const { return (o.HasNaNs() || d.HasNaNs() || isNaN(tMax)); }
-	/*
-    friend std::ostream &operator<<(std::ostream &os, const Ray &r) {
-        os << "[o=" << r.o << ", d=" << r.d << ", tMax=" << r.tMax
-           << ", time=" << r.time << "]";
-        return os;
-    }*/
 
     // Ray Public Data
     Point3f o;
@@ -912,6 +898,12 @@ class Ray {
     Float time;
     const Medium *medium;
 };
+
+inline std::ostream &operator<<(std::ostream &os, const Ray &r) {
+	os << "[o=" << r.o << ", d=" << r.d << ", tMax=" << r.tMax
+		<< ", time=" << r.time << "]";
+	return os;
+}
 
 class RayDifferential : public Ray {
   public:
@@ -935,20 +927,20 @@ class RayDifferential : public Ray {
         rxDirection = d + (rxDirection - d) * s;
         ryDirection = d + (ryDirection - d) * s;
     }
-	/*
-    friend std::ostream &operator<<(std::ostream &os, const RayDifferential &r) {
-        os << "[ " << (Ray &)r << " has differentials: " <<
-            (r.hasDifferentials ? "true" : "false") << ", xo = " << r.rxOrigin <<
-            ", xd = " << r.rxDirection << ", yo = " << r.ryOrigin << ", yd = " <<
-            r.ryDirection;
-        return os;
-    }
-	*/
+	
     // RayDifferential Public Data
     bool hasDifferentials;
     Point3f rxOrigin, ryOrigin;
     Vector3f rxDirection, ryDirection;
 };
+
+inline std::ostream &operator<<(std::ostream &os, const RayDifferential &r) {
+	os << "[ " << (Ray &)r << " has differentials: " <<
+		(r.hasDifferentials ? "true" : "false") << ", xo = " << r.rxOrigin <<
+		", xd = " << r.rxDirection << ", yo = " << r.ryOrigin << ", yd = " <<
+		r.ryDirection;
+	return os;
+}
 
 // Geometry Inline Functions
 template <typename T>
