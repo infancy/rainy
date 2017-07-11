@@ -11,8 +11,8 @@ Bounds3f Sphere::object_bound() const
 					Point3f(radius, radius, radius));
 }
 
-bool Sphere::intersect(const Ray &r, Float* tHit, SurfaceIsect* isect,
-	bool testAlphaTexture) const
+bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
+	/*bool testAlphaTexture*/) const
 {
 	static const Float kEpsilon = 0.001f;
 
@@ -96,7 +96,7 @@ bool Sphere::intersect(const Ray &r, Float* tHit, SurfaceIsect* isect,
 			-ray.d, dpdu, dpdv, dndu, dndv, this));
 
 		// Update _tHit_ for quadric intersection
-		*tHit = (Float)t;	////记录相交距离
+		ray.tMax = (Float)t;	////记录相交距离
 		return true;
 	}
 	else

@@ -1,36 +1,39 @@
-#include"valley.h"
-#include"film.h"
-#include"camera.h"
-#include"shape/sphere.h"
-#include"shape/Rectangle.h"
+#include"api.h"
+
 using namespace valley;
 
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
-
-	Transform m(Matrix4x4(1, 0, 0, 0,
-						  0, 1, 0, 0,
-					      0, 0, 1, 100,
-						  0, 0, 0, 1));
+	
+	Transform m(Matrix4x4(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 100,
+		0, 0, 0, 1));
 	Transform mInv = Inverse(m);
-
-	std::unique_ptr<Sphere> sphere{ new Sphere{ &m, &mInv, false, 50.f } };
+	shared_ptr<Sphere> sphere{ new Sphere(&m, &mInv, false, 50.f) };
+	
+	/*
+	Transform m1(Matrix4x4(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 200,
+		0, 0, 0, 1));
+	Transform mInv1 = Inverse(m1);
+	shared_ptr<Rectangle> rectangle{ new Rectangle(&m1, &mInv1, false, Point3f(0, 0, 0),
+		Vector3f(0, 0, 100), Vector3f(0, 100, 0)) };
+		*/
 	Film* film{ new Film(800, 600, 100) };
 	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
 	Point3f eye(0, 0, 0), tar(0, 0, 1);
 	Vector3f up(0, 1, 0);
 	std::unique_ptr<Camera> camera{ new Pinhole(eye, tar, up, 50, film) };
-	//Camera* camera{ new OrthographicCamera(t, b, 0.f, 50.f, film) };
-	/*
-	std::unique_ptr<Integrator> integrator;
 
-	integrator->render(sphere);
-	*/
-	float maxDepth = 50;
-	for (int y = 0; y < 600; y++)
+	long i = 0;
+	for (int y = 401; y < 600; y++)
 	{
-		for (int x = 0; x < 800; x++)
+		for (int x = 1; x < 800; x++)
 		{
 			CameraSample cs;
 			cs.pFilm.x = x, cs.pFilm.y = y;
@@ -38,9 +41,10 @@ int main(int argc, char** argv)
 			camera->generate_ray(cs, &ray);
 			SurfaceIsect isect;
 			Float max = Infinity;
-			if (sphere->intersect(ray, &max, &isect, true))
+			++i;
+			//cout << i << "\n";
+			if (sphere->intersect(ray, &isect))
 			{
-				//float depth = 2.f - isect.p.z / maxDepth;
 				Normal3f n = Normalize(isect.n);
 				camera->film->operator()(x, y) = Color((n.x + 1) / 2, (n.y + 1) / 2, (n.z + 1) / 2);
 			}

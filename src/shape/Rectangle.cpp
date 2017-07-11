@@ -10,8 +10,8 @@ Bounds3f Rectangle::object_bound() const
 	return Bounds3f(point, point + up + right);
 }
 
-bool Rectangle::intersect(const Ray &r, Float* tHit, SurfaceIsect* isect,
-	bool testAlphaTexture) const
+bool Rectangle::intersect(const Ray &r, SurfaceIsect* isect
+	/*bool testAlphaTexture*/) const
 {
 	// Transform _Ray_ to object space
 	Ray ray = (*WorldToObject)(r);
@@ -21,10 +21,13 @@ bool Rectangle::intersect(const Ray &r, Float* tHit, SurfaceIsect* isect,
 	Vector3f vec = point - ray.o;
 	const Normal3f& n = normal;
 	//tHit = (point - ray.o) * normal / (ray.d * normal); 
-	Float t = (vec.x * n.x + vec.y * n.y + vec.z * n.z) / 
-		(ray.d.x * n.x + ray.d.y * n.y + ray.d.z * n.z);
+	Float tmpa = (vec.x * n.x + vec.y * n.y + vec.z * n.z);
+	Float tmpb = (ray.d.x * n.x + ray.d.y * n.y + ray.d.z * n.z);
+	if (tmpb == 0.f)
+		return false;		//平行
+	Float t = tmpa / tmpb;
 
-	if (t <= 0.f)
+	if (t <= 0.f || t >= ray.tMax)
 		return false;
 
 	Point3f pHit = ray.o + t * ray.d;
@@ -52,7 +55,7 @@ bool Rectangle::intersect(const Ray &r, Float* tHit, SurfaceIsect* isect,
 	*isect = (*ObjectToWorld)(SurfaceIsect(pHit, pError, Point2f(u, v),
 		-ray.d, dpdu, dpdv, dndu, dndv, this));
 
-	*tHit = t;	//记录相交距离
+	ray.tMax = t;	//记录相交距离
 	return true;
 }
 
@@ -66,8 +69,11 @@ bool Rectangle::intersectP(const Ray &r, bool testAlphaTexture) const
 	Vector3f vec = point - ray.o;
 	const Normal3f& n = normal;
 	//tHit = (point - ray.o) * normal / (ray.d * normal); 
-	Float t = (vec.x * n.x + vec.y * n.y + vec.z * n.z) /
-		(ray.d.x * n.x + ray.d.y * n.y + ray.d.z * n.z);
+	Float tmpa = (vec.x * n.x + vec.y * n.y + vec.z * n.z);
+	Float tmpb = (ray.d.x * n.x + ray.d.y * n.y + ray.d.z * n.z);
+	if (tmpb == 0.f)
+		return false;		//平行
+	Float t = tmpa / tmpb;
 
 	if (t <= 0.f)
 		return false;

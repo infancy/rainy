@@ -14,15 +14,16 @@ namespace valley
 class Rectangle : public Shape
 {
 public:
-	Rectangle(const Transform* ObjectToWorld, const Transform* WorldToObject,
+	Rectangle(std::shared_ptr<Transform> ObjectToWorld,
+		std::shared_ptr<Transform> WorldToObject,
 		bool reverseOrientation, Point3f p, Vector3f u, Vector3f r) : 
 		Shape(ObjectToWorld, WorldToObject, reverseOrientation),
 		point(p), up(u), right(r), normal(Normalize(Cross(right, up))) {}
 
 	Bounds3f object_bound() const;
 
-	bool intersect(const Ray &ray, Float *tHit, SurfaceIsect* isect,
-		bool testAlphaTexture) const;
+	bool intersect(const Ray &ray, SurfaceIsect* isect
+		/*bool testAlphaTexture*/) const;
 	bool intersectP(const Ray &ray, bool testAlphaTexture) const;
 
 	Float area() const;

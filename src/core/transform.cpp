@@ -297,10 +297,10 @@ SurfaceIsect Transform::operator()(const SurfaceIsect& si) const
     //ret.dvdy = si.dvdy;
     //ret.dpdx = t(si.dpdx);
     //ret.dpdy = t(si.dpdy);
-    //ret.bsdf = si.bsdf;
-    //ret.bssrdf = si.bssrdf;
+    ret.bsdf.reset(si.bsdf.get());	
+    //ret.bssrdf.reset(si.bssrdf.get());	
     ret.primitive = si.primitive;
-    //    ret.n = Faceforward(ret.n, ret.shading.n);
+    ret.n = Faceforward(ret.n, ret.shading.n);
     ret.shading.n = Faceforward(ret.shading.n, ret.n);
     return ret;
 }

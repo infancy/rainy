@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\bsdf\lambertian.cpp" />
+    <ClCompile Include="..\src\core\api.cpp" />
     <ClCompile Include="..\src\core\bsdf.cpp" />
     <ClCompile Include="..\src\core\film.cpp" />
     <ClCompile Include="..\src\core\filter.cpp" />
@@ -42,11 +43,12 @@
     <ClCompile Include="..\src\material\matte.cpp" />
     <ClCompile Include="..\src\shape\Rectangle.cpp" />
     <ClCompile Include="..\src\shape\sphere.cpp" />
-    <ClCompile Include="..\src\test\test_shape.cpp" />
+    <ClCompile Include="..\src\test\test_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\bsdf\lambertian.h" />
     <ClInclude Include="..\src\camera\ThinLens.h" />
+    <ClInclude Include="..\src\core\api.h" />
     <ClInclude Include="..\src\core\bsdf.h" />
     <ClInclude Include="..\src\core\camera.h" />
     <ClInclude Include="..\src\core\color.h" />

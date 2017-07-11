@@ -298,7 +298,8 @@ inline RayDifferential Transform::operator()(const RayDifferential &r) const {
 
 template <typename T>
 inline Point3<T> Transform::operator()(const Point3<T> &p,
-                                       Vector3<T> *pError) const {
+                                       Vector3<T> *pError) const 
+{
     T x = p.x, y = p.y, z = p.z;
     // Compute transformed coordinates from point _pt_
     T xp = m.m[0][0] * x + m.m[0][1] * y + m.m[0][2] * z + m.m[0][3];

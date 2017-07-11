@@ -20,7 +20,7 @@ public:
 	// MatteMaterial Public Methods
 	Matte(const std::shared_ptr<Texture<Color>>& kd,
 		  const std::shared_ptr<Texture<Float>>& sigma,   //´Ö²Ú¶È
-		  const std::shared_ptr<Texture<Float>>& bumpMap);
+		  const std::shared_ptr<Texture<Float>>& bumpMap = nullptr);
 
 	void compute_scattering(SurfaceIsect* si, TransportMode mode,
 		bool allowMultipleLobes) const override;

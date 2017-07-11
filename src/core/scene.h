@@ -16,12 +16,12 @@ namespace valley
 class Scene 
 {
 public:
-	Scene(std::shared_ptr<Primitive> aggregate,
+	Scene(Primitive* accelerator,
 		  const std::vector<std::shared_ptr<Light>>& lights)
-		: lights(lights), aggregate(aggregate) 
+		: lights(lights), accelerator(accelerator) 
 	{
 		// Scene Constructor Implementation
-		worldBound = aggregate->world_bound();
+		worldBound = accelerator->world_bound();
 		for (const auto& light : lights)
 		{
 			light->preprocess(*this);
@@ -44,7 +44,7 @@ public:
 	std::vector<std::shared_ptr<Light>> infiniteLights;
 
 private:
-	std::shared_ptr<Primitive> aggregate;
+	std::shared_ptr<Primitive> accelerator;
 	Bounds3f worldBound;
 };
 

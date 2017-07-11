@@ -32,9 +32,9 @@ public:
 class GeometricPrimitive : public Primitive 
 {
 public:
-	GeometricPrimitive(const std::shared_ptr<Shape> &shape,
-		const std::shared_ptr<Material> &material,
-		const std::shared_ptr<AreaLight> &areaLight
+	GeometricPrimitive(const std::shared_ptr<Shape>& shape,
+		const std::shared_ptr<Material>& material,
+		const std::shared_ptr<AreaLight>& areaLight = nullptr
 		//,const MediumInterface &mediumInterface
 		) : 
 		shape(shape),
@@ -43,18 +43,18 @@ public:
 	  //mediumInterface(mediumInterface)
 	{}
 
-	virtual Bounds3f world_bound() const;
+	virtual Bounds3f world_bound() const override;
 
-	virtual bool intersect(const Ray& r, SurfaceIsect* isect) const;
-	virtual bool intersectP(const Ray& r) const;
+	virtual bool intersect(const Ray& r, SurfaceIsect* isect) const override;
+	virtual bool intersectP(const Ray& r) const override;
 
-	const AreaLight* get_AreaLight() const;
-	const Material* get_material() const;
+	const AreaLight* get_AreaLight() const override;
+	const Material* get_material() const override;
 
 	void compute_scattering(SurfaceIsect* isect,
 						//	MemoryArena &arena,
 							TransportMode mode,
-							bool allowMultipleLobes) const;
+							bool allowMultipleLobes) const override;
 
 private:
 	std::shared_ptr<Shape> shape;
@@ -95,16 +95,32 @@ private:
 };
 */
 
-class Aggregate : public Primitive 
+class Accelerator : public Primitive
 {
 public:
-	const AreaLight* get_AreaLight() const;
-	const Material* get_material() const;
+	Accelerator(std::vector<std::shared_ptr<Primitive>>& primitives) :
+		primitives(primitives)
+	{
+		//创建加速体的包围盒
+		for (auto& p : primitives)
+			bounds = Union(bounds, p->world_bound());
+	}
+	virtual Bounds3f world_bound() const override { return bounds; }
+
+	const AreaLight* get_AreaLight() const override;
+	const Material* get_material() const override;
 
 	void compute_scattering(SurfaceIsect* isect, 
 						//	MemoryArena &arena,
 							TransportMode mode,
-							bool allowMultipleLobes) const;
+							bool allowMultipleLobes) const override;
+
+	virtual bool intersect(const Ray& r, SurfaceIsect* isect) const override;
+	virtual bool intersectP(const Ray& r) const override;
+
+private:
+	std::vector<std::shared_ptr<Primitive>> primitives;
+	Bounds3f bounds;
 };
 
 }	//namespace valley

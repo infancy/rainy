@@ -10,13 +10,13 @@ namespace valley
 bool Scene::intersect(const Ray& ray, SurfaceIsect* isect) const
 {
 	DCHECK_NE(ray.d, Vector3f(0, 0, 0));
-	return aggregate->intersect(ray, isect);
+	return accelerator->intersect(ray, isect);
 }
 
 bool Scene::intersectP(const Ray &ray) const 
 {
 	DCHECK_NE(ray.d, Vector3f(0, 0, 0));
-	return aggregate->intersectP(ray);
+	return accelerator->intersectP(ray);
 }
 
 bool Scene::intersectTr(Ray ray, Sampler& sampler, SurfaceIsect* isect, Color* Tr) const 

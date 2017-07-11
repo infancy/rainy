@@ -38,7 +38,8 @@ namespace valley
 // Shape Method Definitions
 Shape::~Shape() {}
 
-Shape::Shape(const Transform *ObjectToWorld, const Transform *WorldToObject,
+Shape::Shape(std::shared_ptr<Transform> ObjectToWorld,
+	std::shared_ptr<Transform> WorldToObject,
 	bool reverseOrientation)
 	: ObjectToWorld(ObjectToWorld),
 	WorldToObject(WorldToObject),
@@ -52,7 +53,7 @@ Bounds3f Shape::world_bound() const { return (*ObjectToWorld)(object_bound()); }
 bool Shape::intersectP(const Ray &ray,
 	bool testAlphaTexture) const 
 {
-	return intersect(ray, nullptr, nullptr, testAlphaTexture);
+	return intersect(ray, nullptr /*testAlphaTexture*/);
 }
 
 Isect Shape::sample(const Isect &ref, const Point2f &u,
@@ -76,12 +77,11 @@ Float Shape::pdf(const Isect &ref, const Vector3f &wi) const
 {
 	// Intersect sample ray with area light geometry
 	Ray ray = ref.generate_ray(wi);
-	Float tHit;
 	SurfaceIsect isectLight;
 	// Ignore any alpha textures used for trimming the shape when performing
 	// this intersection. Hack for the "San Miguel" scene, where this is used
 	// to make an invisible area light.
-	if (!intersect(ray, &tHit, &isectLight, false)) return 0;
+	if (!intersect(ray, &isectLight/*false*/)) return 0;
 
 	// Convert light sample weight to solid angle measure
 	Float pdf = DistanceSquared(ref.p, isectLight.p) /

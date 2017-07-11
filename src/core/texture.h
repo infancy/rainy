@@ -26,7 +26,7 @@ template <typename T>
 class ConstantTexture : public Texture<T> {
 public:
 	// ConstantTexture Public Methods
-	ConstantTexture(const T &value) : value(value) {}
+	ConstantTexture(const T& value) : value(value) {}
 	T evaluate(const SurfaceIsect&) const { return value; }
 
 private:

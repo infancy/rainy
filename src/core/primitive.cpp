@@ -13,9 +13,8 @@ bool GeometricPrimitive::intersectP(const Ray &r) const { return shape->intersec
 bool GeometricPrimitive::intersect(
 	const Ray& r, SurfaceIsect* isect) const 
 {
-	Float tHit;
-	if (!shape->intersect(r, &tHit, isect)) return false;
-	r.tMax = tHit;
+	if (!shape->intersect(r, isect)) return false;
+
 	isect->primitive = this;
 	CHECK_GE(Dot(isect->n, isect->shading.n), 0.);
 	// Initialize _SurfaceInteraction::mediumInterface_ after _Shape_
@@ -47,32 +46,49 @@ void GeometricPrimitive::compute_scattering(
 }
 
 
-// Aggregate Method Definitions
-const AreaLight* Aggregate::get_AreaLight() const
+// Accelerator Method Definitions
+const AreaLight* Accelerator::get_AreaLight() const
 {
 	LOG(FATAL) <<
-		"Aggregate::GetAreaLight() method"
+		"Accelerator::GetAreaLight() method"
 		"called; should have gone to GeometricPrimitive";
 	return nullptr;
 }
 
-const Material* Aggregate::get_material() const
+const Material* Accelerator::get_material() const
 {
 	LOG(FATAL) <<
-		"Aggregate::GetMaterial() method"
+		"Accelerator::GetMaterial() method"
 		"called; should have gone to GeometricPrimitive";
 	return nullptr;
 }
 
-void Aggregate::compute_scattering(
+void Accelerator::compute_scattering(
 	SurfaceIsect* isect,
 //	MemoryArena &arena,
 	TransportMode mode,
 	bool allowMultipleLobes) const 
 {
 	LOG(FATAL) <<
-		"Aggregate::ComputeScatteringFunctions() method"
+		"Accelerator::ComputeScatteringFunctions() method"
 		"called; should have gone to GeometricPrimitive";
+}
+
+bool Accelerator::intersect(const Ray& r, SurfaceIsect* isect) const
+{
+	bool flag = false;
+	for (auto& p : primitives)
+		if (p->intersect(r, isect))
+			flag = true;
+	return flag ? true : false;
+}
+
+bool Accelerator::intersectP(const Ray& r) const
+{
+	for (auto& p : primitives)
+		if (p->intersectP(r))
+			return true;
+	return false;
 }
 
 }	//namespace valley

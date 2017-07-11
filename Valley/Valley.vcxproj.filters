@@ -25,6 +25,12 @@
     <Filter Include="light">
       <UniqueIdentifier>{de9f1e36-ba5b-4ed0-8f46-77861023914a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="filter">
+      <UniqueIdentifier>{169fca10-3061-4b23-8816-58d994776804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sampler">
+      <UniqueIdentifier>{1e75a814-a178-4d59-af66-a18ef5d087df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\scene.cpp">
@@ -96,8 +102,11 @@
     <ClCompile Include="..\src\shape\Rectangle.cpp">
       <Filter>shape</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\test\test_shape.cpp">
+    <ClCompile Include="..\src\test\test_scene.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\api.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\src\shape\Rectangle.h">
       <Filter>shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\api.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

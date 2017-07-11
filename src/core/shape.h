@@ -48,15 +48,16 @@ namespace valley
 class Shape 
 {
 public:
-	Shape(const Transform *ObjectToWorld, const Transform *WorldToObject,
+	Shape(std::shared_ptr<Transform> ObjectToWorld,
+		std::shared_ptr<Transform> WorldToObject,
 		bool reverseOrientation);
 	virtual ~Shape();
 
 	virtual Bounds3f object_bound() const = 0;
 	virtual Bounds3f world_bound() const;
 
-	virtual bool intersect(const Ray &ray, Float *tHit,
-						   SurfaceIsect* isect, bool testAlphaTexture = true) const = 0;
+	virtual bool intersect(const Ray &ray, 
+						   SurfaceIsect* isect /*bool testAlphaTexture*/) const = 0;
 	virtual bool intersectP(const Ray &ray,
 						    bool testAlphaTexture = true) const;
 
@@ -80,7 +81,7 @@ public:
 	virtual Float solid_angle(const Point3f &p, int nSamples = 512) const;
 
 public:
-	const Transform *ObjectToWorld, *WorldToObject;
+	std::shared_ptr<const Transform> ObjectToWorld, WorldToObject;
 	const bool reverseOrientation;			//（法线）方向翻转
 	const bool transformSwapsHandedness;    //转换坐标系（左手or右手？）
 };
