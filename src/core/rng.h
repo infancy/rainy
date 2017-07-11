@@ -7,6 +7,7 @@
 #define VALLEY_CORE_RNG_H
 
 #include"valley.h"
+#include <random>
 
 namespace valley
 {
@@ -26,6 +27,25 @@ static const Float OneMinusEpsilon = FloatOneMinusEpsilon;
 #endif
 
 //Random Number Generator
+
+class RNG
+{
+public:
+	RNG(int seed = 1234) : mRng(seed) {}
+
+	int      get_int()  { return int_distr(mRng); }	    //(0, 2^21)
+	uint32_t get_uint() { return uint_distr(mRng); }	//(0, 2^32)
+	Float    get()      { return Float_distr(mRng); }	//(0.F, 1.F)
+
+	Vector2f get_v2() { return Vector2f(get(), get()); }
+	Vector3f get_v3() { return Vector3f(get(), get(), get()); }
+
+private:
+	std::mt19937_64 mRng;
+	std::uniform_int_distribution<int>        int_distr;
+	std::uniform_int_distribution<uint32_t>   uint_distr;
+	std::uniform_real_distribution<Float>     Float_distr;
+};
 
 }	//namespace valley
 

@@ -17,9 +17,30 @@ namespace valley
 class Film	//: public Image
 {
 public:
-	Film(int width = 800, int height = 600, Float resolution = 1.f) 
-		: width(width), height(height), resolution(resolution), pixels(new Color[width * height]) {}
-	~Film() { save_ppm("tt.ppm", pixels.get(), width, height); }
+	Film(int width = 800, int height = 600, Float resolution = 1.f, 
+		const std::string& filename = std::string()) 
+	    : width(width), height(height), resolution(resolution), 
+		filename("C:\\Users\\wyh32\\Desktop\\valley\\"),
+		pixels(new Color[width * height]) {}
+	~Film() 
+	{ 
+		if(!filename.empty())
+		{ 
+			std::string time;
+			long t = clock();
+			while (t != 0)
+			{
+				char c = '0';
+				time += (c + t % 10);
+				t /= 10;
+			}
+			std::reverse(time.begin(), time.end());
+			filename += time;
+			filename += ".ppm";
+		}
+
+		save_ppm(filename, pixels.get(), width, height);
+	}
 
 	Color& operator()(int x, int y)
 	{
@@ -38,6 +59,7 @@ public:
 
 private:
 	std::unique_ptr<Color[]> pixels;
+	std::string filename;
 };
 
 

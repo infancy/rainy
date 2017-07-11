@@ -11,10 +11,10 @@
 namespace valley
 {
 
-void save_ppm(const char* filename, const Float* pixel,
+void save_ppm(std::string filename, const Float* pixel,
 			 int width, int height);
 
-void save_ppm(const char* filename, const Color* pixel,
+void save_ppm(std::string filename, const Color* pixel,
 	int width, int height);
 
 }	//namespace valley

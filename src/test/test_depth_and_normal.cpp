@@ -7,6 +7,8 @@ using namespace valley;
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
+
+
 	std::unique_ptr<Sphere> sphere{new Sphere{Point3f{0.f, 0.f, 100.f}, 50.f}};
 	Film* film{ new Film(800, 600, 100) };
 	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
