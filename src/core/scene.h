@@ -30,8 +30,11 @@ public:
 		}
 	}
 	const Bounds3f &WorldBound() const { return worldBound; }
+
 	bool intersect(const Ray &ray, SurfaceIsect *isect) const;
+	//用于两点间可见性判别
 	bool intersectP(const Ray &ray) const;
+	//
 	bool intersectTr(Ray ray, Sampler &sampler, SurfaceIsect *isect,
 		Color *transmittance) const;
 

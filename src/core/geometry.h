@@ -1456,18 +1456,19 @@ inline bool Bounds3<T>::IntersectP(const Ray &ray, const Vector3f &invDir,
     if (tzMax < tMax) tMax = tzMax;
     return (tMin < ray.tMax) && (tMax > 0);
 }
-/*
-inline Point3f OffsetRayOrigin(const Point3f &p, const Vector3f &pError,
+
+//对光线源点进行一定量的偏移，以抵消数值精度带来的误差
+inline Point3f offset_ray_origin(const Point3f &p, const Vector3f &pError,
                                const Normal3f &n, const Vector3f &w) {
     Float d = Dot(Abs(n), pError);
-#ifdef PBRT_FLOAT_AS_DOUBLE
+#ifdef VALLEY_FLOAT_AS_DOUBLE
     // We have tons of precision; for now bump up the offset a bunch just
     // to be extra sure that we start on the right side of the surface
     // (In case of any bugs in the epsilons code...)
     d *= 1024.;
 #endif
     Vector3f offset = d * Vector3f(n);
-    if (Dot(w, n) < 0) offset = -offset;
+    if (Dot(w, n) < 0) offset = -offset;	//法线与生成光线的方向
     Point3f po = p + offset;
     // Round offset point _po_ away from _p_
     for (int i = 0; i < 3; ++i) {
@@ -1478,7 +1479,7 @@ inline Point3f OffsetRayOrigin(const Point3f &p, const Vector3f &pError,
     }
     return po;
 }
-*/
+
 
 inline Vector3f SphericalDirection(Float sinTheta, Float cosTheta, Float phi) {
     return Vector3f(sinTheta * std::cos(phi), sinTheta * std::sin(phi),

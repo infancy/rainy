@@ -18,14 +18,14 @@ namespace valley
 class Isect
 {
 public:
-	Isect(Float maxDist = Infinity) : dist(maxDist) {}
+	Isect() {}
 	Isect(const Point3f &p  /*const MediumInterface &mediumInterface*/)
 		: p(p) /*mediumInterface(mediumInterface)*/ {}
 	Isect(const Point3f &p, const Vector3f &wo 
 		/*const MediumInterface &mediumInterface*/)
 		: p(p), wo(wo) /*mediumInterface(mediumInterface)*/ {}
 	Isect(const Point3f &p, const Normal3f &n, const Vector3f &pError,
-		const Vector3f &wo, Float maxDist = Infinity);
+		const Vector3f &wo, /*const MediumInterface &mediumInterface, */ Float maxDist = Infinity);
 
 	Ray generate_ray(const Vector3f& d) const
 	{
@@ -49,37 +49,12 @@ public:
 		return Ray(origin, d, 1 - ShadowEpsilon);
 	}
 
-private:
-	//对光线源点进行一定量的偏移，以抵消数值精度带来的误差
-	Point3f offset_ray_origin(const Point3f& p, const Vector3f& pError,
-							  const Normal3f& normal, const Vector3f& direct) const
-	{
-		Float d = Dot(Abs(normal), pError);
-	#ifdef VALLEY_FLOAT_AS_DOUBLE
-		// We have tons of precision; for now bump up the offset a bunch just
-		// to be extra sure that we start on the right side of the surface
-		// (In case of any bugs in the epsilons code...)
-		d *= 1024.;
-	#endif
-		Vector3f offset = d * Vector3f(normal);
-		if (Dot(direct, normal) < 0) offset = -offset;	//法线与生成光线的方向
-		Point3f po = p + offset;
-		// Round offset point _po_ away from _p_
-		for (int i = 0; i < 3; ++i) {
-			if (offset[i] > 0)
-				po[i] = NextFloatUp(po[i]);
-			else if (offset[i] < 0)
-				po[i] = NextFloatDown(po[i]);
-		}
-		return po;
-	}
-
 public:
-	Float dist;			//到最近交点的距离
 	Point3f p;			//交点
 	Normal3f n;    //交点处的法线
 	Vector3f wo;		//入射光线的方向
-	Vector3f pError;    //累积的浮点数绝对误差  
+	Vector3f pError;    //累积的浮点数绝对误差 
+	//MediumInterface mediumInterface;
 };
 
 class SurfaceIsect : public Isect 
@@ -97,6 +72,7 @@ public:
 							  bool orientationIsAuthoritative);
 
 	void compute_scattering(const RayDifferential& ray, 
+							//MemoryArena &arena,
 							TransportMode mode = TransportMode::Radiance, 
 							bool allowMultipleLobes = true);
 

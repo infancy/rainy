@@ -6,15 +6,15 @@ namespace valley
 {
 
 // GeometricPrimitive Method Definitions
-Bounds3f GeometricPrimitive::world_bound() const { return shape->WorldBound(); }
+Bounds3f GeometricPrimitive::world_bound() const { return shape->world_bound(); }
 
-bool GeometricPrimitive::intersectP(const Ray &r) const { return shape->IntersectP(r); }
+bool GeometricPrimitive::intersectP(const Ray &r) const { return shape->intersectP(r); }
 
 bool GeometricPrimitive::intersect(
 	const Ray& r, SurfaceIsect* isect) const 
 {
 	Float tHit;
-	if (!shape->Intersect(r, &tHit, isect)) return false;
+	if (!shape->intersect(r, &tHit, isect)) return false;
 	r.tMax = tHit;
 	isect->primitive = this;
 	CHECK_GE(Dot(isect->n, isect->shading.n), 0.);

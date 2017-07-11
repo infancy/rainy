@@ -7,7 +7,6 @@
 #define VALLEY_LIGHT_POINT_H
 
 #include"valley.h"
-#include"color.h"
 #include"light.h"
 
 namespace valley
@@ -18,16 +17,15 @@ class PointLight : public Light
 public:
 	PointLight(const Transform& LightToWorld,
 		//const MediumInterface &mediumInterface, 
-		const Color& I) : 
+		const Color& i) : 
 		Light((int)Light_type::DeltaPosition, LightToWorld /*,mediumInterface*/),
 		pLight(LightToWorld(Point3f(0, 0, 0))),
-		I(I) {}
+		intensity(i) {}
 
 	Color power() const;
 
 	Float pdf_Li(const Isect &, const Vector3f &) const;
-	void pdf_Le(const Ray &, const Normal3f &, Float *pdfPos,
-		Float *pdfDir) const;
+	void pdf_Le(const Ray &, const Normal3f &, Float *pdfPos, Float *pdfDir) const;
 
 	Color sample_Li(const Isect &ref, const Point2f &u, Vector3f *wi,
 					Float *pdf, Visibility *vis) const;
@@ -37,7 +35,7 @@ public:
 
 private:
 	const Point3f pLight;
-	const Color I;
+	const Color intensity;	//the amount of power per unit solid angle
 };
 
 }	//namespace valley

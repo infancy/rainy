@@ -63,6 +63,38 @@ private:
 	//MediumInterface mediumInterface;
 };
 
+//处理大量相同实例
+/*
+class TransformedPrimitive : public Primitive
+{
+public:
+	// TransformedPrimitive Public Methods
+	TransformedPrimitive(std::shared_ptr<Primitive> &primitive,
+		const AnimatedTransform &PrimitiveToWorld)
+		: primitive(primitive), PrimitiveToWorld(PrimitiveToWorld) {}
+	bool Intersect(const Ray &r, SurfaceIsect *in) const;
+	bool IntersectP(const Ray &r) const;
+	const AreaLight *GetAreaLight() const { return nullptr; }
+	const Material *GetMaterial() const { return nullptr; }
+	void compute_scattering(SurfaceIsect *isect,
+		//MemoryArena &arena, 
+		TransportMode mode,
+		bool allowMultipleLobes) const {
+		LOG(FATAL) <<
+			"TransformedPrimitive::ComputeScatteringFunctions() shouldn't be "
+			"called";
+	}
+	Bounds3f world_bound() const {
+		return PrimitiveToWorld.MotionBounds(primitive->world_bound());
+	}
+
+private:
+	// TransformedPrimitive Private Data
+	std::shared_ptr<Primitive> primitive;
+	const AnimatedTransform PrimitiveToWorld;
+};
+*/
+
 class Aggregate : public Primitive 
 {
 public:

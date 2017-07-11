@@ -34,7 +34,7 @@
 // core/transform.cpp*
 #include "transform.h"
 //#include "error.h"		
-//#include "interaction.h"
+#include"intersection.h"
 
 //namespace pbrt
 
@@ -268,9 +268,10 @@ bool Transform::SwapsHandedness() const {
                 m.m[0][2] * (m.m[1][0] * m.m[2][1] - m.m[1][1] * m.m[2][0]);
     return det < 0;
 }
-/*
-SurfaceInteraction Transform::operator()(const SurfaceInteraction &si) const {
-    SurfaceInteraction ret;
+
+SurfaceIsect Transform::operator()(const SurfaceIsect& si) const 
+{
+	SurfaceIsect ret;
     // Transform _p_ and _pError_ in _SurfaceInteraction_
     ret.p = (*this)(si.p, si.pError, &ret.pError);
 
@@ -278,8 +279,7 @@ SurfaceInteraction Transform::operator()(const SurfaceInteraction &si) const {
     const Transform &t = *this;
     ret.n = Normalize(t(si.n));
     ret.wo = Normalize(t(si.wo));
-    ret.time = si.time;
-    ret.mediumInterface = si.mediumInterface;
+    //ret.mediumInterface = si.mediumInterface;
     ret.uv = si.uv;
     ret.shape = si.shape;
     ret.dpdu = t(si.dpdu);
@@ -291,20 +291,20 @@ SurfaceInteraction Transform::operator()(const SurfaceInteraction &si) const {
     ret.shading.dpdv = t(si.shading.dpdv);
     ret.shading.dndu = t(si.shading.dndu);
     ret.shading.dndv = t(si.shading.dndv);
-    ret.dudx = si.dudx;
-    ret.dvdx = si.dvdx;
-    ret.dudy = si.dudy;
-    ret.dvdy = si.dvdy;
-    ret.dpdx = t(si.dpdx);
-    ret.dpdy = t(si.dpdy);
-    ret.bsdf = si.bsdf;
-    ret.bssrdf = si.bssrdf;
+    //ret.dudx = si.dudx;
+    //ret.dvdx = si.dvdx;
+    //ret.dudy = si.dudy;
+    //ret.dvdy = si.dvdy;
+    //ret.dpdx = t(si.dpdx);
+    //ret.dpdy = t(si.dpdy);
+    //ret.bsdf = si.bsdf;
+    //ret.bssrdf = si.bssrdf;
     ret.primitive = si.primitive;
     //    ret.n = Faceforward(ret.n, ret.shading.n);
     ret.shading.n = Faceforward(ret.shading.n, ret.n);
     return ret;
 }
-*/
+
 Transform Orthographic(Float zNear, Float zFar) {
     return Scale(1, 1, 1 / (zFar - zNear)) * Translate(Vector3f(0, 0, -zNear));
 }

@@ -1,6 +1,8 @@
 #include"intersection.h"
 #include"primitive.h"
 #include"shape.h"
+#include"color.h"
+#include"light.h"
 
 namespace valley
 { 
@@ -11,8 +13,7 @@ Isect::Isect(const Point3f &p, const Normal3f &n, const Vector3f &pError,
 	p(p),
 	pError(pError),
 	wo(Normalize(wo)),
-	n(n),
-	dist(maxDist) {}
+	n(n) {}
 
 // SurfaceIntersection Method Definitions
 SurfaceIsect::SurfaceIsect(
@@ -69,6 +70,12 @@ void SurfaceIsect::compute_scattering(const RayDifferential &ray, TransportMode 
 	//compute_differentials(ray);
 
 	primitive->compute_scattering(this, mode, allowMultipleLobes);
+}
+
+Color SurfaceIsect::Le(const Vector3f &w) const 
+{
+	const AreaLight* area = primitive->get_AreaLight();
+	return area ? area->L(*this, w) : Color(0.f);
 }
 
 }

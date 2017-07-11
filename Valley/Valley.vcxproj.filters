@@ -4,9 +4,6 @@
     <Filter Include="integrator">
       <UniqueIdentifier>{1759e932-e7b3-4eb9-9717-567069255357}</UniqueIdentifier>
     </Filter>
-    <Filter Include="math">
-      <UniqueIdentifier>{2026d86b-f245-4aa7-8140-4084bd0f0567}</UniqueIdentifier>
-    </Filter>
     <Filter Include="core">
       <UniqueIdentifier>{ace364ee-9bbe-4494-b58d-25ffecb79fce}</UniqueIdentifier>
     </Filter>
@@ -80,6 +77,27 @@
     </ClCompile>
     <ClCompile Include="..\src\light\point.cpp">
       <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\light\distance.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\light\diffuse.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\sampler.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\lightdistrib.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\filter.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\shape\sphere.cpp">
+      <Filter>shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\shape\Rectangle.cpp">
+      <Filter>shape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +178,24 @@
     </ClInclude>
     <ClInclude Include="..\src\light\point.h">
       <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\light\distance.h">
+      <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\light\diffuse.h">
+      <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\sampler.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\lightdistrib.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\filter.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shape\Rectangle.h">
+      <Filter>shape</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

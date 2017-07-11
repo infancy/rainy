@@ -47,11 +47,18 @@ Shape::Shape(const Transform *ObjectToWorld, const Transform *WorldToObject,
 	//++nShapesCreated;
 }
 
-Bounds3f Shape::WorldBound() const { return (*ObjectToWorld)(ObjectBound()); }
+Bounds3f Shape::world_bound() const { return (*ObjectToWorld)(object_bound()); }
 
-Isect Shape::Sample(const Isect &ref, const Point2f &u,
-	Float *pdf) const {
-	Isect intr = Sample(u, pdf);
+bool Shape::intersectP(const Ray &ray,
+	bool testAlphaTexture) const 
+{
+	return intersect(ray, nullptr, nullptr, testAlphaTexture);
+}
+
+Isect Shape::sample(const Isect &ref, const Point2f &u,
+	Float *pdf) const 
+{
+	Isect intr = sample(u, pdf);
 	Vector3f wi = intr.p - ref.p;
 	if (wi.LengthSquared() == 0)
 		*pdf = 0;
@@ -65,7 +72,8 @@ Isect Shape::Sample(const Isect &ref, const Point2f &u,
 	return intr;
 }
 
-Float Shape::Pdf(const Isect &ref, const Vector3f &wi) const {
+Float Shape::pdf(const Isect &ref, const Vector3f &wi) const 
+{
 	// Intersect sample ray with area light geometry
 	Ray ray = ref.generate_ray(wi);
 	Float tHit;
@@ -73,16 +81,16 @@ Float Shape::Pdf(const Isect &ref, const Vector3f &wi) const {
 	// Ignore any alpha textures used for trimming the shape when performing
 	// this intersection. Hack for the "San Miguel" scene, where this is used
 	// to make an invisible area light.
-	if (!Intersect(ray, &tHit, &isectLight, false)) return 0;
+	if (!intersect(ray, &tHit, &isectLight, false)) return 0;
 
 	// Convert light sample weight to solid angle measure
 	Float pdf = DistanceSquared(ref.p, isectLight.p) /
-		(AbsDot(isectLight.n, -wi) * Area());
+		(AbsDot(isectLight.n, -wi) * area());
 	if (std::isinf(pdf)) pdf = 0.f;
 	return pdf;
 }
 
-Float Shape::SolidAngle(const Point3f &p, int nSamples) const
+Float Shape::solid_angle(const Point3f &p, int nSamples) const
 {
 	Isect ref(p, Normal3f(), Vector3f(), Vector3f(0, 0, 1));
 	double solidAngle = 0;
@@ -92,8 +100,9 @@ Float Shape::SolidAngle(const Point3f &p, int nSamples) const
 		//Point2f u{ RadicalInverse(0, i), RadicalInverse(1, i) };
 		Point2f u{0.f, 1.f};
 		Float pdf;
-		Isect pShape = Sample(ref, u, &pdf);
-		if (pdf > 0 && !IntersectP(Ray(p, pShape.p - p, .999f))) {
+		Isect pShape = sample(ref, u, &pdf);
+		if (pdf > 0 && !intersectP(Ray(p, pShape.p - p, .999f))) 
+		{
 			solidAngle += 1 / pdf;
 		}
 	}

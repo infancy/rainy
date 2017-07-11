@@ -40,6 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include"valley.h"
 #include"geometry.h"
 #include"intersection.h"
+#include"transform.h"
 
 namespace valley
 {
@@ -47,41 +48,41 @@ namespace valley
 class Shape 
 {
 public:
-	// Shape Interface
 	Shape(const Transform *ObjectToWorld, const Transform *WorldToObject,
 		bool reverseOrientation);
 	virtual ~Shape();
-	virtual Bounds3f ObjectBound() const = 0;
-	virtual Bounds3f WorldBound() const;
-	virtual bool Intersect(const Ray &ray, Float *tHit,
-		SurfaceIsect* isect, bool testAlphaTexture = true) const = 0;
-	virtual bool IntersectP(const Ray &ray,
-		bool testAlphaTexture = true) const {
-		return Intersect(ray, nullptr, nullptr, testAlphaTexture);
-	}
-	virtual Float Area() const = 0;
-	// Sample a point on the surface of the shape and return the PDF with
-	// respect to area on the surface.
-	virtual Isect Sample(const Point2f &u, Float *pdf) const = 0;
-	virtual Float Pdf(const Isect &) const { return 1 / Area(); }
+
+	virtual Bounds3f object_bound() const = 0;
+	virtual Bounds3f world_bound() const;
+
+	virtual bool intersect(const Ray &ray, Float *tHit,
+						   SurfaceIsect* isect, bool testAlphaTexture = true) const = 0;
+	virtual bool intersectP(const Ray &ray,
+						    bool testAlphaTexture = true) const;
+
+	virtual Float area() const = 0;
+	virtual Float pdf(const Isect &) const { return 1 / area(); }
+
+	//传入一个[0,1]范围的采样点，在几何体表面计算一个Isect并返回相应的pdf(1/area())
+	virtual Isect sample(const Point2f &u, Float *pdf) const = 0;
 
 	// Sample a point on the shape given a reference point |ref| and
 	// return the PDF with respect to solid angle from |ref|.
-	virtual Isect Sample(const Isect &ref, const Point2f &u,
+	virtual Isect sample(const Isect &ref, const Point2f &u,
 		Float *pdf) const;
-	virtual Float Pdf(const Isect &ref, const Vector3f &wi) const;
+	virtual Float pdf(const Isect &ref, const Vector3f &wi) const;
 
 	// Returns the solid angle subtended by the shape w.r.t. the reference
 	// point p, given in world space. Some shapes compute this value in
 	// closed-form, while the default implementation uses Monte Carlo
 	// integration; the nSamples parameter determines how many samples are
 	// used in this case.
-	virtual Float SolidAngle(const Point3f &p, int nSamples = 512) const;
+	virtual Float solid_angle(const Point3f &p, int nSamples = 512) const;
 
-	// Shape Public Data
+public:
 	const Transform *ObjectToWorld, *WorldToObject;
-	const bool reverseOrientation;
-	const bool transformSwapsHandedness;
+	const bool reverseOrientation;			//（法线）方向翻转
+	const bool transformSwapsHandedness;    //转换坐标系（左手or右手？）
 };
 
 }	//namespace valley

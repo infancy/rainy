@@ -18,14 +18,17 @@ Light::Light(int flags, const Transform &LightToWorld,
 
 Light::~Light() {}
 
-bool Visibility::unoccluded(const Scene &scene) const {
+bool Visibility::unoccluded(const Scene &scene) const 
+{
 	return !scene.intersectP(p0.generate_ray(p1));
 }
 
-Color Visibility::Tr(const Scene &scene, Sampler &sampler) const {
+Color Visibility::Tr(const Scene &scene, Sampler &sampler) const
+{
 	Ray ray(p0.generate_ray(p1));
 	Color Tr(1.f);
-	while (true) {
+	while (true) 
+	{
 		SurfaceIsect isect;
 		bool hitSurface = scene.intersect(ray, &isect);
 		// Handle opaque surface along ray's path
