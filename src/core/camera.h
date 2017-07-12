@@ -68,13 +68,13 @@ public:
 	Float generate_ray(const CameraSample& sample, Ray* ray) const
 	{
 		Point3f pFilm(sample.pFilm.x, sample.pFilm.y, 0);	
-		Vector3f dir(pixelSize * (pFilm.x - film->width / 2),		//dir - (0,0,0)
+		Point3f p(pixelSize * (pFilm.x - film->width / 2),		//dir - (0,0,0)
 					 pixelSize * (film->height / 2 - pFilm.y),
 					 imageDistance);
 
 		//Vector3f dir = forward * pCamera.z + right * pCamera.x + upward * pCamera.y;
-		dir = camera_to_world(dir);
-		*ray = Ray(eye, Normalize(dir));
+		p = camera_to_world(p);
+		*ray = Ray(eye, Normalize(p - eye));
 
 		return 1;
 	}

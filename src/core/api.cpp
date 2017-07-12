@@ -16,19 +16,16 @@ Scene* valley_create_scene()
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1)));
-	shared_ptr<Transform> mInv(new Transform(m->GetMatrix(), m->GetInverseMatrix()));
+	
+	shared_ptr<Transform> mInv(new Transform(m->GetInverseMatrix(), m->GetMatrix()));
 	shared_ptr<Sphere> sphere{ new Sphere(m, mInv, false, 50.f) };
 	primitive.push_back(make_unique<GeometricPrimitive>(sphere, matte));
 
-	shared_ptr<Transform> m1(new Transform(Matrix4x4(
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1)));
-	shared_ptr<Transform> mInv1(new Transform(m1->GetMatrix(), m1->GetInverseMatrix()));
-	shared_ptr<Rectangle> rectangle{ new Rectangle(m1, mInv1, false, Point3f(0, 0, 0),
-		Vector3f(0, 0, 100), Vector3f(0, 100, 0)) };
+	shared_ptr<Transform> m1(new Transform(Rotate(90, Vector3f(1, 1, 1))));
 
+	shared_ptr<Transform> mInv1(new Transform(m1->GetInverseMatrix(), m1->GetMatrix()));
+	shared_ptr<Rectangle> rectangle{ new Rectangle(m1, mInv1, false, Point3f(0, 0, 0),
+		Vector3f(0, 0, 100), Vector3f(0, 10, 0)) };
 	primitive.push_back(make_unique<GeometricPrimitive>(rectangle, matte));
 
 	std::vector<std::shared_ptr<Light>> lights;
