@@ -36,7 +36,7 @@ public:
 	//Float solid_angle(const Point3f &p, int nSamples) const;
 
 private:
-	Point3f 		point; //可以通过变换矩阵来定义位置，point是多余的
+	Point3f 		point; //可以通过变换矩阵来定义位置，但point不是多余的
 	Vector3f		first, second;
 	Normal3f        normal;
 };

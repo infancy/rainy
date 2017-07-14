@@ -77,8 +77,9 @@ Isect Shape::sample(const Isect &isect, const Point2f &u,
 		Float dist = DistanceSquared(isect.p, next.p);
 		Float cosine = AbsDot(next.n, -wi);
 		*pdf *= dist / cosine;
-		DLOG(INFO) << "DistSqua(ref.p, intr.p): " << dist  << " AbsDot(intr.n, -wi):" << cosine
-		<< " lightPdf: " << *pdf << "\n";
+		DLOG(INFO) << "isect.p: " << isect.p << " next.p: " << next.p << " DistSquared: " << dist;
+		DLOG(INFO) << "next.n: " << next.n << " -wi: " << -wi << " AbsDot(intr.n, -wi):" << cosine;
+		DLOG(INFO) << "lightPdf: " << *pdf;
 		if (std::isinf(*pdf)) *pdf = 0.f;
 	}
 	return next;

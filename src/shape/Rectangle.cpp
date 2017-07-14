@@ -101,7 +101,7 @@ Float Rectangle::area() const { return first.Length() * second.Length(); }
 Isect Rectangle::sample(const Point2f &u, Float *pdf) const
 {
 	//Point3f pObj(u.x * first.Length(), u.y * second.Length(), 0);
-	Point3f pObj(u.y * second.Length(), 0, u.x * first.Length());
+	Point3f pObj = Point3f(u.y * second.Length(), 0, u.x * first.Length()) + point;
 	Isect it;
 	//it.n = Normalize((*ObjectToWorld)(Normal3f(0, 0, 1)));
 	it.n = Normalize((*ObjectToWorld)(Normal3f(0, 1, 0)));

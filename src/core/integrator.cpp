@@ -17,7 +17,7 @@ Color uniform_sample_all_lights(const Isect& it, const Scene &scene, Sampler &sa
 
 		Color Ld(0.f);
 		for (int k = 0; k < nSamples; ++k)
-			Ld += estimate_direct(it, sampler.get_2D(), *light, Point2f(0.5f, 0.5f),//sampler.get_2D(), 
+			Ld += estimate_direct(it, sampler.get_2D(), *light, sampler.get_2D(), 
 				scene, sampler, handleMedia);
 		L += Ld / nSamples;	//在光源上取n个采样点，计算平均辐射度
 	}
@@ -66,7 +66,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 
 	//计算Li,wi,pdf
 	Color Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
-	VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
+	DVLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
 		<< wi << ", pdf: " << lightPdf;
 
 	if (lightPdf > 0 && !Li.is_black()) 
@@ -83,7 +83,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
 			f *= AbsDot(wi, isect.shading.n);
 			scatteringPdf = isect.bsdf->pdf(isect.wo, wi, bsdfFlags);
-			VLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
+			DVLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
 		}
 		/*
 		else 
@@ -102,17 +102,17 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			if (handleMedia) 
 			{
 				Li *= visibility.Tr(scene, sampler);
-				VLOG(2) << "  after Tr, Li: " << Li;
+				DVLOG(2) << "  after Tr, Li: " << Li;
 			}
 			else 
 			{
 				if (!visibility.unoccluded(scene))
 				{
-					VLOG(2) << "  shadow ray blocked";
+					DVLOG(2) << "  shadow ray blocked";
 					Li = Color(0.f);
 				}
 				else
-					VLOG(2) << "  shadow ray unoccluded";
+					DVLOG(2) << "  shadow ray unoccluded";
 			}
 
 			// Add light's contribution to reflected radiance
@@ -155,7 +155,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			scatteringPdf = p;
 		}
 		*/
-		VLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
+		DVLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
 			scatteringPdf;
 
 		if (!f.is_black() && scatteringPdf > 0) 

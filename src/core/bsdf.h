@@ -44,12 +44,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace valley
 {
 
-//Auxiliary Function
-inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.z); }
+//Utility Function
+//pbrt中以Z轴为垂直轴，而我以y轴为垂直轴
+//inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.z); }
+//inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.z * wp.z > 0; }
+//inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z * wp.z > 0; }
 
-inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.z * wp.z > 0; }
-inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z * wp.z > 0; }
+inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.y); }
 
+inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.y * wp.y > 0; }
+inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.y * wp.y > 0; }
 
 enum class BxDF_type 
 {
