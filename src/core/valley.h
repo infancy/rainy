@@ -73,6 +73,7 @@ struct Matrix4x4;
 
 // Global Forward Declarations
 class Color;
+class RNG;
 class Image;
 class Scene;
 class Integrator;

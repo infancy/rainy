@@ -3,32 +3,94 @@
 namespace valley
 {
 
+struct Render
+{
+
+};
+
+void  valley_create_integrator()
+{
+	Film* film{ new Film(600, 600, 100) };
+	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
+	Point3f eye(0, 0, -130), tar(0, 0, 0);
+	Vector3f up(0, 1, 0);
+	shared_ptr<Camera> camera{ new Pinhole(eye, tar, up, 50, film) };
+	srand(time(nullptr));
+	shared_ptr<Sampler> sampler{ new Sampler(1, rand()) };
+
+	unique_ptr<Integrator> integrator(new RayCast(camera, sampler));
+
+	Scene* scene = valley_create_scene();
+	integrator->render(*scene);
+	camera->film->flush();
+	delete scene;
+}
+
 Scene* valley_create_scene()
 {
-	vector<shared_ptr<Primitive>> primitive;
 
-	shared_ptr<ConstantTexture<Color>> kd(new ConstantTexture<Color>(Color{ 1.f, 0.f, 1.f }));
+	//material
+	shared_ptr<ConstantTexture<Color>> kd(new ConstantTexture<Color>(Color{ 0.5f, 0.5f, 0.5f }));
 	shared_ptr<ConstantTexture<Float>> sigma(new ConstantTexture<Float>(Float(1.f)));
 	shared_ptr<Matte> matte(new Matte(kd, sigma));
 
-	shared_ptr<Transform> m(new Transform(Matrix4x4(
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1)));
+	//shape
+
+	//ball
+	Transform* m(new Transform(Translate(Vector3f(0, -20, 0))));
+	shared_ptr<Sphere> ball{ new Sphere(m, true, 30.f) };
+
+	//wall-back
+	Transform* m_back(new Transform(Translate(Vector3f(0, 0, 50))*Rotate(-90, Vector3f(1, 0, 0))));
+	shared_ptr<Rectangle> wall_back{ new Rectangle(m_back, false, 100, 100) };
 	
-	shared_ptr<Transform> mInv(new Transform(m->GetInverseMatrix(), m->GetMatrix()));
-	shared_ptr<Sphere> sphere{ new Sphere(m, mInv, false, 50.f) };
-	primitive.push_back(make_unique<GeometricPrimitive>(sphere, matte));
+	//wall-right
+	Transform* m_right(new Transform(Translate(Vector3f(50, 0, 0))*Rotate(90, Vector3f(0, 0, 1))));
+	shared_ptr<Rectangle> wall_right{ new Rectangle(m_right, false, 100, 100) };
 
-	shared_ptr<Transform> m1(new Transform(Rotate(90, Vector3f(1, 1, 1))));
+	//wall-left
+	Transform* m_left(new Transform(Translate(Vector3f(-50, 0, 0))*Rotate(-90, Vector3f(0, 0, 1))));
+	shared_ptr<Rectangle> wall_left{ new Rectangle(m_left, false, 100, 100) };
 
-	shared_ptr<Transform> mInv1(new Transform(m1->GetInverseMatrix(), m1->GetMatrix()));
-	shared_ptr<Rectangle> rectangle{ new Rectangle(m1, mInv1, false, Point3f(0, 0, 0),
-		Vector3f(0, 0, 100), Vector3f(0, 10, 0)) };
-	primitive.push_back(make_unique<GeometricPrimitive>(rectangle, matte));
+	//wall-down
+	Transform* m_down(new Transform(Translate(Vector3f(0, -50, 0))));
+	shared_ptr<Rectangle> wall_down{ new Rectangle(m_down, false, 100, 100) };
+
+	//wall-up
+	Transform* m_up(new Transform(Translate(Vector3f(0, 50, 0))));
+	shared_ptr<Rectangle> wall_up{ new Rectangle(m_up, true, 100, 100) };
+
+	//add to primitive
+	vector<shared_ptr<Primitive>> primitive;
+	primitive.push_back(make_unique<GeometricPrimitive>(ball, matte));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_back, matte));
+	//primitive.push_back(make_unique<GeometricPrimitive>(wall_left, matte));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_right, matte));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, matte));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_up, matte));
+
+	//Arealight
+	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.9, 0))));
+	Transform ml_upp(Transform(Translate(Vector3f(0, 49.9, 0))));
+	shared_ptr<Shape> light_up{ new Rectangle(ml_up, true, 40, 40) };
+	shared_ptr<AreaLight> diffuse_light{ new DiffuseAreaLight(ml_upp, Color(0.5f,0.5f,0.5f), 1, light_up) };
+
+	primitive.push_back(make_unique<GeometricPrimitive>(light_up, matte, diffuse_light));
+
+	//LightToWorld
+	Transform ml_point(Transform(Translate(Vector3f(0, 0, -50))));
+	shared_ptr<Light> point_light{ new PointLight(ml_point, Color(5000,5000,10)) };
+
+	Transform ml_distance;
+	//最后的Vector3f表示的是光源随处的方向，而不是光源发出的光的方向
+	shared_ptr<Light> distance_light{ new DistantLight(ml_distance, Color(0,2,2), Vector3f(-1, -1, 0)) };
 
 	std::vector<std::shared_ptr<Light>> lights;
+	lights.push_back(diffuse_light);
+	//lights.push_back(point_light);
+	lights.push_back(distance_light);
+
+	//scene
 	return new Scene(new Accelerator(primitive), lights);
 }
 

@@ -20,8 +20,8 @@ public:
 		  const std::vector<std::shared_ptr<Light>>& lights)
 		: lights(lights), accelerator(accelerator) 
 	{
-		// Scene Constructor Implementation
 		worldBound = accelerator->world_bound();
+		//无穷光源等光源需要进行预处理
 		for (const auto& light : lights)
 		{
 			light->preprocess(*this);
@@ -29,15 +29,16 @@ public:
 				infiniteLights.push_back(light);
 		}
 	}
-	const Bounds3f &WorldBound() const { return worldBound; }
+	const Bounds3f& WorldBound() const { return worldBound; }
 
-	bool intersect(const Ray &ray, SurfaceIsect *isect) const;
+	bool intersect(const Ray& ray, SurfaceIsect* isect) const;
 
-	bool intersectP(const Ray &ray) const;
+	bool intersectP(const Ray& ray) const;
 	//transmittance
-	bool intersectTr(Ray ray, Sampler &sampler, SurfaceIsect *isect,
-		Color *transmittance) const;
+	bool intersectTr(Ray ray, Sampler& sampler, SurfaceIsect* isect,
+		Color* transmittance) const;
 
+public:
 	std::vector<std::shared_ptr<Light>> lights;
 	// Store infinite light sources separately for cases where we only want
 	// to loop over them.

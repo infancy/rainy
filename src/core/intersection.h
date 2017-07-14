@@ -38,7 +38,8 @@ public:
 	{
 		Point3f origin = offset_ray_origin(p, pError, n, p2 - p);
 		Vector3f d = p2 - p;
-		return Ray(origin, d, 1 - ShadowEpsilon);
+		//return Ray(origin, d, 1 - ShadowEpsilon);
+		return Ray(origin, d, (p - p2).Length() * (1 - ShadowEpsilon));
 	}
 
 	Ray generate_ray(const Isect& isect) const 
@@ -46,8 +47,12 @@ public:
 		Point3f origin = offset_ray_origin(p, pError, n, isect.p - p);
 		Point3f target = offset_ray_origin(isect.p, isect.pError, isect.n, origin - isect.p);
 		Vector3f d = target - origin;
-		return Ray(origin, d, 1 - ShadowEpsilon);
+		//return Ray(origin, d, 1 - ShadowEpsilon);
+		return Ray(origin, d, (p - isect.p).Length() * (1 - ShadowEpsilon));
 	}
+
+	bool in_surface() const { return n != Normal3f(0, 0, 0); }
+	bool in_medium() const { return !in_surface(); }
 
 public:
 	Point3f p;			//½»µã

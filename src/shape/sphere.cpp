@@ -14,7 +14,7 @@ Bounds3f Sphere::object_bound() const
 bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 	/*bool testAlphaTexture*/) const
 {
-	static const Float kEpsilon = 0.001f;
+	//static const Float kEpsilon = 0.001f; for shadow ray
 
 	//phi from 0 to 2Pi,theta from 0 to Pi
 	static const Float phiMax = 2 * Pi, thetaMax = Pi, thetaMin = 0; 
@@ -36,9 +36,9 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 		Float sqrte = sqrt(discr);
 		Point3f pHit;
 
-		if ((t = -b - sqrte) > kEpsilon && t < ray.tMax)
+		if ((t = -b - sqrte) > 0.f && t < ray.tMax)
 			pHit = ray(t);
-		else if ((t = -b + sqrte) > kEpsilon && t < ray.tMax)
+		else if ((t = -b + sqrte) > 0.f && t < ray.tMax)
 			pHit = ray(t);
 		else
 			return false;
@@ -96,7 +96,7 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 			-ray.d, dpdu, dpdv, dndu, dndv, this));
 
 		// Update _tHit_ for quadric intersection
-		ray.tMax = (Float)t;	////记录相交距离
+		r.tMax = t;	////记录相交距离
 		return true;
 	}
 	else
@@ -105,7 +105,7 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 
 bool Sphere::intersectP(const Ray &r, bool testAlphaTexture) const 
 {
-	static const Float kEpsilon = 0.001f;
+	//static const Float kEpsilon = 0.001f;
 
 	// Transform _Ray_ to object space
 	Ray ray = (*WorldToObject)(r);
@@ -120,7 +120,7 @@ bool Sphere::intersectP(const Ray &r, bool testAlphaTexture) const
 	Float discr = b * b - c;
 	Float e = sqrt(discr);
 
-	if (discr < 0.f || (t = -b + e) < kEpsilon || (t = -b - e) > ray.tMax)
+	if (discr < 0.f || (t = -b + e) < 0.f || (t = -b - e) > ray.tMax)
 		return false;
 	else
 		return true;

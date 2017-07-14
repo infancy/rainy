@@ -76,6 +76,7 @@ public:
 	//在开始渲染前记录场景的一些特征，如DistanceLight记录场景包围盒
 	virtual void preprocess(const Scene &scene) {}
 
+	////当光线与场景未相交时，计算朝光线方向发出的辐射度
 	virtual Color Le(const RayDifferential &r) const;
 
 	virtual Float pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
@@ -83,7 +84,7 @@ public:
 						Float *pdfDir) const = 0;
 
 	//传入Isect，返回到达该点的incident Radiance及其的方向wi
-	//当光源是面积光源时，使用u和pdf参数，对光源上一点进行采样并记录概率密度值
+	//当光源是面积光源时，还需传入一个[0,1]^2范围的采样点，对光源上一点进行采样并记录概率密度值pdf
 	//Visibility用于记录阴影光线等信息
 	virtual Color sample_Li(const Isect& ref, const Point2f& u,
 							Vector3f* wi, Float* pdf, Visibility* vis) const = 0;

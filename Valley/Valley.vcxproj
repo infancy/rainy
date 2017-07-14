@@ -28,7 +28,6 @@
     <ClCompile Include="..\src\core\integrator.cpp" />
     <ClCompile Include="..\src\core\intersection.cpp" />
     <ClCompile Include="..\src\core\light.cpp" />
-    <ClCompile Include="..\src\core\lightdistrib.cpp" />
     <ClCompile Include="..\src\core\material.cpp" />
     <ClCompile Include="..\src\core\primitive.cpp" />
     <ClCompile Include="..\src\core\sampler.cpp" />
@@ -43,7 +42,7 @@
     <ClCompile Include="..\src\material\matte.cpp" />
     <ClCompile Include="..\src\shape\Rectangle.cpp" />
     <ClCompile Include="..\src\shape\sphere.cpp" />
-    <ClCompile Include="..\src\test\test_scene.cpp" />
+    <ClCompile Include="..\src\test\test_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\bsdf\lambertian.h" />
@@ -73,6 +72,10 @@
     <ClInclude Include="..\src\core\texture.h" />
     <ClInclude Include="..\src\core\transform.h" />
     <ClInclude Include="..\src\core\valley.h" />
+    <ClInclude Include="..\src\integrator\bdpt.h" />
+    <ClInclude Include="..\src\integrator\eyelight.h" />
+    <ClInclude Include="..\src\integrator\raycast.h" />
+    <ClInclude Include="..\src\integrator\whitted.h" />
     <ClInclude Include="..\src\light\diffuse.h" />
     <ClInclude Include="..\src\light\distance.h" />
     <ClInclude Include="..\src\light\point.h" />

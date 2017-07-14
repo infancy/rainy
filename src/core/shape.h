@@ -48,8 +48,7 @@ namespace valley
 class Shape 
 {
 public:
-	Shape(std::shared_ptr<Transform> ObjectToWorld,
-		std::shared_ptr<Transform> WorldToObject,
+	Shape(const Transform* ObjectToWorld, const Transform* WorldToObject,
 		bool reverseOrientation);
 	virtual ~Shape();
 
@@ -81,8 +80,8 @@ public:
 	virtual Float solid_angle(const Point3f &p, int nSamples = 512) const;
 
 public:
-	std::shared_ptr<const Transform> ObjectToWorld, WorldToObject;
-	const bool reverseOrientation;			//（法线）方向翻转
+	std::unique_ptr<const Transform> ObjectToWorld, WorldToObject;
+	const bool reverseOrientation;			//是否翻转（法线）方向
 	const bool transformSwapsHandedness;    //转换坐标系（左手or右手？）
 };
 

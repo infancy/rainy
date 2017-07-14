@@ -38,8 +38,7 @@ namespace valley
 // Shape Method Definitions
 Shape::~Shape() {}
 
-Shape::Shape(std::shared_ptr<Transform> ObjectToWorld,
-	std::shared_ptr<Transform> WorldToObject,
+Shape::Shape(const Transform* ObjectToWorld, const Transform* WorldToObject,
 	bool reverseOrientation)
 	: ObjectToWorld(ObjectToWorld),
 	WorldToObject(WorldToObject),

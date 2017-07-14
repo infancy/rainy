@@ -35,8 +35,10 @@ SurfaceIsect::SurfaceIsect(
 	shading.dndv = dndv;
 
 	// Adjust normal based on orientation and handedness
+	// 是否翻转法线方向 异或 矩阵的左右手系
 	if (shape &&
-		(shape->reverseOrientation ^ shape->transformSwapsHandedness)) {
+		(shape->reverseOrientation ^ shape->transformSwapsHandedness)) 
+	{
 		n *= -1;
 		shading.n *= -1;
 	}

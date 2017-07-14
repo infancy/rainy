@@ -28,16 +28,15 @@ public:
 	Color power() const;
 
 	Float pdf_Li(const Isect&, const Vector3f &) const;
-	void pdf_Le(const Ray &, const Normal3f &, Float *pdfPos,
-		Float *pdfDir) const;
+	void  pdf_Le(const Ray &, const Normal3f &, Float *pdfPos,
+				Float *pdfDir) const;
 
 	//区域光源的sample_Li方法与面积有关
 	Color sample_Li(const Isect&ref, const Point2f &u, Vector3f *wo,
-		Float *pdf, Visibility* vis) const;
+					Float *pdf, Visibility* vis) const;
 
-	Color sample_Le(const Point2f &u1, const Point2f &u2, Float time,
-		Ray *ray, Normal3f *nLight, Float *pdfPos,
-		Float *pdfDir) const;
+	Color sample_Le(const Point2f &u1, const Point2f &u2,  Ray *ray, 
+					Normal3f *nLight, Float *pdfPos, Float *pdfDir) const override;
 
 protected:
 	// DiffuseAreaLight Protected Data

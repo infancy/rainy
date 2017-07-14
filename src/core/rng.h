@@ -12,13 +12,8 @@
 namespace valley
 {
 
-#ifndef PBRT_HAVE_HEX_FP_CONSTANTS
 static const double DoubleOneMinusEpsilon = 0.99999999999999989;
 static const float FloatOneMinusEpsilon = 0.99999994;
-#else
-static const double DoubleOneMinusEpsilon = 0x1.fffffffffffffp-1;
-static const float FloatOneMinusEpsilon = 0x1.fffffep-1;
-#endif
 
 #ifdef VALLEY_FLOAT_AS_DOUBLE
 static const Float OneMinusEpsilon = DoubleOneMinusEpsilon;
@@ -37,8 +32,8 @@ public:
 	uint32_t get_uint() { return uint_distr(mRng); }	//(0, 2^32)
 	Float    get()      { return Float_distr(mRng); }	//(0.F, 1.F)
 
-	Vector2f get_v2() { return Vector2f(get(), get()); }
-	Vector3f get_v3() { return Vector3f(get(), get(), get()); }
+	Point2f get_2D() { return Point2f(get(), get()); }
+	Point3f get_3D() { return Point3f(get(), get(), get()); }
 
 private:
 	std::mt19937_64 mRng;

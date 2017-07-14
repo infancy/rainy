@@ -53,11 +53,15 @@ inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z 
 
 enum class BxDF_type 
 {
+	//每个type至少有Re或Tr之一
 	Reflection   = 1 << 0,
-	Transmission = 1 << 1,
-	Diffuse		 = 1 << 2,
-	Glossy		 = 1 << 3,
-	Specular	 = 1 << 4,
+	Transmission = 1 << 1,	//透射，和镜面没什么必然的联系
+
+	Diffuse		 = 1 << 2,	//漫反/透射
+	Glossy		 = 1 << 3,	//光泽
+	Specular	 = 1 << 4,	//镜面，delta
+
+	NonSpecular  = Reflection | Transmission | Diffuse | Glossy,
 	All			 = Reflection | Transmission | Diffuse | Glossy | Specular
 };
 

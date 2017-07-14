@@ -31,7 +31,7 @@ public:
 	virtual Float generate_ray(const CameraSample& sample, Ray* ray) const = 0;
 
 public:
-	std::unique_ptr<Film> film;
+	std::shared_ptr<Film> film;
 };
 
 

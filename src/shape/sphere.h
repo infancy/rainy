@@ -14,10 +14,10 @@ namespace valley
 class Sphere : public Shape
 {
 public:
-	Sphere(std::shared_ptr<Transform> ObjectToWorld,
-		std::shared_ptr<Transform> WorldToObject,
+	Sphere(Transform* o2w,
 		bool reverseOrientation, Float radius)
-		: Shape(ObjectToWorld, WorldToObject, reverseOrientation),
+		: Shape(o2w, new Transform(o2w->GetInverseMatrix(), o2w->GetMatrix()), 
+			reverseOrientation),
 		radius(radius) {}
 
 	Bounds3f object_bound() const override;

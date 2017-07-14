@@ -212,7 +212,7 @@ Color BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
 Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
 	BxDF_type flags) const 
 {
-	if (nBxDFs == 0.f) return 0.f;
+	if (nBxDFs == 0) return 0.f;
 	Vector3f wo = world_to_local(woWorld), wi = world_to_local(wiWorld);
 	if (wo.z == 0) return 0.;
 	Float pdf = 0.f;

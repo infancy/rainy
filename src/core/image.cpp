@@ -24,9 +24,11 @@ void save_ppm(std::string filename, const Float* pixel,
 			int g = *(++pixel) * 255;
 			int b = *(++pixel) * 255;
 
-			ppm << std::min(255, std::max(0, r)) << " "
-				<< std::min(255, std::max(0, g)) << " "
-				<< std::min(255, std::max(0, b)) << " ";
+			if (r < 0 || r > 255) r = 1;
+			if (g < 0 || g > 255) g = 1;
+			if (b < 0 || b > 255) b = 1;
+
+			ppm << r << " " << g << " " << b << " ";
 		}
 
 		ppm << std::endl;
@@ -47,9 +49,11 @@ void save_ppm(std::string filename, const Color* pixel,
 			int g = pixel->g * 255;
 			int b = pixel->b * 255;
 
-			ppm << std::min(255, std::max(0, r)) << " "
-				<< std::min(255, std::max(0, g)) << " "
-				<< std::min(255, std::max(0, b)) << " ";
+			if (r < 0 || r > 255) r = 1;
+			if (g < 0 || g > 255) g = 1;
+			if (b < 0 || b > 255) b = 1;
+
+			ppm << r << " " << g << " " << b << " ";
 		}
 
 		ppm << std::endl;

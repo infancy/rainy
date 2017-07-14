@@ -14,11 +14,12 @@ namespace valley
 class Rectangle : public Shape
 {
 public:
-	Rectangle(std::shared_ptr<Transform> ObjectToWorld,
-		std::shared_ptr<Transform> WorldToObject,
-		bool reverseOrientation, Point3f p, Vector3f u, Vector3f r) : 
-		Shape(ObjectToWorld, WorldToObject, reverseOrientation),
-		point(p), up(u), right(r), normal(Normalize(Cross(right, up))) {}
+	Rectangle(Transform* o2w,
+		bool reverseOrientation, Float Zaxis, Float Xaxis) : 
+		Shape(o2w, new Transform(o2w->GetInverseMatrix(), o2w->GetMatrix()), 
+		reverseOrientation), point(-Xaxis / 2.f, 0, -Zaxis / 2.f), 
+		first(0, 0, Zaxis), second(Xaxis, 0, 0),
+		normal(Normalize(Cross(first, second))) {}	//我们现在在左手系中
 
 	Bounds3f object_bound() const;
 
@@ -35,8 +36,8 @@ public:
 	//Float solid_angle(const Point3f &p, int nSamples) const;
 
 private:
-	Point3f 		point;   // corner vertex 
-	Vector3f		up, right;
+	Point3f 		point; //可以通过变换矩阵来定义位置，point是多余的
+	Vector3f		first, second;
 	Normal3f        normal;
 };
 

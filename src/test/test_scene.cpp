@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 
 	Film* film{ new Film(800, 800, 100) };
 	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
-	Point3f eye(200, 0, 0), tar(-10, 0, 0);
+	Point3f eye(0, 0, -200), tar(-10, 0, 0);
 	Vector3f up(0, 1, 0);
 	std::unique_ptr<Camera> camera{ new Pinhole(eye, tar, up, 50, film) };
 

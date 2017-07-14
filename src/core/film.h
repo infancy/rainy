@@ -22,10 +22,35 @@ public:
 	    : width(width), height(height), resolution(resolution), 
 		filename("C:\\Users\\wyh32\\Desktop\\valley\\"),
 		pixels(new Color[width * height]) {}
-	~Film() 
-	{ 
-		if(!filename.empty())
-		{ 
+	~Film() {}
+
+	Color& operator()(int x, int y)
+	{
+		DCHECK(0 <= x && x < width && 0 <= y && y < height);
+		return pixels[y * width + x];
+	}
+	Color operator()(int x, int y) const
+	{
+		DCHECK(0 <= x && x < width && 0 <= y && y < height);
+		return pixels[y * width + x];
+	}
+
+	void add(int x, int y, Color& c)
+	{
+		DCHECK(0 <= x && x < width && 0 <= y && y < height);
+		pixels[y * width + x] += c;
+	}
+
+	void scale(Float factor)
+	{
+		for (int i = 0; i < width * height; ++i)
+			pixels[i] *= factor;
+	}
+
+	void flush()
+	{
+		if (!filename.empty())
+		{
 			std::string time;
 			long t = clock();
 			while (t != 0)
@@ -42,20 +67,10 @@ public:
 		save_ppm(filename, pixels.get(), width, height);
 	}
 
-	Color& operator()(int x, int y)
-	{
-		DCHECK(0 <= x && x < width && 0 <= y && y < height);
-		return pixels[y * width + x];
-	}
-	Color operator()(int x, int y) const
-	{
-		DCHECK(0 <= x && x < width && 0 <= y && y < height);
-		return pixels[y * width + x];
-	}
-
 public:
 	int width, height;
 	Float resolution;	//分辨率为单位面积的上的像素数量
+
 
 private:
 	std::unique_ptr<Color[]> pixels;

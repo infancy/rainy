@@ -16,7 +16,8 @@ DiffuseAreaLight::DiffuseAreaLight(const Transform &LightToWorld,
 	Lemit(Lemit),
 	shape(shape),
 	twoSided(twoSided),
-	area(shape->area()) {
+	area(shape->area())
+{
 	// Warn if light has transformation with non-uniform scale, though not
 	// for Triangles, since this doesn't matter for them.
 	//if (WorldToLight.HasScale() &&
@@ -35,7 +36,8 @@ Color DiffuseAreaLight::sample_Li(const Isect& ref, const Point2f &u,
 {
 	Isect pShape = shape->sample(ref, u, pdf);
 	//pShape.mediumInterface = mediumInterface;
-	if (*pdf == 0 || (pShape.p - ref.p).LengthSquared() == 0) {
+	if (*pdf == 0 || (pShape.p - ref.p).LengthSquared() == 0) 
+	{
 		*pdf = 0;
 		return 0.f;
 	}
@@ -51,7 +53,7 @@ Float DiffuseAreaLight::pdf_Li(const Isect&ref,
 }
 
 Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
-	Float time, Ray *ray, Normal3f *nLight,
+	Ray *ray, Normal3f *nLight,
 	Float *pdfPos, Float *pdfDir) const 
 {
 	// Sample a point on the area light's _Shape_, _pShape_
@@ -61,22 +63,26 @@ Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
 
 	// Sample a cosine-weighted outgoing direction _w_ for area light
 	Vector3f w;
-	if (twoSided) {
+	if (twoSided) 
+	{
 		Point2f u = u2;
 		// Choose a side to sample and then remap u[0] to [0,1] before
 		// applying cosine-weighted hemisphere sampling for the chosen side.
-		if (u[0] < .5) {
+		if (u[0] < .5) 
+		{
 			u[0] = std::min(u[0] * 2, OneMinusEpsilon);
 			w = cosine_sample_hemisphere(u);
 		}
-		else {
+		else 
+		{
 			u[0] = std::min((u[0] - .5f) * 2, OneMinusEpsilon);
 			w = cosine_sample_hemisphere(u);
 			w.z *= -1;
 		}
 		*pdfDir = 0.5f * cosine_hemisphere_pdf(std::abs(w.z));
 	}
-	else {
+	else 
+	{
 		w = cosine_sample_hemisphere(u2);
 		*pdfDir = cosine_hemisphere_pdf(w.z);
 	}
