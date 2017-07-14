@@ -3,12 +3,40 @@
 namespace valley
 {
 
-struct Render
-{
+//什么时候用指针 && 指针or智能指针
+//破坏封装
 
+void valley_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
+{
+	Sampler sampler(rand());
+	ior->preprocess(scene, sampler);
+	int x = 0, y = 0;
+	Sampler Pixelsampler(rand());
+	while (std::cin >> y >> x)
+		if (y >= 0 && y < ior->camera->film->height && x >= 0 && x < ior->camera->film->width)
+		{
+			Ray ray;
+			ior->camera->generate_ray(sampler.get_CameraSample(x, y), &ray);
+			Color L = ior->Li(ray, scene, Pixelsampler);
+		}
+		else
+			std::cout << "error,should't call position out of film\n";
+}
+
+void valley_render()
+{
+	shared_ptr<Scene> scene = valley_create_scene();
+	//shared_ptr<Integrator> integrator = valley_create_integrator(); 不接受等号的重载
+	shared_ptr<Integrator> integrator(valley_create_integrator());
+#if defined _DEBUG
+	valley_interactive(integrator, *scene);
+#else
+	integrator->render(*scene);
+	integrator->camera->film->flush();
+#endif
 };
 
-void  valley_create_integrator()
+Integrator* valley_create_integrator()
 {
 	Film* film{ new Film(600, 600, 100) };
 	//std::unique_ptr<Camera> camera{new PerspectiveCamera;
@@ -18,15 +46,12 @@ void  valley_create_integrator()
 	srand(time(nullptr));
 	shared_ptr<Sampler> sampler{ new Sampler(1, rand()) };
 
-	unique_ptr<Integrator> integrator(new RayCast(camera, sampler));
-
-	Scene* scene = valley_create_scene();
-	integrator->render(*scene);
-	camera->film->flush();
-	delete scene;
+	//选择策略
+	//return  make_shared<Integrator>(new RayCast(camera, sampler, 1));
+	return new RayCast(camera, sampler, 1);
 }
 
-Scene* valley_create_scene()
+shared_ptr<Scene> valley_create_scene()
 {
 
 	//material
@@ -64,34 +89,35 @@ Scene* valley_create_scene()
 	vector<shared_ptr<Primitive>> primitive;
 	primitive.push_back(make_unique<GeometricPrimitive>(ball, matte));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_back, matte));
-	//primitive.push_back(make_unique<GeometricPrimitive>(wall_left, matte));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_left, matte));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_right, matte));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, matte));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_up, matte));
 
 	//Arealight
-	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.9, 0))));
-	Transform ml_upp(Transform(Translate(Vector3f(0, 49.9, 0))));
+	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.9, 30))));
+	Transform ml_upp(Transform(Translate(Vector3f(0, 49.9, 30))));
 	shared_ptr<Shape> light_up{ new Rectangle(ml_up, true, 40, 40) };
-	shared_ptr<AreaLight> diffuse_light{ new DiffuseAreaLight(ml_upp, Color(0.5f,0.5f,0.5f), 1, light_up) };
+	//区域光必须进行多次采样
+	shared_ptr<AreaLight> diffuse_light{ new DiffuseAreaLight(ml_upp, Color(30), 1, light_up) };
 
 	primitive.push_back(make_unique<GeometricPrimitive>(light_up, matte, diffuse_light));
 
 	//LightToWorld
-	Transform ml_point(Transform(Translate(Vector3f(0, 0, -50))));
-	shared_ptr<Light> point_light{ new PointLight(ml_point, Color(5000,5000,10)) };
+	//Transform ml_point(Transform(Translate(Vector3f(0, 0, -50))));
+	//shared_ptr<Light> point_light{ new PointLight(ml_point, Color(5000,5000,10)) };
 
-	Transform ml_distance;
+	//Transform ml_distance;
 	//最后的Vector3f表示的是光源随处的方向，而不是光源发出的光的方向
-	shared_ptr<Light> distance_light{ new DistantLight(ml_distance, Color(0,2,2), Vector3f(-1, -1, 0)) };
+	//shared_ptr<Light> distance_light{ new DistantLight(ml_distance, Color(0,2,2), Vector3f(-1, -1, 0)) };
 
 	std::vector<std::shared_ptr<Light>> lights;
 	lights.push_back(diffuse_light);
 	//lights.push_back(point_light);
-	lights.push_back(distance_light);
+	//lights.push_back(distance_light);
 
 	//scene
-	return new Scene(new Accelerator(primitive), lights);
+	return  make_shared<Scene>(new Accelerator(primitive), lights);
 }
 
 }	//namespace valley

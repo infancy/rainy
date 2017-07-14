@@ -218,5 +218,8 @@
     <ClInclude Include="..\src\integrator\raycast.h">
       <Filter>integrator</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\integrator\test.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

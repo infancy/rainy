@@ -17,7 +17,7 @@ Color uniform_sample_all_lights(const Isect& it, const Scene &scene, Sampler &sa
 
 		Color Ld(0.f);
 		for (int k = 0; k < nSamples; ++k)
-			Ld += estimate_direct(it, sampler.get_2D(), *light, sampler.get_2D(), 
+			Ld += estimate_direct(it, sampler.get_2D(), *light, Point2f(0.5f, 0.5f),//sampler.get_2D(), 
 				scene, sampler, handleMedia);
 		L += Ld / nSamples;	//在光源上取n个采样点，计算平均辐射度
 	}
@@ -64,23 +64,26 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 	Float lightPdf = 0, scatteringPdf = 0;
 	Visibility visibility;
 
+	//计算Li,wi,pdf
 	Color Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
-	//VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
-	//	<< wi << ", pdf: " << lightPdf;
+	VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
+		<< wi << ", pdf: " << lightPdf;
 
 	if (lightPdf > 0 && !Li.is_black()) 
 	{
+		//分段函数
 		// Compute BSDF or phase function's value for light sample
 		Color f;
 		if (it.in_surface()) 
 		{
 			// Evaluate BSDF for light sampling strategy
 			const SurfaceIsect& isect = (const SurfaceIsect&)it;
+			//计算f(p,wo,wi)cos(eta_light_isect)项
 			//f = isect.bsdf->f(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.shading.n);
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
 			f *= AbsDot(wi, isect.shading.n);
 			scatteringPdf = isect.bsdf->pdf(isect.wo, wi, bsdfFlags);
-			//VLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
+			VLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
 		}
 		/*
 		else 
@@ -99,13 +102,13 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			if (handleMedia) 
 			{
 				Li *= visibility.Tr(scene, sampler);
-				//VLOG(2) << "  after Tr, Li: " << Li;
+				VLOG(2) << "  after Tr, Li: " << Li;
 			}
 			else 
 			{
 				if (!visibility.unoccluded(scene))
 				{
-					//VLOG(2) << "  shadow ray blocked";
+					VLOG(2) << "  shadow ray blocked";
 					Li = Color(0.f);
 				}
 				else
@@ -152,14 +155,16 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			scatteringPdf = p;
 		}
 		*/
-		//VLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
-		//	scatteringPdf;
+		VLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
+			scatteringPdf;
 
 		if (!f.is_black() && scatteringPdf > 0) 
 		{
 			// Account for light contributions along sampled direction _wi_
+			//不处理透射就直接输出
 			Float weight = 1;
-			if (!sampledSpecular) {
+			if (!sampledSpecular) 
+			{
 				lightPdf = light.pdf_Li(it, wi);
 				if (lightPdf == 0) return Ld;
 				weight = power_heuristic(1, scatteringPdf, 1, lightPdf);
@@ -219,6 +224,7 @@ void SamplerIntegrator::render(const Scene &scene)
 {
 	preprocess(scene, *sampler);
 
+	Sampler Pixelsampler(rand());
 	for (int y = 0; y < camera->film->height; ++y)
 		for (int x = 0; x < camera->film->width; ++x)
 		{
@@ -227,7 +233,8 @@ void SamplerIntegrator::render(const Scene &scene)
 				Ray ray;
 				camera->generate_ray(sampler->get_CameraSample(x, y), &ray);
 
-				Color L = Li(ray, scene, Sampler());
+				//采样器丛聚
+				Color L = Li(ray, scene, Pixelsampler);
 
 				check_radiance(x, y, L);
 				camera->film->add(x, y, L);

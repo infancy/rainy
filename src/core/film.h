@@ -18,10 +18,10 @@ class Film	//: public Image
 {
 public:
 	Film(int width = 800, int height = 600, Float resolution = 1.f, 
-		const std::string& filename = std::string()) 
+		const std::string& filename = std::string(), bool save_type = false) 
 	    : width(width), height(height), resolution(resolution), 
 		filename("C:\\Users\\wyh32\\Desktop\\valley\\"),
-		pixels(new Color[width * height]) {}
+		pixels(new Color[width * height]), save_type(save_type) {}
 	~Film() {}
 
 	Color& operator()(int x, int y)
@@ -75,6 +75,7 @@ public:
 private:
 	std::unique_ptr<Color[]> pixels;
 	std::string filename;
+	bool save_type;
 };
 
 

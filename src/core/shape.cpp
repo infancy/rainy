@@ -55,21 +55,33 @@ bool Shape::intersectP(const Ray &ray,
 	return intersect(ray, nullptr /*testAlphaTexture*/);
 }
 
-Isect Shape::sample(const Isect &ref, const Point2f &u,
+//previous   next
+//    ----  ----
+//      \    /
+//	  wo \  / wi
+//		  \/
+//		------
+//		isect
+Isect Shape::sample(const Isect &isect, const Point2f &u,
 	Float *pdf) const 
 {
-	Isect intr = sample(u, pdf);
-	Vector3f wi = intr.p - ref.p;
+	Isect next = sample(u, pdf);
+	Vector3f wi = next.p - isect.p;
 	if (wi.LengthSquared() == 0)
 		*pdf = 0;
-	else {
+	else 
+	{
 		wi = Normalize(wi);
 		// Convert from area measure, as returned by the Sample() call
 		// above, to solid angle measure.
-		*pdf *= DistanceSquared(ref.p, intr.p) / AbsDot(intr.n, -wi);
+		Float dist = DistanceSquared(isect.p, next.p);
+		Float cosine = AbsDot(next.n, -wi);
+		*pdf *= dist / cosine;
+		DLOG(INFO) << "DistSqua(ref.p, intr.p): " << dist  << " AbsDot(intr.n, -wi):" << cosine
+		<< " lightPdf: " << *pdf << "\n";
 		if (std::isinf(*pdf)) *pdf = 0.f;
 	}
-	return intr;
+	return next;
 }
 
 Float Shape::pdf(const Isect &ref, const Vector3f &wi) const 

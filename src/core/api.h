@@ -16,6 +16,7 @@
 
 #include"integrator/eyelight.h"
 #include"integrator/raycast.h"
+#include"integrator/test.h"
 #include"light/diffuse.h"
 #include"light/distance.h"
 #include"light/point.h"
@@ -28,13 +29,17 @@ using namespace std;
 namespace valley
 {
 
+enum class Intetrator_type
+{
+
+};
+
 void valley_render();
 
 
-Scene* valley_create_scene();
+shared_ptr<Scene>      valley_create_scene();
 
-//Integrator*  
-void valley_create_integrator();
+Integrator* valley_create_integrator();
 
 }	//namespace valley
 

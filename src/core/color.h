@@ -82,6 +82,12 @@ public:
 	float r, g, b, a;
 };
 
+//template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Color& c) {
+	os << "[ " << c.r << ", " << c.g << c.b << " ]";
+	return os;
+}
+
 }	//namespace valley
 
 

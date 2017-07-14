@@ -35,37 +35,45 @@ Color estimate_direct(const Isect& it,    const Point2f& uScattering,
 class Integrator 
 {
 public:
-	// Integrator Interface
+	Integrator(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,
+		uint32_t maxDepth) : camera(camera), sampler(sampler), maxDepth(maxDepth) {}
 	virtual ~Integrator() {}
-	virtual void render(const Scene &scene) = 0;
+
+	//interactive(ray, scene){Li();}
+	//计算沿光线的辐射度
+	virtual Color Li(const Ray& ray, const Scene &scene,
+		Sampler &sampler, int depth = 0) const
+	{
+		std::cerr << "error,should't call Li() in Integrator_base_class\n";
+		return Color();
+	}
+
+	virtual void preprocess(const Scene& scene, Sampler& sampler) {}
+	virtual void render(const Scene &scene)
+	{
+		std::cerr << "error,should't call render() in Integrator_base_class\n";
+	}
+
+public:
+	uint32_t maxDepth;
+
+	std::shared_ptr<Sampler> sampler;
+	std::shared_ptr<Camera> camera;
 };
 
 class SamplerIntegrator : public Integrator
 {
 public:
 	SamplerIntegrator(std::shared_ptr<Camera> camera,  std::shared_ptr<Sampler> sampler,
-			   uint32_t maxDepth) : camera(camera), sampler(sampler), maxDepth(maxDepth) {}
+			   uint32_t maxDepth) : Integrator(camera, sampler, maxDepth) {}
 	virtual ~SamplerIntegrator() {}
 
-	virtual void preprocess(const Scene& scene, Sampler& sampler) {}
 	virtual void render(const Scene& scene) override;
-
-	//计算沿光线的辐射度
-	virtual Color Li(const Ray& ray, const Scene &scene,
-		Sampler &sampler, int depth = 0) const = 0;
-	//	{std::cerr << "error,should't call Li() in Integrator_base_class\n";
-	//   return Color(); }
 
 	Color specular_reflect(const Ray& ray, const SurfaceIsect& isect,
 						  const Scene &scene, Sampler &sampler, int depth) const;
 	Color specular_transmit(const Ray& ray, const SurfaceIsect& isect,  
 						   const Scene &scene, Sampler &sampler, int depth) const;
-
-protected:
-	uint32_t maxDepth;
-
-	std::shared_ptr<Sampler> sampler;
-	std::shared_ptr<Camera> camera;
 };
 
 }	//namespace valley

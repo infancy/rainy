@@ -76,6 +76,7 @@
     <ClInclude Include="..\src\integrator\eyelight.h" />
     <ClInclude Include="..\src\integrator\raycast.h" />
     <ClInclude Include="..\src\integrator\whitted.h" />
+    <ClInclude Include="..\src\integrator\test.h" />
     <ClInclude Include="..\src\light\diffuse.h" />
     <ClInclude Include="..\src\light\distance.h" />
     <ClInclude Include="..\src\light\point.h" />
