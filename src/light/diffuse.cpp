@@ -31,8 +31,7 @@ Color DiffuseAreaLight::power() const
 }
 
 Color DiffuseAreaLight::sample_Li(const Isect& ref, const Point2f &u,
-	Vector3f *wi, Float *pdf,
-	Visibility *vis) const 
+	Vector3f *wi, Float *pdf, Visibility *vis) const 
 {
 	Isect pShape = shape->sample(ref, u, pdf);
 	//pShape.mediumInterface = mediumInterface;
@@ -46,15 +45,13 @@ Color DiffuseAreaLight::sample_Li(const Isect& ref, const Point2f &u,
 	return L(pShape, -*wi);
 }
 
-Float DiffuseAreaLight::pdf_Li(const Isect&ref,
-	const Vector3f &wi) const 
+Float DiffuseAreaLight::pdf_Li(const Isect&ref, const Vector3f &wi) const 
 {
 	return shape->pdf(ref, wi);
 }
 
 Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
-	Ray *ray, Normal3f *nLight,
-	Float *pdfPos, Float *pdfDir) const 
+	Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const 
 {
 	// Sample a point on the area light's _Shape_, _pShape_
 	Isect pShape = shape->sample(u1, pdfPos);

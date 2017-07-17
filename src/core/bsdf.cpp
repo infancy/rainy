@@ -39,20 +39,22 @@ namespace valley
 {
 
 // BxDF Method Definitions
-
+//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
 Color BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 					   Float* Pdf, BxDF_type* sampledType) const
 {
 	// Cosine-sample the hemisphere, flipping the direction if necessary
 	*wi = cosine_sample_hemisphere(u);
-	if (wo.z < 0) wi->z *= -1;
+	//if (wo.z < 0) wi->z *= -1;
+	if (wo.y < 0) wi->y *= -1;
 	*Pdf = pdf(wo, *wi);
 	return f(wo, *wi);
 }
 
 Color BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
 	Color r(0.);
-	for (int i = 0; i < nSamples; ++i) {
+	for (int i = 0; i < nSamples; ++i) 
+	{
 		// Estimate one term of $\rho_\roman{hd}$
 		Vector3f wi;
 		Float pdf = 0;
@@ -62,9 +64,11 @@ Color BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
 	return r / nSamples;
 }
 
-Color BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const {
+Color BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const
+{
 	Color r(0.f);
-	for (int i = 0; i < nSamples; ++i) {
+	for (int i = 0; i < nSamples; ++i)
+	{
 		// Estimate one term of $\rho_\roman{hh}$
 		Vector3f wo, wi;
 		wo = uniform_sample_hemisphere(u1[i]);
@@ -103,7 +107,7 @@ Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 				BxDF_type flags) const 
 {
 	Vector3f wi = world_to_local(wiW), wo = world_to_local(woW);
-	if (wo.z == 0.f) return 0.f;
+	if (wo.y == 0.f) return 0.f;
 
 	bool reflect = Dot(wiW, ng) * Dot(woW, ng) > 0;	//处理着色法线的缺陷
 	Color f(0.f);
@@ -116,14 +120,16 @@ Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 	return f;
 }
 
+//uniformSamplePoint in [0,1]^2
 Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
-					   const Point2f& u, Float *pdf, BxDF_type type,
-					   BxDF_type* sampledType) const
+					 const Point2f& u, Float *pdf, BxDF_type type,
+					 BxDF_type* sampledType) const
 {
 
-	// Choose which _BxDF_ to sample
+	// 选择被采样的BxDF
 	int matchingComps = components_num(type);
-	if (matchingComps == 0) {
+	if (matchingComps == 0) 
+	{
 		*pdf = 0;
 		if (sampledType) *sampledType = BxDF_type(0);
 		return Color(0);
@@ -135,7 +141,8 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	BxDF* bxdf = nullptr;
 	int count = comp;
 	for (int i = 0; i < nBxDFs; ++i)
-		if (bxdfs[i]->match(type) && count-- == 0) {
+		if (bxdfs[i]->match(type) && count-- == 0)	//选择第comp个BxDF
+		{
 			bxdf = bxdfs[i];
 			break;
 		}
@@ -146,26 +153,30 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	*/
 
 	// Remap _BxDF_ sample _u_ to $[0,1)^2$
+	//假如有两个matchingComps，那么如果选中第一个，则意味着u[0]属于[0,0.5)，所以对u[0]进行重新映射
 	Point2f uRemapped(std::min(u[0] * matchingComps - comp, OneMinusEpsilon), u[1]);
 
 	// Sample chosen _BxDF_
 	Vector3f wi, wo = world_to_local(woWorld);
-	if (wo.z == 0) return 0.;
+	if (wo.y == 0.f) return 0.f;
 	*pdf = 0;
 	if (sampledType) *sampledType = bxdf->type;
+
 	Color f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
-	/*
-	VLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
-	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Color(0.))
+	
+	DVLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
+	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Color(0.f))
 	<< ", wi = " << wi;
-	*/
-	if (*pdf == 0) {
+	
+	if (*pdf == 0) 
+	{
 		if (sampledType) *sampledType = BxDF_type(0);
 		return 0;
 	}
 	*wiWorld = local_to_world(wi);
 
 	// Compute overall PDF with all matching _BxDF_s
+	//对于Specular，无需执行均值计算，因为其delta分布，pdf=1
 	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i] != bxdf && bxdfs[i]->match(type))
@@ -173,7 +184,8 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	if (matchingComps > 1) *pdf /= matchingComps;
 
 	// Compute value of BSDF for sampled direction
-	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1) {
+	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1) 
+	{
 		bool reflect = Dot(*wiWorld, ng) * Dot(woWorld, ng) > 0;
 		f = 0.;
 		for (int i = 0; i < nBxDFs; ++i)
@@ -182,10 +194,10 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Transmission))))
 				f += bxdfs[i]->f(wo, wi);
 	}
-	/*
-	VLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
-	<< ((*pdf > 0) ? (f / *pdf) : Color(0.));
-	*/
+	
+	DVLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
+	<< ((*pdf > 0) ? (f / *pdf) : Color(0.f));
+	
 	return f;
 }
 
@@ -214,14 +226,16 @@ Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
 {
 	if (nBxDFs == 0) return 0.f;
 	Vector3f wo = world_to_local(woWorld), wi = world_to_local(wiWorld);
-	if (wo.z == 0) return 0.;
+	if (wo.y == 0) return 0.;
 	Float pdf = 0.f;
 	int matchingComps = 0;
 	for (int i = 0; i < nBxDFs; ++i)
-		if (bxdfs[i]->match(flags)) {
+		if (bxdfs[i]->match(flags))
+		{
 			++matchingComps;
 			pdf += bxdfs[i]->pdf(wo, wi);
 		}
+	//计算均值
 	Float v = matchingComps > 0 ? pdf / matchingComps : 0.f;
 	return v;
 }

@@ -6,9 +6,15 @@ namespace valley
 {
 
 // GeometricPrimitive Method Definitions
-Bounds3f GeometricPrimitive::world_bound() const { return shape->world_bound(); }
+Bounds3f GeometricPrimitive::world_bound() const 
+{ 
+	return shape->world_bound(); 
+}
 
-bool GeometricPrimitive::intersectP(const Ray &r) const { return shape->intersectP(r); }
+bool GeometricPrimitive::intersectP(const Ray &r) const 
+{
+	return shape->intersectP(r);
+}
 
 bool GeometricPrimitive::intersect(
 	const Ray& r, SurfaceIsect* isect) const 
@@ -26,11 +32,13 @@ bool GeometricPrimitive::intersect(
 	return true;
 }
 
-const AreaLight *GeometricPrimitive::get_AreaLight() const {
+const AreaLight *GeometricPrimitive::get_AreaLight() const
+{
 	return areaLight.get();
 }
 
-const Material *GeometricPrimitive::get_material() const {
+const Material *GeometricPrimitive::get_material() const
+{
 	return material.get();
 }
 
@@ -38,8 +46,9 @@ void GeometricPrimitive::compute_scattering(
 	SurfaceIsect *isect, 
 //	MemoryArena &arena,
 	TransportMode mode,
-	bool allowMultipleLobes) const {
-
+	bool allowMultipleLobes) const
+{
+	//CHECK_NE(material, nullptr);
 	if (material)
 		material->compute_scattering(isect, mode, allowMultipleLobes);
 	CHECK_GE(Dot(isect->n, isect->shading.n), 0.);

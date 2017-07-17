@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\bsdf\lambertian.h" />
-    <ClInclude Include="..\src\camera\ThinLens.h" />
+    <ClInclude Include="..\src\camera\thinlens.h" />
     <ClInclude Include="..\src\core\api.h" />
     <ClInclude Include="..\src\core\bsdf.h" />
     <ClInclude Include="..\src\core\camera.h" />
@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\core\valley.h" />
     <ClInclude Include="..\src\integrator\bdpt.h" />
     <ClInclude Include="..\src\integrator\eyelight.h" />
+    <ClInclude Include="..\src\integrator\path.h" />
     <ClInclude Include="..\src\integrator\raycast.h" />
     <ClInclude Include="..\src\integrator\whitted.h" />
     <ClInclude Include="..\src\integrator\test.h" />
@@ -133,12 +134,12 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Valley.props" />
-    <Import Project="..\..\..\Library\global_64d.props" />
+    <Import Project="..\..\..\Library\lib_64d.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Valley.props" />
-    <Import Project="..\..\..\Library\global_64.props" />
+    <Import Project="..\..\..\Library\lib_64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

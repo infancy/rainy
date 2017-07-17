@@ -68,8 +68,9 @@ public:
 
 	// Sample a point on the shape given a reference point |ref| and
 	// return the PDF with respect to solid angle from |ref|.
-	virtual Isect sample(const Isect &ref, const Point2f &u,
-		Float *pdf) const;
+	virtual Isect sample(const Isect &ref, const Point2f &u, Float *pdf) const;
+
+	//传入一个isect和isect上的方向wi，若isect->wi->shape，则计算相应的pdf
 	virtual Float pdf(const Isect &ref, const Vector3f &wi) const;
 
 	// Returns the solid angle subtended by the shape w.r.t. the reference

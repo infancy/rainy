@@ -51,7 +51,9 @@ public:
 	}
 
 	bool is_black() const { return r == 0.f && g == 0.f && b == 0.f; }
+	Float max_value() const { return std::max(std::max(r, g), b); }
 	float luminance() const { return r * 0.212671f + g * 0.715160f + b * 0.072169f; }
+
 
 	Color normalize() const
 	{

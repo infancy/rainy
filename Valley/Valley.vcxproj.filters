@@ -149,9 +149,6 @@
     <ClInclude Include="..\src\core\camera.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\camera\ThinLens.h">
-      <Filter>camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\core\bsdf.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -220,6 +217,12 @@
     </ClInclude>
     <ClInclude Include="..\src\integrator\test.h">
       <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\integrator\path.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\camera\thinlens.h">
+      <Filter>camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

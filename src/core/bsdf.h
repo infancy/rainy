@@ -89,16 +89,18 @@ public:
 
 	//针对给定方向返回分布函数值
 	virtual Color f(const Vector3f& wo, const Vector3f& wi) const = 0;
-	//略复杂
-	virtual Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
-							 Float* Pdf, BxDF_type* sampledType = nullptr) const;
 
+	//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
+	virtual Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
+						   Float* Pdf, BxDF_type* sampledType = nullptr) const;
+
+	//针对某些无法通过闭式计算反射率的BxDF，可用rho来估算（使用蒙特卡洛方法）
 	//rho_hemisphere_direction
 	virtual Color rho(const Vector3f& wo, int nSamples,
-						const Point2f* samples) const;
+					  const Point2f* samples) const;
 	//rho_hemisphere_hemisphere
 	virtual Color rho(int nSamples, const Point2f* samples1,
-						const Point2f* samples2) const;
+					  const Point2f* samples2) const;
 
 	virtual Float pdf(const Vector3f& wo, const Vector3f& wi) const;
 	//virtual std::string ToString() const = 0;
@@ -121,6 +123,9 @@ public:
 	//针对给定方向返回分布函数值
 	Color f(const Vector3f& woW, const Vector3f& wiW,
 			  BxDF_type flags = BxDF_type::All) const;
+
+	//根据采样值从bxdf[n]中选取一个bxdf（sampleType即为该bxdf），计算sample_f，得到wi，pdf
+	//然后需对pdf进行均值计算以得到平均值，最后计算f(wo,wi)
 	Color sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u, Float* pdf,
 					 BxDF_type type = BxDF_type::All, BxDF_type* sampledType = nullptr) const;
 

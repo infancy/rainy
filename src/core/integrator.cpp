@@ -5,6 +5,7 @@ namespace valley
 {
 
 // Integrator Utility Functions
+//对所有光源进行uniform的采样
 Color uniform_sample_all_lights(const Isect& it, const Scene &scene, Sampler &sampler,
 	const std::vector<int> &nLightSamples, bool handleMedia)
 {
@@ -53,6 +54,15 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 		scene, sampler, handleMedia) / lightPdf;
 }
 
+//   prev   light
+//    ----  ----
+//      \    /
+//    wo \  / wi
+//        \/
+//      ------
+//      isect
+//计算light经isect对prev的贡献，使用MIS分别对light和brdf进行采样
+//在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=Le+Li
 Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)
@@ -69,6 +79,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 	DVLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
 		<< wi << ", pdf: " << lightPdf;
 
+	//从光源部分进行采样
 	if (lightPdf > 0 && !Li.is_black()) 
 	{
 		//分段函数
@@ -83,6 +94,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
 			f *= AbsDot(wi, isect.shading.n);
 			scatteringPdf = isect.bsdf->pdf(isect.wo, wi, bsdfFlags);
+
 			DVLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
 		}
 		/*
@@ -98,6 +110,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 		*/
 		if (!f.is_black()) 
 		{
+			//可见性测试
 			// Compute effect of visibility for light source sample
 			if (handleMedia) 
 			{
@@ -116,6 +129,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			}
 
 			// Add light's contribution to reflected radiance
+			//计算最终结果
 			if (!Li.is_black()) 
 			{
 				if (is_delta_light(light.flags))
@@ -130,6 +144,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 		}
 	}
 
+	//从brdf部分进行采样
 	// Sample BSDF with multiple importance sampling
 	if (!is_delta_light(light.flags)) 
 	{
@@ -140,6 +155,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			// Sample scattered direction for surface interactions
 			BxDF_type sampledType;
 			const SurfaceIsect& isect = (const SurfaceIsect&)it;
+			//使用采样点对bsdf进行采样，得到wi，pdf，f
 			f = isect.bsdf->sample_f(isect.wo, &wi, uScattering, &scatteringPdf,
 				bsdfFlags, &sampledType);
 			f *= AbsDot(wi, isect.shading.n);
@@ -161,12 +177,12 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 		if (!f.is_black() && scatteringPdf > 0) 
 		{
 			// Account for light contributions along sampled direction _wi_
-			//不处理透射就直接输出
+			//沿着wi的方向计算光源贡献
 			Float weight = 1;
 			if (!sampledSpecular) 
 			{
-				lightPdf = light.pdf_Li(it, wi);
-				if (lightPdf == 0) return Ld;
+				lightPdf = light.pdf_Li(it, wi);	//若it->wi->light,则采样到light的概率
+				if (lightPdf == 0) return Ld;		//否则从bsdf采样失败，返回Ld
 				weight = power_heuristic(1, scatteringPdf, 1, lightPdf);
 			}
 
@@ -183,10 +199,10 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			if (foundSurfaceIsect) 
 			{
 				if (lightIsect.primitive->get_AreaLight() == &light)
-					Li = lightIsect.Le(-wi);
+					Li = lightIsect.Le(-wi);	//调用SurIsect的Le
 			}
 			else
-				Li = light.Le(ray);
+				Li = light.Le(ray);		//调用light的Le
 			if (!Li.is_black()) Ld += f * Li * Tr * weight / scatteringPdf;
 		}
 	}

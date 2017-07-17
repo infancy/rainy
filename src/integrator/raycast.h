@@ -41,13 +41,15 @@ public:
 		Color L(0.f);
 		// Find closest ray intersection or return background radiance
 		SurfaceIsect isect;
+
+		//如果未被遮挡，则计算光源到视点的直接辐射度
 		if (!scene.intersect(ray, &isect)) 
 		{
 			for (const auto& light : scene.lights) L += light->Le(ray);
 			return L;
 		}
 
-		//计算这个交点向wo方向发射的辐射度
+		//否则计算这个交点向视点方向发射的辐射度
 		// Compute scattering functions for surface Isect
 		isect.compute_scattering(ray);
 		if (!isect.bsdf)

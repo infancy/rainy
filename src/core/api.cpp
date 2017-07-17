@@ -44,11 +44,11 @@ Integrator* valley_create_integrator()
 	Vector3f up(0, 1, 0);
 	shared_ptr<Camera> camera{ new Pinhole(eye, tar, up, 50, film) };
 	srand(time(nullptr));
-	shared_ptr<Sampler> sampler{ new Sampler(16, rand()) };
+	shared_ptr<Sampler> sampler{ new Sampler(64, rand()) };
 
 	//选择策略
 	//return  make_shared<Integrator>(new RayCast(camera, sampler, 1));
-	return new RayCast(camera, sampler, 1);
+	return new Path(camera, sampler, 5);
 }
 
 shared_ptr<Scene> valley_create_scene()
@@ -95,11 +95,11 @@ shared_ptr<Scene> valley_create_scene()
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_up, matte));
 
 	//Arealight
-	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.9, 30))));
+	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.9, 0))));
 	Transform ml_upp(Transform(Translate(Vector3f(0, 49.9, 30))));
 	shared_ptr<Shape> light_up{ new Rectangle(ml_up, true, 40, 40) };
 	//区域光必须进行多次采样
-	shared_ptr<AreaLight> diffuse_light{ new DiffuseAreaLight(ml_upp, Color(30), 9, light_up) };
+	shared_ptr<AreaLight> diffuse_light{ new DiffuseAreaLight(ml_upp, Color(5), 9, light_up) };
 
 	primitive.push_back(make_unique<GeometricPrimitive>(light_up, matte, diffuse_light));
 

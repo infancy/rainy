@@ -34,6 +34,7 @@ inline Float balance_heuristic(int nf, Float fPdf, int ng, Float gPdf)
 {
 	return (nf * fPdf) / (nf * fPdf + ng * gPdf);
 }
+//Veach根据经验指出，beta=2可视为一个较好的值，可硬编码到实现中
 inline Float power_heuristic(int nf, Float fPdf, int ng, Float gPdf) 
 {
 	Float f = nf * fPdf, g = ng * gPdf;

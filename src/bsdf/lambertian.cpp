@@ -8,7 +8,7 @@ Color LambertianTransmission::sample_f(const Vector3f& wo, Vector3f* wi,
 	const Point2f& u, Float* Pdf, BxDF_type* sampledType) const 
 {
 	*wi = cosine_sample_hemisphere(u);
-	if (wo.z > 0) wi->z *= -1;
+	if (wo.y > 0) wi->y *= -1;
 	*Pdf = pdf(wo, *wi);
 	return f(wo, *wi);
 }

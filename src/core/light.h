@@ -76,7 +76,8 @@ public:
 	//在开始渲染前记录场景的一些特征，如DistanceLight记录场景包围盒
 	virtual void preprocess(const Scene &scene) {}
 
-	////当光线与场景未相交时，计算朝光线方向发出的辐射度
+	//光源向-r方向发射的辐射度
+	//比如当视点发出的光线与场景中物体未相交时，计算光源朝视点方向的辐射度
 	virtual Color Le(const RayDifferential &r) const;
 
 	virtual Float pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
