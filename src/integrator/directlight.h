@@ -3,8 +3,8 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_RAYCAST_H
-#define VALLEY_INTEGRATOR_RAYCAST_H
+#ifndef VALLEY_INTEGRATOR_DIRECTLIGHT_H
+#define VALLEY_INTEGRATOR_DIRECTLIGHT_H
 
 #include"valley.h"
 #include"integrator.h"
@@ -12,10 +12,10 @@
 namespace valley
 {
 
-class RayCast : public SamplerIntegrator
+class DirectLight : public SamplerIntegrator
 {
 public:
-	RayCast(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler, uint32_t maxDepth = 2,
+	DirectLight(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler, uint32_t maxDepth = 2,
 			bool sampler_all_light = true) :
 		SamplerIntegrator(camera, sampler, maxDepth), sampler_all_light(sampler_all_light) {}
 
@@ -25,13 +25,7 @@ public:
 		{
 			// Compute number of samples to use for each light
 			for (const auto &light : scene.lights)
-				nLightSamples.push_back(light->nSamples);
-
-			// Request samples for sampling all lights
-			//for (int i = 0; i < maxDepth; ++i) 
-			//	for (size_t j = 0; j < scene.lights.size(); ++j) 
-			//		sampler.Request2DArray(nLightSamples[j]);
-			//		sampler.Request2DArray(nLightSamples[j]);							
+				nLightSamples.push_back(light->nSamples);							
 		}
 	}
 
@@ -87,4 +81,4 @@ private:
 }	//namespace valley
 
 
-#endif //VALLEY_INTEGRATOR_RAYCAST_H
+#endif //VALLEY_INTEGRATOR_DIRECTLIGHT_H

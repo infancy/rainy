@@ -8,7 +8,6 @@
 
 #include"valley.h"
 #include"material.h"
-#include"texture.h"
 
 namespace valley
 {
@@ -27,7 +26,8 @@ public:
 
 private:
 	std::shared_ptr<Texture<Color>> kd;
-	std::shared_ptr<Texture<Float>> sigma, bumpMap;	//sigma代表了粗糙度
+	std::shared_ptr<Texture<Float>> sigma;	//粗糙度
+	std::shared_ptr<Texture<Float>> bumpMap;
 };
 
 }	//namespace valley

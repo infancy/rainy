@@ -25,9 +25,6 @@
     <Filter Include="light">
       <UniqueIdentifier>{de9f1e36-ba5b-4ed0-8f46-77861023914a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="filter">
-      <UniqueIdentifier>{169fca10-3061-4b23-8816-58d994776804}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sampler">
       <UniqueIdentifier>{1e75a814-a178-4d59-af66-a18ef5d087df}</UniqueIdentifier>
     </Filter>
@@ -104,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="..\src\test\test_integrator.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\material\glass.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\material\mirror.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bsdf\fresnel.cpp">
+      <Filter>bsdf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,17 +218,29 @@
     <ClInclude Include="..\src\integrator\eyelight.h">
       <Filter>integrator</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\integrator\raycast.h">
-      <Filter>integrator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\integrator\test.h">
-      <Filter>integrator</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\integrator\path.h">
       <Filter>integrator</Filter>
     </ClInclude>
     <ClInclude Include="..\src\camera\thinlens.h">
       <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bsdf\specular.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bsdf\fresnel.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\material\glass.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\material\mirror.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sampler\uniform.h">
+      <Filter>sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\integrator\directlight.h">
+      <Filter>integrator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

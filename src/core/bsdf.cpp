@@ -90,10 +90,10 @@ Float BxDF::pdf(const Vector3f &wo, const Vector3f &wi) const
 
 BSDF::BSDF(const SurfaceIsect& si, Float eta) :
 	eta(eta),
-	ns(si.shading.n),
+	ns(si.shading.n),	//y÷·
 	ng(si.n),
-	ss(Normalize(si.shading.dpdu)),
-	ts(Cross(ns, ss)) {}
+	ss(Normalize(si.shading.dpdu)),	//z÷·
+	ts(Cross(ns, ss)) {}	//x÷·
 
 int BSDF::components_num(BxDF_type flags) const
 {

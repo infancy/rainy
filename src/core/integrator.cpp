@@ -54,15 +54,19 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 		scene, sampler, handleMedia) / lightPdf;
 }
 
-//   prev   light
-//    ----  ----
-//      \    /
-//    wo \  / wi
-//        \/
-//      ------
-//      isect
-//计算light经isect对prev的贡献，使用MIS分别对light和brdf进行采样
-//在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=Le+Li
+/*
+   prev   light
+    ----  ----
+      \    /
+    wo \  / wi
+        \/
+      ------
+      isect
+*/
+//当bsdf呈镜面状态而光源分布较广时从bsdf采样较为高效
+//当光源较小而bsdf呈漫反射分布时从光源采样更高效
+//因而使用MIS分别对light和brdf进行采样
+//在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=MIS(Le, Li)
 Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)
@@ -132,7 +136,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			//计算最终结果
 			if (!Li.is_black()) 
 			{
-				if (is_delta_light(light.flags))
+				if (is_delta_light(light.flags))	//如果是delta光源，无需使用MIS
 					Ld += f * Li / lightPdf;		//对普通光源，pdf=1，对区域光源，pdf=1/area
 				else 
 				{
@@ -144,8 +148,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 		}
 	}
 
-	//从brdf部分进行采样
-	// Sample BSDF with multiple importance sampling
+	//从bsdf部分进行采样
 	if (!is_delta_light(light.flags)) 
 	{
 		Color f;
@@ -240,25 +243,24 @@ void SamplerIntegrator::render(const Scene &scene)
 {
 	preprocess(scene, *sampler);
 
-	Sampler Pixelsampler(rand());
 	for (int y = 0; y < camera->film->height; ++y)
 		for (int x = 0; x < camera->film->width; ++x)
 		{
-			for(int count = 0; count < sampler->samples_PerPixel; ++count)
+			for(int count = 0; count < sampler->samplesPerPixel; ++count)
 			{ 
 				Ray ray;
-				camera->generate_ray(sampler->get_CameraSample(x, y), &ray);
+				CameraSample cs = sampler->get_CameraSample(x, y);
+				camera->generate_ray(cs, &ray);
 
-				//采样器丛聚
-				Color L = Li(ray, scene, Pixelsampler);
+				Color L = Li(ray, scene, *sampler);
 
 				check_radiance(x, y, L);
-				camera->film->add(x, y, L);
+				camera->film->add(cs.pFilm, L);
 			}
 		}
 
 	//对一个像素采样n次，可否理解为长时间曝光
-	return camera->film->scale(1.f / sampler->samples_PerPixel);	//filter、flush
+	//return camera->film->scale(1.f / sampler->samples_PerPixel);	//filter、flush
 }
 
 Color SamplerIntegrator::specular_reflect(const Ray& ray, const SurfaceIsect& isect,

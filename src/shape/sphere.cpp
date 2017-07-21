@@ -17,7 +17,7 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 	//static const Float kEpsilon = 0.001f; for shadow ray
 
 	//phi from 0 to 2Pi,theta from 0 to Pi
-	static const Float phiMax = 2 * Pi, thetaMax = Pi, thetaMin = 0; 
+	static const Float phiMax = 2 * Pi, thetaMax = 0, thetaMin = Pi; 
 
 	// Transform _Ray_ to object space
 	Ray ray = (*WorldToObject)(r);
@@ -46,7 +46,9 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 		// Refine sphere intersection point
 		pHit *= radius / Distance(pHit, Point3f(0, 0, 0));
 		if (pHit.x == 0 && pHit.y == 0) pHit.x = 1e-5f * radius;
-		Float phi = std::atan2(pHit.y, pHit.x);
+		//Float phi = std::atan2(pHit.y, pHit.x);
+		//x = r*sinTheta*sinPhi, z = r*sinTheta*cosPhi
+		Float phi = std::atan2(pHit.x, pHit.z);
 		if (phi < 0) phi += 2 * Pi;
 
 		//计算uv、dpdu、dpdv
@@ -54,19 +56,23 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 
 		// Find parametric representation of sphere hit
 		Float u = phi / phiMax;
-		Float theta = std::acos(Clamp(pHit.z / radius, -1, 1));
+		//Float theta = std::acos(Clamp(pHit.z / radius, -1, 1));
+		Float theta = std::acos(Clamp(pHit.y / radius, -1, 1));
 		Float v = (theta - thetaMin) / (thetaMax - thetaMin);
 
 		// Compute sphere $\dpdu$ and $\dpdv$
-		Float zRadius = std::sqrt(pHit.x * pHit.x + pHit.y * pHit.y);
-		Float invZRadius = 1 / zRadius;
-		Float cosPhi = pHit.x * invZRadius;
-		Float sinPhi = pHit.y * invZRadius;
+		Float yRadius = std::sqrt(pHit.z * pHit.z + pHit.x * pHit.x);
+		Float invYRadius = 1 / yRadius;
+		Float cosPhi = pHit.z * invYRadius;
+		Float sinPhi = pHit.x * invYRadius;
 
-		Vector3f dpdu(-phiMax * pHit.y, phiMax * pHit.x, 0);
+		//Vector3f dpdu(-phiMax * pHit.y, phiMax * pHit.x, 0);
+		Vector3f dpdu(phiMax * pHit.z, 0, -phiMax * pHit.x);
 		Vector3f dpdv = (thetaMax - thetaMin) *
-			Vector3f(pHit.z * cosPhi, pHit.z * sinPhi, -radius * std::sin(theta));
+			Vector3f(pHit.y * sinPhi, -radius * std::sin(theta), pHit.y * cosPhi);
+			//Vector3f(pHit.z * cosPhi, pHit.z * sinPhi, -radius * std::sin(theta));
 
+		//法线微分暂未检查
 		// Compute sphere $\dndu$ and $\dndv$
 		Vector3f d2Pduu = -phiMax * phiMax * Vector3f(pHit.x, pHit.y, 0);
 		Vector3f d2Pduv =
@@ -89,6 +95,7 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 			(e * F - f * E) * invEGF2 * dpdv);
 		Normal3f dndv = Normal3f((g * F - f * G) * invEGF2 * dpdu +
 			(f * F - g * E) * invEGF2 * dpdv);
+
 
 		Vector3f pError = gamma(5) * Abs((Vector3f)pHit);
 
@@ -142,20 +149,22 @@ Isect Sphere::sample(const Point2f &u, Float *pdf) const
 	return it;
 }
 
-Isect Sphere::sample(const Isect &ref, const Point2f &u,
-	Float *pdf) const 
+//此处建立的坐标系可能还有问题
+Isect Sphere::sample(const Isect &ref, const Point2f &u, Float *pdf) const 
 {
 	Point3f pCenter = (*ObjectToWorld)(Point3f(0, 0, 0));
 
 	// Sample uniformly on sphere if $\pt{}$ is inside it
 	Point3f pOrigin =
 		offset_ray_origin(ref.p, ref.pError, ref.n, pCenter - ref.p);
-	if (DistanceSquared(pOrigin, pCenter) <= radius * radius) {
+	if (DistanceSquared(pOrigin, pCenter) <= radius * radius) 
+	{
 		Isect intr = sample(u, pdf);
 		Vector3f wi = intr.p - ref.p;
 		if (wi.LengthSquared() == 0)
 			*pdf = 0;
-		else {
+		else 
+		{
 			// Convert from area measure returned by Sample() call above to
 			// solid angle measure.
 			wi = Normalize(wi);

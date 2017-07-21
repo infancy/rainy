@@ -81,8 +81,8 @@ public:
 	virtual Color Le(const RayDifferential &r) const;
 
 	virtual Float pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
-	virtual void pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
-						Float *pdfDir) const = 0;
+	virtual void  pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
+						 Float *pdfDir) const = 0;
 
 	//传入Isect，返回到达该点的incident Radiance及其的方向wi
 	//当光源是面积光源时，还需传入一个[0,1]^2范围的采样点，对光源上一点进行采样并记录概率密度值pdf
@@ -90,7 +90,7 @@ public:
 	virtual Color sample_Li(const Isect& ref, const Point2f& u,
 							Vector3f* wi, Float* pdf, Visibility* vis) const = 0;
 
-
+	//pdf of position、pdf of direction
 	virtual Color sample_Le(const Point2f& u1, const Point2f& u2,  Ray* ray, 
 							Normal3f* nLight, Float* pdfPos, Float* pdfDir) const = 0;
 

@@ -49,10 +49,12 @@ Color DistantLight::sample_Le(const Point2f& u1, const Point2f& u2, Ray* ray,
 	Normal3f* nLight, Float* pdfPos, Float* pdfDir) const
 {
 	// Choose point on disk oriented toward infinite light direction
-	Vector3f v1, v2;
+	Vector3f v1, v2;	//z,x
 	CoordinateSystem(wLight, &v1, &v2);
 	Point2f cd = concentric_sample_disk(u1);
+	//构造一个和世界包围盒一样大的圆盘
 	Point3f pDisk = worldCenter + worldRadius * (cd.x * v1 + cd.y * v2);
+	//Point3f pDisk = worldCenter + worldRadius * (cd.z * v1 + cd.x * v2);
 
 	// Set ray origin and direction for infinite light ray
 	*ray = Ray(pDisk + worldRadius * wLight, -wLight, Infinity);

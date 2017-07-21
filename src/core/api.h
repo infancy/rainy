@@ -8,6 +8,7 @@
 
 #include"camera.h"
 #include"film.h"
+#include"filter.h"
 #include"integrator.h"
 #include"light.h"
 #include"primitive.h"
@@ -16,12 +17,15 @@
 
 #include"integrator/eyelight.h"
 #include"integrator/path.h"
-#include"integrator/raycast.h"
-#include"integrator/test.h"
+#include"integrator/directlight.h"
+//#include"integrator/test.h"
 #include"light/diffuse.h"
 #include"light/distance.h"
 #include"light/point.h"
+#include"material/glass.h"
 #include"material/matte.h"
+#include"material/mirror.h"
+#include"sampler/uniform.h"
 #include"shape/sphere.h"
 #include"shape/Rectangle.h"
 

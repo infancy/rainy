@@ -84,9 +84,10 @@ Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
 		*pdfDir = cosine_hemisphere_pdf(w.z);
 	}
 
-	Vector3f v1, v2, n(pShape.n);
-	CoordinateSystem(n, &v1, &v2);
-	w = w.x * v1 + w.y * v2 + w.z * n;
+	Vector3f z, x, y(pShape.n);
+	CoordinateSystem(y, &z, &x);
+	//w = w.x * v1 + w.y * v2 + w.z * n;
+	w = w.x * x + w.y * y + w.z * z;
 	*ray = pShape.generate_ray(w);
 	return L(pShape, w);
 }

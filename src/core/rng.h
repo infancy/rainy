@@ -7,6 +7,7 @@
 #define VALLEY_CORE_RNG_H
 
 #include"valley.h"
+#include"geometry.h"
 #include <random>
 
 namespace valley
@@ -33,7 +34,7 @@ public:
 	Float    get()      { return Float_distr(mRng); }	//(0.F, 1.F)
 
 	Point2f get_2D() { return Point2f(get(), get()); }
-	Point3f get_3D() { return Point3f(get(), get(), get()); }
+	//Point3f get_3D() { return Point3f(get(), get(), get()); }
 
 private:
 	std::mt19937_64 mRng;

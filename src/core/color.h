@@ -12,7 +12,7 @@
 
 namespace valley
 {
-
+//所有检查都在
 class Color
 {
 public:
@@ -41,6 +41,7 @@ public:
 	Color operator+(const Color& c) const { return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
 	Color operator-(const Color& c) const { return Color(r - c.r, g - c.g, b - c.b, a - c.a); }
 	Color operator*(const Color& c) const { return Color(r * c.r, g * c.g, b * c.b, a * c.a); }
+	Color operator/(const Color& c) const { return Color(r / c.r, g / c.g, b / c.b, a / c.a); }
 
 	Color& operator+=(const Color& c) { r += c.r; g += c.g; b += c.b; a += c.a; return *this; }
 	Color& operator-=(const Color& c) { r -= c.r; g -= c.g; b -= c.b; a -= c.a; return *this; }
@@ -76,6 +77,19 @@ public:
 		return ret;
 	}
 
+	Color sqrt()
+	{
+		return Color(std::sqrt(r), std::sqrt(g), std::sqrt(b), std::sqrt(a));
+	}
+	/*
+	friend Color Sqrt(const Color& s)
+	{
+		Color ret;
+		for (int i = 0; i < nSpectrumSamples; ++i) ret.c[i] = std::sqrt(s.c[i]);
+		DCHECK(!ret.HasNaNs());
+		return ret;
+	}
+	*/
 	/*
 	Color lerp(Color& c, float f) { return Color((*this * f) + (c * (1 - f))); }
 	*/
@@ -83,6 +97,14 @@ public:
 public:
 	float r, g, b, a;
 };
+/*
+template <typename T, typename U>
+inline Color operator*(U s, const Color& v) 
+{
+	return v * s;
+}
+*/
+inline Color operator*(const float f, const Color& c) { return c.operator*(f); }
 
 //template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Color& c) {

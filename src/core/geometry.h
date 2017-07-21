@@ -948,6 +948,7 @@ inline Vector3<T>::Vector3(const Point3<T> &p)
     DCHECK(!HasNaNs());
 }
 
+//really great!
 template <typename T, typename U>
 inline Vector3<T> operator*(U s, const Vector3<T> &v) {
     return v * s;
@@ -1033,11 +1034,12 @@ Vector3<T> Max(const Vector3<T> &p1, const Vector3<T> &p2) {
                       std::max(p1.z, p2.z));
 }
 
+//permute(v{-1,0,1}, 2,1,0)->v{1,0,-1}
 template <typename T>
 Vector3<T> Permute(const Vector3<T> &v, int x, int y, int z) {
     return Vector3<T>(v[x], v[y], v[z]);
 }
-
+/*
 template <typename T>
 inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,
                              Vector3<T> *v3) {
@@ -1046,6 +1048,16 @@ inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,
     else
         *v2 = Vector3<T>(0, v1.z, -v1.y) / std::sqrt(v1.y * v1.y + v1.z * v1.z);
     *v3 = Cross(v1, *v2);
+}
+*/
+template <typename T>
+inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,	//v1->y,v2->z,v3->x
+	Vector3<T> *v3) {
+	if (std::abs(v1.x) > std::abs(v1.z))
+		*v2 = Vector3<T>(-v1.y, v1.x, 0) / std::sqrt(v1.x * v1.x + v1.y * v1.y);
+	else
+		*v2 = Vector3<T>(0, -v1.z, v1.y) / std::sqrt(v1.z * v1.z + v1.y * v1.y);
+	*v3 = Cross(v1, *v2);
 }
 
 template <typename T>

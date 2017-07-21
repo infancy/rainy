@@ -1,5 +1,4 @@
 /*
-
 pbrt source code is Copyright(c) 1998-2016
 Matt Pharr, Greg Humphreys, and Wenzel Jakob.
 
@@ -35,30 +34,46 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_MATERIAL_H
-#define VALLEY_CORE_MATERIAL_H
+#ifndef VALLEY_MATERIALS_GLASS_H
+#define VALLEY_MATERIALS_GLASS_H
 
+// materials/glass.h*
 #include"valley.h"
-#include"texture.h"
-#include"intersection.h"
+#include"material.h"
 
-namespace valley
+namespace valley 
 {
 
-class Material 
+class GlassMaterial : public Material
 {
 public:
-	//通过交点的几何特征确定散射属性并初始化交点处的BSDF
-	//allow-参数表示是否允许BxDF聚合多种类型（如 FresnelSpecular, 其
-	//包含了 specular reflection 和 transmission）
-	virtual void compute_scattering(SurfaceIsect* si, TransportMode mode,
-									bool allowMultipleLobes) const = 0;
+	GlassMaterial(const std::shared_ptr<Texture<Color>> &Kr,
+		const std::shared_ptr<Texture<Color>> &Kt,
+		const std::shared_ptr<Texture<Float>> &uRoughness,
+		const std::shared_ptr<Texture<Float>> &vRoughness,
+		const std::shared_ptr<Texture<Float>> &index,
+		const std::shared_ptr<Texture<Float>> &bumpMap = nullptr,
+		bool remapRoughness = false)
+		: Kr(Kr),
+		Kt(Kt),
+		uRoughness(uRoughness),
+		vRoughness(vRoughness),
+		index(index),
+		bumpMap(bumpMap),
+		remapRoughness(remapRoughness) {}
 
-	//计算凹凸贴图
-	//static void bump(const std::shared_ptr<Texture<Float>>& d, SurfaceIsect* si);
+	void compute_scattering(SurfaceIsect* si, //MemoryArena &arena,
+		TransportMode mode,
+		bool allowMultipleLobes) const;
+
+private:
+	std::shared_ptr<Texture<Color>> Kr, Kt;
+	std::shared_ptr<Texture<Float>> uRoughness, vRoughness;
+	std::shared_ptr<Texture<Float>> index;
+	std::shared_ptr<Texture<Float>> bumpMap;
+	bool remapRoughness;
 };
 
-}	//namespace valley
+}  // namespace valley
 
-
-#endif //VALLEY_CORE_MATERIAL_H
+#endif  // VALLEY_MATERIALS_GLASS_H

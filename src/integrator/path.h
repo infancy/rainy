@@ -26,9 +26,9 @@ public:
 
 	Color Path::Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
 	{
-		Color L(0.f), beta(1.f);
+		Color L(0.f), beta(1.f);	//beta为 path throughput 项
 		Ray ray(r);
-		bool specularBounce = false;
+		bool specularBounce = false;	//记录最后一个顶点是否有镜面反射
 		int bounces;
 		// Added after book publication: etaScale tracks the accumulated effect
 		// of radiance scaling due to rays passing through refractive
@@ -37,7 +37,7 @@ public:
 		// Russian roulette; this is worthwhile, since it lets us sometimes
 		// avoid terminating refracted rays that are about to be refracted back
 		// out of a medium and thus have their beta value increased.
-		Float etaScale = 1;
+		Float etaScale = 1.f;
 
 		for (bounces = 0;; ++bounces)
 		{
@@ -51,6 +51,8 @@ public:
 			bool foundIntersection = scene.intersect(ray, &isect);
 
 			// Possibly add emitted light at intersection
+			//中间交点的Le会被上一交点的直接光照计算包含在内（但specular项不计入），
+			//因而只需要计算最初交点的或最后一个含镜面brdf交点的$L_emit$
 			if (bounces == 0 || specularBounce)
 			{
 				// Add emitted light at path vertex or from the environment
@@ -63,7 +65,7 @@ public:
 				{
 					for (const auto &light : scene.infiniteLights)
 						L += beta * light->Le(ray);
-					//VLOG(2) << "Added infinite area lights -> L = " << L;
+					DVLOG(2) << "Added infinite area lights -> L = " << L;
 				}
 			}
 
@@ -74,7 +76,7 @@ public:
 			isect.compute_scattering(ray, TransportMode::Importance, true);
 			if (!isect.bsdf)
 			{
-				//VLOG(2) << "Skipping intersection due to null bsdf";
+				DVLOG(2) << "Skipping intersection due to null bsdf";
 				ray = isect.generate_ray(ray.d);
 				bounces--;
 				continue;
@@ -84,14 +86,15 @@ public:
 
 			// Sample illumination from lights to find path contribution.
 			// (But skip this for perfectly specular BSDFs.)
+			//如果只包含specular BSDF，则跳过
 			if (isect.bsdf->components_num(
 				BxDF_type(static_cast<int>(BxDF_type::All) & ~static_cast<int>(BxDF_type::Specular))) > 0)
 			{
 				Color Ld = beta * uniform_sample_one_light(isect, scene, //arena,
 					sampler, false, distrib);
-				//VLOG(2) << "Sampled direct lighting Ld = " << Ld;
+				DVLOG(2) << "Sampled direct lighting Ld = " << Ld;
 				//if (Ld.IsBlack()) ++zeroRadiancePaths;
-				//CHECK_GE(Ld.luminance(), 0.f);
+				CHECK_GE(Ld.luminance(), 0.f);
 				L += Ld;
 			}
 
@@ -101,12 +104,15 @@ public:
 			BxDF_type flags;
 			Color f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf,
 				BxDF_type::All, &flags);
-			//VLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
+			DVLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
 			if (f.is_black() || pdf == 0.f) break;
+			//更新throughput
 			beta *= f * AbsDot(wi, isect.shading.n) / pdf;
-			//VLOG(2) << "Updated beta = " << beta;
-			//CHECK_GE(beta.luminance(), 0.f);
-			//DCHECK(!std::isinf(beta.luminance()));
+
+			DVLOG(2) << "Updated beta = " << beta;
+			CHECK_GE(beta.luminance(), 0.f);
+			DCHECK(!std::isinf(beta.luminance()));
+
 			specularBounce = static_cast<int>(flags & BxDF_type::Specular) != 0;
 			if (static_cast<int>(flags & BxDF_type::Specular) && 
 				static_cast<int>(flags & BxDF_type::Transmission)) 
@@ -149,9 +155,10 @@ public:
 			// Possibly terminate the path with Russian roulette.
 			// Factor out radiance scaling due to refraction in rrBeta.
 			Color rrBeta = beta * etaScale;
+			//3次反射后开始考虑终止路径
 			if (rrBeta.max_value() < rrThreshold && bounces > 3)
 			{
-				Float q = std::max((Float).05, 1 - rrBeta.max_value());
+				Float q = std::max((Float).05, 1 - rrBeta.max_value());	//终止概率
 				if (sampler.get() < q) break;
 				beta /= 1 - q;
 				DCHECK(!std::isinf(beta.luminance()));

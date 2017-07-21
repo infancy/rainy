@@ -1,5 +1,4 @@
 #include"material/matte.h"
-#include"intersection.h"
 //#include"bsdf.h"
 #include"bsdf/lambertian.h"
 

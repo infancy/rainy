@@ -14,11 +14,14 @@ namespace valley
 class Sphere : public Shape
 {
 public:
-	Sphere(Transform* o2w,
-		bool reverseOrientation, Float radius)
-		: Shape(o2w, new Transform(o2w->GetInverseMatrix(), o2w->GetMatrix()), 
-			reverseOrientation),
-		radius(radius) {}
+	Sphere(Transform* o2w, bool reverseOrientation, Float radius) : 
+		Shape(o2w, new Transform(o2w->GetInverseMatrix(), o2w->GetMatrix()), 
+		reverseOrientation), radius(radius) {}
+	/*
+		thetaMin(std::acos(Clamp(std::min(zMin, zMax) / radius, -1, 1))),
+        thetaMax(std::acos(Clamp(std::max(zMin, zMax) / radius, -1, 1))),
+		phiMax(Radians(Clamp(phiMax, 0, 360))
+	*/
 
 	Bounds3f object_bound() const override;
 
@@ -29,7 +32,7 @@ public:
 
 	Isect sample(const Point2f &u, Float *pdf) const override;
 	Isect sample(const Isect& ref, const Point2f &u,
-		Float *pdf) const override;
+				 Float *pdf) const override;
 
 	Float pdf(const Isect& ref, const Vector3f &wi) const override;
 	Float solid_angle(const Point3f &p, int nSamples) const override;

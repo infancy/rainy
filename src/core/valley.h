@@ -104,7 +104,9 @@ class Visibility;
 class AreaLight;
 struct Distribution1D;
 class Distribution2D;
-class RNG;
+
+//用于确定路径是从相机还是光源开始的
+enum class TransportMode { Radiance, Importance };
 
 struct Options 
 {

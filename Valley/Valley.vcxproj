@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\bsdf\fresnel.cpp" />
     <ClCompile Include="..\src\bsdf\lambertian.cpp" />
     <ClCompile Include="..\src\core\api.cpp" />
     <ClCompile Include="..\src\core\bsdf.cpp" />
@@ -39,13 +40,17 @@
     <ClCompile Include="..\src\light\diffuse.cpp" />
     <ClCompile Include="..\src\light\distance.cpp" />
     <ClCompile Include="..\src\light\point.cpp" />
+    <ClCompile Include="..\src\material\glass.cpp" />
     <ClCompile Include="..\src\material\matte.cpp" />
+    <ClCompile Include="..\src\material\mirror.cpp" />
     <ClCompile Include="..\src\shape\Rectangle.cpp" />
     <ClCompile Include="..\src\shape\sphere.cpp" />
     <ClCompile Include="..\src\test\test_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\bsdf\fresnel.h" />
     <ClInclude Include="..\src\bsdf\lambertian.h" />
+    <ClInclude Include="..\src\bsdf\specular.h" />
     <ClInclude Include="..\src\camera\thinlens.h" />
     <ClInclude Include="..\src\core\api.h" />
     <ClInclude Include="..\src\core\bsdf.h" />
@@ -75,13 +80,15 @@
     <ClInclude Include="..\src\integrator\bdpt.h" />
     <ClInclude Include="..\src\integrator\eyelight.h" />
     <ClInclude Include="..\src\integrator\path.h" />
-    <ClInclude Include="..\src\integrator\raycast.h" />
+    <ClInclude Include="..\src\integrator\directlight.h" />
     <ClInclude Include="..\src\integrator\whitted.h" />
-    <ClInclude Include="..\src\integrator\test.h" />
     <ClInclude Include="..\src\light\diffuse.h" />
     <ClInclude Include="..\src\light\distance.h" />
     <ClInclude Include="..\src\light\point.h" />
+    <ClInclude Include="..\src\material\glass.h" />
     <ClInclude Include="..\src\material\matte.h" />
+    <ClInclude Include="..\src\material\mirror.h" />
+    <ClInclude Include="..\src\sampler\uniform.h" />
     <ClInclude Include="..\src\shape\Rectangle.h" />
     <ClInclude Include="..\src\shape\sphere.h" />
   </ItemGroup>

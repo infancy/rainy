@@ -37,7 +37,23 @@ public:
 
 //class ProjectiveCamera : public Camera
 
-
+/*								   |
+					    		  *|
+Image				       *   *   |
+|		  Lens      * |	   *	   |
+|           |*		  | *		   |
+|		  * |      *  |			   |
+|		*   |  *      |			   |
+|	  *    *|         |          Focal
+|	*   *   |         |   
+| *  *      |         |   
+|*	    	|		  |	
+| 		    		  |	
+				    View
+通过穿过透镜中心的中心光线确定位置，而后生成主光线进行着色
+虽然主光线可能未通过视平面的相应像素的位置，但这并没有关系
+当薄透镜的半径为 0 时，则透镜相机变成了针孔相机
+*/
 class Pinhole : public Camera	//PerspectiveCamera
 {
 public:
@@ -53,7 +69,7 @@ public:
 		Matrix4x4 c2w(right.x, upward.x, forward.x, eye.x,
 					  right.y, upward.y, forward.y, eye.y,
 					  right.z, upward.z, forward.z, eye.z,
-					0, 0, 0, 1);
+					  0, 0, 0, 1);
 		camera_to_world = c2w;
 
 		//车祸现场
@@ -69,8 +85,8 @@ public:
 	{
 		Point3f pFilm(sample.pFilm.x, sample.pFilm.y, 0);	
 		Point3f p(pixelSize * (pFilm.x - film->width / 2),		//dir - (0,0,0)
-					 pixelSize * (film->height / 2 - pFilm.y),
-					 imageDistance);
+				  pixelSize * (film->height / 2 - pFilm.y),
+			      imageDistance);
 
 		//Vector3f dir = forward * pCamera.z + right * pCamera.x + upward * pCamera.y;
 		p = camera_to_world(p);

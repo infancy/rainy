@@ -31,7 +31,7 @@ Color PointLight::sample_Le(const Point2f& u1, const Point2f& u2, Ray* ray,
 	*ray = Ray(pLight, uniform_sample_sphere(u1), Infinity /*mediumInterface.inside*/);
 	*nLight = (Normal3f)ray->d;
 	*pdfPos = 1;
-	*pdfDir = uniform_sphere_pdf();
+	*pdfDir = uniform_sphere_pdf();	//
 	return intensity;
 }
 

@@ -46,11 +46,11 @@ namespace valley
 
 //Utility Function
 //pbrt中以Z轴为垂直轴，而我以y轴为垂直轴
-//inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.z); }
-//inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.z * wp.z > 0; }
-//inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z * wp.z > 0; }
+//inline Float CosTheta(const Vector3f& w) { return w.z; }
 
+inline Float CosTheta(const Vector3f &w) { return w.y; }
 inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.y); }
+inline Float Cos2Theta(const Vector3f &w) { return w.y * w.y; }
 
 inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.y * wp.y > 0; }
 inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.y * wp.y > 0; }
@@ -161,13 +161,14 @@ inline void BSDF::add_BxDF(BxDF* b)
 
 inline Vector3f BSDF::world_to_local(const Vector3f &v) const
 {
-	return Vector3f(Dot(v, ss), Dot(v, ts), Dot(v, ns));
+	//return Vector3f(Dot(v, ss), Dot(v, ts), Dot(v, ns));
+	return Vector3f(Dot(v, ts), Dot(v, ns), Dot(v, ss));
 }
 inline Vector3f BSDF::local_to_world(const Vector3f &v) const
 {	
-	return Vector3f(ss.x * v.x + ts.x * v.y + ns.x * v.z,	//因为stn是正交矩阵，其逆矩阵即为转置矩阵
-					ss.y * v.x + ts.y * v.y + ns.y * v.z,
-					ss.z * v.x + ts.z * v.y + ns.z * v.z);
+	return Vector3f(ts.x * v.x + ns.x * v.y + ss.x * v.z,	//因为stn是正交矩阵，其逆矩阵即为转置矩阵
+					ts.y * v.x + ns.y * v.y + ss.y * v.z,
+					ts.z * v.x + ns.z * v.y + ss.z * v.z);
 }
 
 }	//namespace valley
