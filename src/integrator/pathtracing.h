@@ -12,10 +12,10 @@
 namespace valley
 {
 
-class Path : public SamplerIntegrator
+class PathTracing : public SamplerIntegrator
 {
 public:
-	Path(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,  int maxDepth = 3,
+	PathTracing(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,  int maxDepth = 3,
 		const Float rrThreshold = 1.f) :
 		SamplerIntegrator(camera, sampler, maxDepth), rrThreshold(rrThreshold){}
 
@@ -24,7 +24,7 @@ public:
 		lightDistribution = std::unique_ptr<LightDistribution>{new PowerDistribution(scene)};
 	}
 
-	Color Path::Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
+	Color Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
 	{
 		Color L(0.f), beta(1.f);	//beta为 path throughput 项
 		Ray ray(r);
@@ -86,7 +86,7 @@ public:
 
 			// Sample illumination from lights to find path contribution.
 			// (But skip this for perfectly specular BSDFs.)
-			//如果只包含specular BSDF，则跳过
+			//不能直接在镜面 BSDF上计算着色，跳过
 			if (isect.bsdf->components_num(
 				BxDF_type(static_cast<int>(BxDF_type::All) & ~static_cast<int>(BxDF_type::Specular))) > 0)
 			{
@@ -159,7 +159,7 @@ public:
 			if (rrBeta.max_value() < rrThreshold && bounces > 3)
 			{
 				Float q = std::max((Float).05, 1 - rrBeta.max_value());	//终止概率
-				if (sampler.get() < q) break;
+				if (sampler.get_1D() < q) break;
 				beta /= 1 - q;
 				DCHECK(!std::isinf(beta.luminance()));
 			}

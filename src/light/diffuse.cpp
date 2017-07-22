@@ -74,14 +74,14 @@ Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
 		{
 			u[0] = std::min((u[0] - .5f) * 2, OneMinusEpsilon);
 			w = cosine_sample_hemisphere(u);
-			w.z *= -1;
+			w.y *= -1;
 		}
-		*pdfDir = 0.5f * cosine_hemisphere_pdf(std::abs(w.z));
+		*pdfDir = 0.5f * cosine_hemisphere_pdf(std::abs(w.y));
 	}
 	else 
 	{
 		w = cosine_sample_hemisphere(u2);
-		*pdfDir = cosine_hemisphere_pdf(w.z);
+		*pdfDir = cosine_hemisphere_pdf(w.y);
 	}
 
 	Vector3f z, x, y(pShape.n);

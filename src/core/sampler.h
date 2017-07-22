@@ -20,7 +20,7 @@ public:
 		samplesPerPixel(samplesPerPixel) {}
 	~Sampler(){}
 
-	virtual Float   get() = 0;
+	virtual Float   get_1D() = 0;
 	virtual Point2f get_2D() = 0;
 
 	CameraSample get_CameraSample(int x, int y);
@@ -60,7 +60,7 @@ public:
 	PixelSampler(int64_t samplesPerPixel, int seed = 1234, int nSampledDimensions = 83);
 	~PixelSampler() {}
 
-	virtual Float get() override;
+	virtual Float   get_1D() override;
 	virtual Point2f get_2D() override;
 
 	//void start_pixel(const Point2i& p) 由子类实现，在其中完成初始化采样数组的工作
@@ -82,7 +82,7 @@ public:
 	GlobalSampler(int64_t samplesPerPixel) : Sampler(samplesPerPixel) {}
 	~GlobalSampler() {}
 
-	virtual Float get() override;
+	virtual Float   get_1D() override;
 	virtual Point2f get_2D() override;
 
 	//virtual void start_pixel(const Point2i& p);

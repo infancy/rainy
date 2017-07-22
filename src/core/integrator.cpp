@@ -37,12 +37,12 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 	if (lightDistrib)
 	{
 		//随机选取一个light
-		lightNum = lightDistrib->sample_discrete(sampler.get(), &lightPdf);
+		lightNum = lightDistrib->sample_discrete(sampler.get_1D(), &lightPdf);
 		if (lightPdf == 0) return Color(0.f);
 	}
 	else
 	{
-		lightNum = std::min((int)(sampler.get() * nLights), nLights - 1);
+		lightNum = std::min((int)(sampler.get_1D() * nLights), nLights - 1);
 		lightPdf = Float(1) / nLights;
 	}
 	const std::shared_ptr<Light> &light = scene.lights[lightNum];
@@ -67,6 +67,7 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 //当光源较小而bsdf呈漫反射分布时从光源采样更高效
 //因而使用MIS分别对light和brdf进行采样
 //在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=MIS(Le, Li)
+//默认不计算镜面BSDF项
 Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)

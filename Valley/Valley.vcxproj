@@ -79,7 +79,8 @@
     <ClInclude Include="..\src\core\valley.h" />
     <ClInclude Include="..\src\integrator\bdpt.h" />
     <ClInclude Include="..\src\integrator\eyelight.h" />
-    <ClInclude Include="..\src\integrator\path.h" />
+    <ClInclude Include="..\src\integrator\lightracing.h" />
+    <ClInclude Include="..\src\integrator\pathtracing.h" />
     <ClInclude Include="..\src\integrator\directlight.h" />
     <ClInclude Include="..\src\integrator\whitted.h" />
     <ClInclude Include="..\src\light\diffuse.h" />

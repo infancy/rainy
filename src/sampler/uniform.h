@@ -19,7 +19,7 @@ public:
 		Sampler(samplesPerPixel), rng(seed) {}
 	~UniformSampler() {}
 
-	Float   get() { return rng.get(); }
+	Float   get_1D() { return rng.get_1D(); }
 	Point2f get_2D() { return rng.get_2D(); }
 
 	/*

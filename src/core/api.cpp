@@ -48,7 +48,7 @@ Integrator* valley_create_integrator()
 
 	//选择策略
 	//return  make_shared<Integrator>(new RayCast(camera, sampler, 1));
-	return new Path(camera, sampler);
+	return new PathTracing(camera, sampler);
 }
 //valley_CornellBox_scene
 shared_ptr<Scene> valley_create_scene()
@@ -67,14 +67,14 @@ shared_ptr<Scene> valley_create_scene()
 	auto blue_kd(make_shared<ConstantTexture<Color>>(Color{ 0.156863f, 0.172549f, 0.803922f }));
 	auto blue_mat(make_shared<Matte>(blue_kd, sigma));
 
-	auto white_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f, 0.803922f, 0.803922f }));
+	auto white_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f }));
 	auto white_mat(make_shared<Matte>(white_kd, sigma));
 
 	//mirror material
-	auto mirror_ball_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f, 0.803922f, 0.803922f }));
+	auto mirror_ball_kd(make_shared<ConstantTexture<Color>>(Color{ 1.f }));
 	auto mirror_ball(make_shared<MirrorMaterial>(mirror_ball_kd));
 
-	auto mirror_wall_kd(make_shared<ConstantTexture<Color>>(Color{ 0.603922f, 0.603922f, 0.603922f }));
+	auto mirror_wall_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f }));
 	auto mirror_wall(make_shared<MirrorMaterial>(mirror_wall_kd));
 
 	//glossy material
@@ -84,8 +84,8 @@ shared_ptr<Scene> valley_create_scene()
 
 	//ball
 	//auto ball = make_shared<Sphere>(o2w, w2o, reverseOrientation, radius, zmin, zmax, phimax);
-	Transform* m(new Transform(Translate(Vector3f(0, -20, 0))));
-	shared_ptr<Sphere> ball{ new Sphere(m, false, 30.f) };
+	Transform* m_ball(new Transform(Translate(Vector3f(0, -20, 0))));
+	shared_ptr<Sphere> ball{ new Sphere(m_ball, false, 30.f) };
 
 	//wall-back
 	Transform* m_back(new Transform(Translate(Vector3f(0, 0, 50))*Rotate(-90, Vector3f(1, 0, 0))));
@@ -128,10 +128,10 @@ shared_ptr<Scene> valley_create_scene()
 
 	//Arealight
 	Transform* ml_up(new Transform(Translate(Vector3f(0, 49.99, 0))));
-	Transform ml_upp(Transform(Translate(Vector3f(0, 49.99, 30))));
+	Transform ml_upp(Transform(Translate(Vector3f(0, 49.99, 0))));
 	shared_ptr<Shape> light_up{ new Rectangle(ml_up, true, 30, 30) };
 	//区域光必须进行多次采样
-	shared_ptr<AreaLight> area_light{ new DiffuseAreaLight(ml_upp, Color(15), 4, light_up) };
+	shared_ptr<AreaLight> area_light{ new DiffuseAreaLight(ml_upp, Color(40), 4, light_up) };
 
 	//带区域光源的 shape ： L = Le（area） + Li(material->brdf),两者是不关联的
 	primitive.push_back(make_unique<GeometricPrimitive>(light_up, white_mat, area_light));

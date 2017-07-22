@@ -55,7 +55,7 @@ public:
 	}
 
 public:
-	uint32_t maxDepth;
+	int maxDepth;
 
 	std::shared_ptr<Sampler> sampler;
 	std::shared_ptr<Camera> camera;
@@ -65,7 +65,7 @@ class SamplerIntegrator : public Integrator
 {
 public:
 	SamplerIntegrator(std::shared_ptr<Camera> camera,  std::shared_ptr<Sampler> sampler,
-			   uint32_t maxDepth) : Integrator(camera, sampler, maxDepth) {}
+			   int maxDepth) : Integrator(camera, sampler, maxDepth) {}
 	virtual ~SamplerIntegrator() {}
 
 	virtual void render(const Scene& scene) override;

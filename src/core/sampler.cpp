@@ -51,13 +51,13 @@ PixelSampler::PixelSampler(int64_t samplesPerPixel, int seed, int nSampledDimens
 	}
 }
 
-Float PixelSampler::get()
+Float PixelSampler::get_1D()
 {
 	CHECK_LT(currentPixel_SampleIndex, samplesPerPixel);
 	if (current_ArrayOffset_1D < sampleArray_1D.size())
 		return sampleArray_1D[current_ArrayOffset_1D++][currentPixel_SampleIndex];
 	else
-		return rng.get();
+		return rng.get_1D();
 }
 
 Point2f PixelSampler::get_2D()
@@ -84,7 +84,7 @@ bool PixelSampler::set_SampleIndex(int64_t sampleNum)
 
 // GlobalSampler Method Definitions
 
-Float GlobalSampler::get()
+Float GlobalSampler::get_1D()
 {
 	if (dimension >= arrayStartDim && dimension < arrayEndDim)
 		dimension = arrayEndDim;

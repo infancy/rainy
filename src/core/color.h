@@ -107,8 +107,10 @@ inline Color operator*(U s, const Color& v)
 inline Color operator*(const float f, const Color& c) { return c.operator*(f); }
 
 //template <typename T>
-inline std::ostream &operator<<(std::ostream &os, const Color& c) {
-	os << "[ " << c.r << ", " << c.g << c.b << " ]";
+inline std::ostream &operator<<(std::ostream &os, const Color& c) 
+{
+	os.precision(4);	//两位精度
+	os << "[ " << c.r << ", " << c.g << ", " << c.b << " ]";
 	return os;
 }
 

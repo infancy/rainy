@@ -91,6 +91,7 @@ public:
 							Vector3f* wi, Float* pdf, Visibility* vis) const = 0;
 
 	//pdf of position、pdf of direction
+	//在光源上取一点 pos，在 pos 上取一个方向 dir，生成 ray
 	virtual Color sample_Le(const Point2f& u1, const Point2f& u2,  Ray* ray, 
 							Normal3f* nLight, Float* pdfPos, Float* pdfDir) const = 0;
 

@@ -31,9 +31,9 @@ public:
 
 	int      get_int()  { return int_distr(mRng); }	    //(0, 2^21)
 	uint32_t get_uint() { return uint_distr(mRng); }	//(0, 2^32)
-	Float    get()      { return Float_distr(mRng); }	//(0.F, 1.F)
 
-	Point2f get_2D() { return Point2f(get(), get()); }
+	Float    get_1D() { return Float_distr(mRng); }	//(0.F, 1.F)
+	Point2f  get_2D() { return Point2f(get_1D(), get_1D()); }
 	//Point3f get_3D() { return Point3f(get(), get(), get()); }
 
 private:

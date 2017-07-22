@@ -25,8 +25,8 @@ Point2f concentric_sample_disk(const Point2f &u);
 inline Vector3f cosine_sample_hemisphere(const Point2f &u)
 {
 	Point2f d = concentric_sample_disk(u);
-	Float z = std::sqrt(std::max((Float)0, 1 - d.x * d.x - d.y * d.y));
-	return Vector3f(d.x, d.y, z);
+	Float y = std::sqrt(std::max((Float)0, 1 - d.x * d.x - d.y * d.y));
+	return Vector3f(d.y, y, d.x);	//(z,x)->(x,y,z)
 }
 inline Float    cosine_hemisphere_pdf(Float cosTheta) { return cosTheta * InvPi; }
 

@@ -16,7 +16,7 @@
 #include"texture.h"
 
 #include"integrator/eyelight.h"
-#include"integrator/path.h"
+#include"integrator/pathtracing.h"
 #include"integrator/directlight.h"
 //#include"integrator/test.h"
 #include"light/diffuse.h"
