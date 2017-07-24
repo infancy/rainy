@@ -51,7 +51,7 @@ Float DiffuseAreaLight::pdf_Li(const Isect&ref, const Vector3f &wi) const
 }
 
 Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
-	Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const 
+	Ray *ray, Normal3f *nLight, Float *pdfPos, Float *pdfDir) const
 {
 	// Sample a point on the area light's _Shape_, _pShape_
 	Isect pShape = shape->sample(u1, pdfPos);
@@ -60,34 +60,29 @@ Color DiffuseAreaLight::sample_Le(const Point2f &u1, const Point2f &u2,
 
 	// Sample a cosine-weighted outgoing direction _w_ for area light
 	Vector3f w;
-	if (twoSided) 
-	{
+	if (twoSided) {
 		Point2f u = u2;
 		// Choose a side to sample and then remap u[0] to [0,1] before
 		// applying cosine-weighted hemisphere sampling for the chosen side.
-		if (u[0] < .5) 
-		{
+		if (u[0] < .5) {
 			u[0] = std::min(u[0] * 2, OneMinusEpsilon);
 			w = cosine_sample_hemisphere(u);
 		}
-		else 
-		{
+		else {
 			u[0] = std::min((u[0] - .5f) * 2, OneMinusEpsilon);
 			w = cosine_sample_hemisphere(u);
-			w.y *= -1;
+			w.z *= -1;
 		}
-		*pdfDir = 0.5f * cosine_hemisphere_pdf(std::abs(w.y));
+		*pdfDir = 0.5f * cosine_hemisphere_pdf(std::abs(w.z));
 	}
-	else 
-	{
+	else {
 		w = cosine_sample_hemisphere(u2);
-		*pdfDir = cosine_hemisphere_pdf(w.y);
+		*pdfDir = cosine_hemisphere_pdf(w.z);
 	}
 
-	Vector3f z, x, y(pShape.n);
-	CoordinateSystem(y, &z, &x);
-	//w = w.x * v1 + w.y * v2 + w.z * n;
-	w = w.x * x + w.y * y + w.z * z;
+	Vector3f v1, v2, n(pShape.n);
+	CoordinateSystem(n, &v1, &v2);
+	w = w.x * v1 + w.y * v2 + w.z * n;
 	*ray = pShape.generate_ray(w);
 	return L(pShape, w);
 }

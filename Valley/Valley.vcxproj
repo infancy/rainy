@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\bsdf\fresnel.cpp" />
     <ClCompile Include="..\src\bsdf\lambertian.cpp" />
+    <ClCompile Include="..\src\camera\perspective.cpp" />
     <ClCompile Include="..\src\core\api.cpp" />
     <ClCompile Include="..\src\core\bsdf.cpp" />
     <ClCompile Include="..\src\core\film.cpp" />
@@ -51,7 +52,7 @@
     <ClInclude Include="..\src\bsdf\fresnel.h" />
     <ClInclude Include="..\src\bsdf\lambertian.h" />
     <ClInclude Include="..\src\bsdf\specular.h" />
-    <ClInclude Include="..\src\camera\thinlens.h" />
+    <ClInclude Include="..\src\camera\perspective.h" />
     <ClInclude Include="..\src\core\api.h" />
     <ClInclude Include="..\src\core\bsdf.h" />
     <ClInclude Include="..\src\core\camera.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="..\src\material\glass.h" />
     <ClInclude Include="..\src\material\matte.h" />
     <ClInclude Include="..\src\material\mirror.h" />
+    <ClInclude Include="..\src\sampler\random.h" />
     <ClInclude Include="..\src\sampler\uniform.h" />
     <ClInclude Include="..\src\shape\Rectangle.h" />
     <ClInclude Include="..\src\shape\sphere.h" />

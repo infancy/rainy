@@ -138,10 +138,11 @@ class Transform {
     Transform(const Matrix4x4 &m) : m(m), mInv(Inverse(m)) {}
     Transform(const Matrix4x4 &m, const Matrix4x4 &mInv) : m(m), mInv(mInv) {}
 
-	Transform& operator=(const Matrix4x4& mat)
+	Transform& operator=(const Transform& t)
 	{
-		m = mat;
-		mInv = Inverse(mat);
+		if (this == &t) return *this;
+		m = t.m;
+		mInv = t.mInv;
 		return *this;
 	}
 

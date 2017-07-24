@@ -46,7 +46,7 @@ Color BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 	// Cosine-sample the hemisphere, flipping the direction if necessary
 	*wi = cosine_sample_hemisphere(u);
 	//if (wo.z < 0) wi->z *= -1;
-	if (wo.y < 0) wi->y *= -1;
+	if (wo.z < 0) wi->z *= -1;
 	*Pdf = pdf(wo, *wi);
 	return f(wo, *wi);
 }
@@ -90,10 +90,10 @@ Float BxDF::pdf(const Vector3f &wo, const Vector3f &wi) const
 
 BSDF::BSDF(const SurfaceIsect& si, Float eta) :
 	eta(eta),
-	ns(si.shading.n),	//y轴
+	ns(si.shading.n),	//z轴
 	ng(si.n),
-	ss(Normalize(si.shading.dpdu)),	//z轴
-	ts(Cross(ns, ss)) {}	//x轴
+	ss(Normalize(si.shading.dpdu)),	//x轴
+	ts(Cross(ns, ss)) {}	//y轴
 
 int BSDF::components_num(BxDF_type flags) const
 {
@@ -107,7 +107,7 @@ Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 				BxDF_type flags) const 
 {
 	Vector3f wi = world_to_local(wiW), wo = world_to_local(woW);
-	if (wo.y == 0.f) return 0.f;
+	if (wo.z == 0.f) return 0.f;
 
 	bool reflect = Dot(wiW, ng) * Dot(woW, ng) > 0;	//处理着色法线的缺陷
 	Color f(0.f);
@@ -158,7 +158,7 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 
 	// Sample chosen _BxDF_
 	Vector3f wi, wo = world_to_local(woWorld);
-	if (wo.y == 0.f) return 0.f;
+	if (wo.z == 0.f) return 0.f;
 	*pdf = 0;
 	if (sampledType) *sampledType = bxdf->type;
 
@@ -226,7 +226,7 @@ Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
 {
 	if (nBxDFs == 0) return 0.f;
 	Vector3f wo = world_to_local(woWorld), wi = world_to_local(wiWorld);
-	if (wo.y == 0) return 0.;
+	if (wo.z == 0) return 0.;
 	Float pdf = 0.f;
 	int matchingComps = 0;
 	for (int i = 0; i < nBxDFs; ++i)

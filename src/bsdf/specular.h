@@ -45,8 +45,7 @@ public:
 				   Float *pdf, BxDF_type *sampledType) const
 	{
 		// Compute perfect specular reflection direction
-		//*wi = Vector3f(-wo.x, -wo.y, wo.z);
-		*wi = Vector3f(-wo.x, wo.y, -wo.z);
+		*wi = Vector3f(-wo.x, -wo.y, wo.z);
 		*pdf = 1;
 
 		return fresnel->evaluate(CosTheta(*wi)) * R / AbsCosTheta(*wi);
@@ -82,7 +81,7 @@ public:
 		Float etaT = entering ? etaB : etaA;
 
 		// Compute ray direction for specular transmission
-		if (!Refract(wo, Faceforward(Normal3f(0, 1, 0), wo), etaI / etaT, wi))
+		if (!Refract(wo, Faceforward(Normal3f(0, 0, 1), wo), etaI / etaT, wi))
 			return 0;
 		*pdf = 1;
 		Color ft = T * (Color(1.) - fresnel.evaluate(CosTheta(*wi)));
@@ -122,7 +121,7 @@ public:
 			// Compute specular reflection for _FresnelSpecular_
 
 			// Compute perfect specular reflection direction
-			*wi = Vector3f(-wo.x, wo.y, -wo.z);
+			*wi = Vector3f(-wo.x, -wo.y, wo.z);
 			if (sampledType)
 				*sampledType = BxDF_type::Specular | BxDF_type::Reflection;
 			*pdf = F;
@@ -138,7 +137,7 @@ public:
 			Float etaT = entering ? etaB : etaA;
 
 			// Compute ray direction for specular transmission
-			if (!Refract(wo, Faceforward(Normal3f(0, 1, 0), wo), etaI / etaT, wi))
+			if (!Refract(wo, Faceforward(Normal3f(0, 0, 1), wo), etaI / etaT, wi))
 				return 0;
 			Color ft = T * (1 - F);
 

@@ -104,17 +104,16 @@ Float Shape::pdf(const Isect &ref, const Vector3f &wi) const
 
 Float Shape::solid_angle(const Point3f &p, int nSamples) const
 {
-	//Isect ref(p, Normal3f(), Vector3f(), Vector3f(0, 0, 1));
-	Isect ref(p, Normal3f(), Vector3f(), Vector3f(0, 1, 0));
+	Isect ref(p, Normal3f(), Vector3f(), Vector3f(0, 0, 1));
 	double solidAngle = 0;
 
-	for (int i = 0; i < nSamples; ++i) 
+	for (int i = 0; i < nSamples; ++i)
 	{
 		//Point2f u{ RadicalInverse(0, i), RadicalInverse(1, i) };
-		Point2f u{0.f, 1.f};
+		Point2f u{ 0, 1 };
 		Float pdf;
 		Isect pShape = sample(ref, u, &pdf);
-		if (pdf > 0 && !intersectP(Ray(p, pShape.p - p, .999f))) 
+		if (pdf > 0 && !intersectP(Ray(p, pShape.p - p, .999f)))
 		{
 			solidAngle += 1 / pdf;
 		}

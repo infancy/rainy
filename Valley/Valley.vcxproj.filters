@@ -111,6 +111,9 @@
     <ClCompile Include="..\src\bsdf\fresnel.cpp">
       <Filter>bsdf</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\camera\perspective.cpp">
+      <Filter>camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\platform.h">
@@ -218,9 +221,6 @@
     <ClInclude Include="..\src\integrator\eyelight.h">
       <Filter>integrator</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\camera\thinlens.h">
-      <Filter>camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\bsdf\specular.h">
       <Filter>bsdf</Filter>
     </ClInclude>
@@ -244,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="..\src\integrator\pathtracing.h">
       <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sampler\random.h">
+      <Filter>sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\camera\perspective.h">
+      <Filter>camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

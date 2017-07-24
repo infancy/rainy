@@ -15,12 +15,12 @@ namespace valley
 class UniformSampler : public Sampler
 {
 public:
-	UniformSampler(int64_t samplesPerPixel = 16, int seed = 1234) :
-		Sampler(samplesPerPixel), rng(seed) {}
+	UniformSampler(int64_t samplesPerPixel = 16) :
+		Sampler(samplesPerPixel){}
 	~UniformSampler() {}
 
-	Float   get_1D() { return rng.get_1D(); }
-	Point2f get_2D() { return rng.get_2D(); }
+	Float   get_1D() { return 0.5; }
+	Point2f get_2D() { return Point2f(0.5, 0.5); }
 
 	/*
 	virtual void start_pixel(const Point2i& p)
@@ -39,11 +39,8 @@ public:
 
 	virtual std::unique_ptr<Sampler> clone(int seed)
 	{
-		return std::make_unique<UniformSampler>(samplesPerPixel, seed);
+		return std::make_unique<UniformSampler>(samplesPerPixel);
 	}
-
-public:
-	RNG rng;
 };
 
 }	//namespace valley

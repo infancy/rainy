@@ -28,19 +28,18 @@ struct Pixel
 	|
 	|	film 的坐标系
 	|	
-	|
+	|           .(x,y)
   y 方向
 */
 
 class Film	
 {
 public:
-	Film(int width = 800, int height = 600, Float resolution = 1.f, Filter* filter = nullptr, 
+	Film(int width = 800, int height = 600, Filter* filter = nullptr, 
 		 const std::string& filename = std::string("C:\\Users\\wyh32\\Desktop\\valley\\"),
 		 bool save_type = false) 
 		: width(width), height(height), 
 		bounds(Point2i(0, 0), Point2i(width, height)),
-		resolution(resolution), 
 		pixels(new Pixel[width * height]),
 		filter(filter), FilterRadius(filter->radius), 
 		invFilterRadius(1. / FilterRadius.x, 1. / FilterRadius.y),
@@ -76,6 +75,14 @@ public:
 	{
 		for (int i = 0; i < width * height; ++i)
 			pixels[i].c *= factor;
+	}
+
+	Bounds2i get_sample_bounds() const 
+	{
+		Bounds2f floatBounds(
+			Floor(Point2f(bounds.pMin) + Vector2f(0.5f, 0.5f) - filter->radius),
+			 Ceil(Point2f(bounds.pMax) - Vector2f(0.5f, 0.5f) + filter->radius));
+		return (Bounds2i)floatBounds;
 	}
 
 	void add(const Point2f& pFilm, Color& L, Float sampleWeight = 1.0)
@@ -159,7 +166,7 @@ public:
 public:
 	int width, height;
 	Bounds2i bounds;
-	Float resolution;	//分辨率为单位面积的上的像素数量
+	//Float resolution; 分辨率为单位面积的上的像素数量
 
 private:
 	std::unique_ptr<Pixel[]> pixels;

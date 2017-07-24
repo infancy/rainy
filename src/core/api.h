@@ -15,6 +15,7 @@
 #include"scene.h"
 #include"texture.h"
 
+#include"camera/perspective.h"
 #include"integrator/eyelight.h"
 #include"integrator/pathtracing.h"
 #include"integrator/directlight.h"
@@ -25,6 +26,7 @@
 #include"material/glass.h"
 #include"material/matte.h"
 #include"material/mirror.h"
+#include"sampler/random.h"
 #include"sampler/uniform.h"
 #include"shape/sphere.h"
 #include"shape/Rectangle.h"
@@ -42,7 +44,7 @@ enum class Intetrator_type
 void valley_render();
 
 
-shared_ptr<Scene>      valley_create_scene();
+shared_ptr<Scene> valley_create_scene();
 
 Integrator* valley_create_integrator();
 

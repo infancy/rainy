@@ -15,10 +15,10 @@ class Rectangle : public Shape
 {
 public:
 	Rectangle(Transform* o2w,
-		bool reverseOrientation, Float Zaxis, Float Xaxis) : 
+		bool reverseOrientation, Float Xaxis, Float Yaxis) : 
 		Shape(o2w, new Transform(o2w->GetInverseMatrix(), o2w->GetMatrix()), 
-		reverseOrientation), point(-Xaxis / 2.f, 0, -Zaxis / 2.f), 
-		first(0, 0, Zaxis), second(Xaxis, 0, 0),
+		reverseOrientation), point(-Xaxis / 2.f, -Yaxis / 2.f, 0), 
+		first(Xaxis, 0, 0), second(0, Yaxis, 0),
 		normal(Normalize(Cross(first, second))) {}	//我们现在在左手系中
 
 	Bounds3f object_bound() const;
@@ -30,10 +30,6 @@ public:
 	Float area() const;
 
 	Isect sample(const Point2f &u, Float *pdf) const;
-	//Isect sample(const Isect& ref, const Point2f &u, Float *pdf) const;
-
-	//Float pdf(const Isect& ref, const Vector3f &wi) const;
-	//Float solid_angle(const Point3f &p, int nSamples) const;
 
 private:
 	Point3f 		point; //可以通过变换矩阵来定义位置，但point不是多余的

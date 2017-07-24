@@ -62,7 +62,7 @@ public:
 			else
 				L += uniform_sample_one_light(isect, scene, sampler);
 		}
-
+		//在直接光照中计算镜面反射或折射
 		if (depth + 1 < maxDepth)
 		{
 			Vector3f wi;

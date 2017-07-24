@@ -47,7 +47,7 @@ bool Rectangle::intersect(const Ray &r, SurfaceIsect* isect
 	Float u = d * first / first.Length();
 	Float v = d * second / second.Length();
 	
-	Vector3f dpdu(0, 0, first.Length()), dpdv(second.Length(), 0, 0);
+	Vector3f dpdu(first.Length(), 0, 0), dpdv(0, second.Length(), 0);
 	Normal3f dndu(0, 0, 0), dndv(0, 0, 0);
 
 	Vector3f pError(0, 0, 0);
@@ -101,10 +101,10 @@ Float Rectangle::area() const { return first.Length() * second.Length(); }
 Isect Rectangle::sample(const Point2f &u, Float *pdf) const
 {
 	//Point3f pObj(u.x * first.Length(), u.y * second.Length(), 0);
-	Point3f pObj = Point3f(u.y * second.Length(), 0, u.x * first.Length()) + point;
+	Point3f pObj = Point3f(u.x * first.Length(), u.y * second.Length(), 0) + point;
 	Isect it;
 	//it.n = Normalize((*ObjectToWorld)(Normal3f(0, 0, 1)));
-	it.n = Normalize((*ObjectToWorld)(Normal3f(0, 1, 0)));
+	it.n = Normalize((*ObjectToWorld)(Normal3f(0, 0, 1)));
 	if (reverseOrientation) it.n *= -1;
 	it.p = (*ObjectToWorld)(pObj, Vector3f(0, 0, 0), &it.pError);
 	*pdf = 1 / area();

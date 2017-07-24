@@ -51,6 +51,12 @@ public:
 		return std::isnan(r) || std::isnan(g) || std::isnan(b) || std::isnan(a);
 	}
 
+	const Color& operator[](int i) const
+	{
+		DCHECK(i == 0 || i == 1 || i == 2);
+		return (i == 0) ? r : ((i == 1) ? g : b);
+	}
+
 	bool is_black() const { return r == 0.f && g == 0.f && b == 0.f; }
 	Float max_value() const { return std::max(std::max(r, g), b); }
 	float luminance() const { return r * 0.212671f + g * 0.715160f + b * 0.072169f; }

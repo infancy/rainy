@@ -1039,9 +1039,9 @@ template <typename T>
 Vector3<T> Permute(const Vector3<T> &v, int x, int y, int z) {
     return Vector3<T>(v[x], v[y], v[z]);
 }
-/*
+
 template <typename T>
-inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,
+inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,	//v1->zÖá/·¨Ïß,v2->x,v3->y
                              Vector3<T> *v3) {
     if (std::abs(v1.x) > std::abs(v1.y))
         *v2 = Vector3<T>(-v1.z, 0, v1.x) / std::sqrt(v1.x * v1.x + v1.z * v1.z);
@@ -1049,7 +1049,7 @@ inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,
         *v2 = Vector3<T>(0, v1.z, -v1.y) / std::sqrt(v1.y * v1.y + v1.z * v1.z);
     *v3 = Cross(v1, *v2);
 }
-*/
+/*
 template <typename T>
 inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,	//v1->y,v2->z,v3->x
 	Vector3<T> *v3) {
@@ -1059,7 +1059,7 @@ inline void CoordinateSystem(const Vector3<T> &v1, Vector3<T> *v2,	//v1->y,v2->z
 		*v2 = Vector3<T>(0, -v1.z, v1.y) / std::sqrt(v1.z * v1.z + v1.y * v1.y);
 	*v3 = Cross(v1, *v2);
 }
-
+*/
 template <typename T>
 Vector2<T>::Vector2(const Point2<T> &p)
     : x(p.x), y(p.y) {
