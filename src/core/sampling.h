@@ -60,20 +60,19 @@ public:
 		else
 			for (int i = 1; i < n + 1; ++i)
 				cdf[i] /= funcInt;
-		/*
+
+		/*简明易懂版
 		cdf[0] = 0;
 		for (int i = 1; i < n + 1; ++i)
-		cdf[i] = cdf[i - 1] + func[i - 1];
+			cdf[i] = cdf[i - 1] + func[i - 1];
 
-		// Transform step function integral into CDF
 		total_power = cdf[n];
-		if (funcInt == 0)
-		for (int i = 1; i < n + 1; ++i)
-		cdf[i] = Float(i) / Float(n);
+		if (total_power == 0)
+			for (int i = 1; i < n + 1; ++i)
+				cdf[i] = Float(i) / Float(n);
 		else
-		for (int i = 1; i < n + 1; ++i)
-		cdf[i] /= total_power;
-		//cdf[i] from 0 to 1
+			for (int i = 1; i < n + 1; ++i)
+				cdf[i] /= total_power;
 		*/
 	}
 
@@ -104,7 +103,7 @@ public:
 
 		// Return $x\in{}[0,1)$ corresponding to sample
 		//返回值$x_i$属于[0,1]
-		return (offset + du) / count();
+		return (offset + du) / count();	
 	}
 
 	//返回第i个light及其light_power / total_power

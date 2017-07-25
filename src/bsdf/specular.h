@@ -35,13 +35,13 @@ inline bool Refract(const Vector3f &wi, const Normal3f &n, Float eta, Vector3f *
 class SpecularReflection : public BxDF 
 {
 public:
-	SpecularReflection(const Color &R, Fresnel *fresnel)
+	SpecularReflection(const Spectrum &R, Fresnel *fresnel)
 		: BxDF(BxDF_type::Reflection | BxDF_type::Specular),
 		R(R), fresnel(fresnel) {}
 
-	Color f(const Vector3f &wo, const Vector3f &wi) const { return Color(0.f); }
+	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
-	Color sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
+	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
 				   Float *pdf, BxDF_type *sampledType) const
 	{
 		// Compute perfect specular reflection direction
@@ -57,22 +57,22 @@ public:
 	//std::string ToString() const;
 
 private:
-	const Color R;
+	const Spectrum R;
 	const Fresnel* fresnel;
 };
 
 class SpecularTransmission : public BxDF 
 {
 public:
-	SpecularTransmission(const Color &T, Float etaA, Float etaB,
+	SpecularTransmission(const Spectrum &T, Float etaA, Float etaB,
 		TransportMode mode)
 		: BxDF(BxDF_type(BxDF_type::Transmission| BxDF_type::Specular)),
 		T(T), etaA(etaA), etaB(etaB),
 		fresnel(etaA, etaB), mode(mode) {}
 
-	Color f(const Vector3f &wo, const Vector3f &wi) const { return Color(0.f); }
+	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
-	Color sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
+	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
 		Float *pdf, BxDF_type *sampledType) const
 	{
 		// Figure out which $\eta$ is incident and which is transmitted
@@ -84,7 +84,7 @@ public:
 		if (!Refract(wo, Faceforward(Normal3f(0, 0, 1), wo), etaI / etaT, wi))
 			return 0;
 		*pdf = 1;
-		Color ft = T * (Color(1.) - fresnel.evaluate(CosTheta(*wi)));
+		Spectrum ft = T * (Spectrum(1.) - fresnel.evaluate(CosTheta(*wi)));
 		// Account for non-symmetry with transmission to different medium
 		if (mode == TransportMode::Radiance) ft *= (etaI * etaI) / (etaT * etaT);
 		return ft / AbsCosTheta(*wi);
@@ -95,7 +95,7 @@ public:
 	//std::string ToString() const;
 
 private:
-	const Color T;
+	const Spectrum T;
 	const Float etaA, etaB;
 	const FresnelDielectric fresnel;
 	const TransportMode mode;
@@ -104,14 +104,14 @@ private:
 class FresnelSpecular : public BxDF
 {
 public:
-	FresnelSpecular(const Color &R, const Color &T, Float etaA,
+	FresnelSpecular(const Spectrum &R, const Spectrum &T, Float etaA,
 		Float etaB, TransportMode mode)
 		: BxDF(BxDF_type(BxDF_type::Reflection | BxDF_type::Transmission | BxDF_type::Specular)),
 		R(R), T(T), etaA(etaA), etaB(etaB), mode(mode) {}
 
-	Color f(const Vector3f &wo, const Vector3f &wi) const { return Color(0.f); }
+	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
-	Color sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
+	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
 		Float *pdf, BxDF_type *sampledType) const
 	{
 		//根据反射率来确定是计算反射还是折射
@@ -139,7 +139,7 @@ public:
 			// Compute ray direction for specular transmission
 			if (!Refract(wo, Faceforward(Normal3f(0, 0, 1), wo), etaI / etaT, wi))
 				return 0;
-			Color ft = T * (1 - F);
+			Spectrum ft = T * (1 - F);
 
 			// Account for non-symmetry with transmission to different medium
 			if (mode == TransportMode::Radiance)
@@ -156,7 +156,7 @@ public:
 	//std::string ToString() const;
 
 private:
-	const Color R, T;
+	const Spectrum R, T;
 	const Float etaA, etaB;
 	const TransportMode mode;
 };

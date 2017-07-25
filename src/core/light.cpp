@@ -1,6 +1,6 @@
 #include"light.h"
-#include"intersection.h"
-#include"color.h"
+#include"interaction.h"
+#include"spectrum.h"
 #include"scene.h"
 
 namespace valley
@@ -23,17 +23,17 @@ bool Visibility::unoccluded(const Scene &scene) const
 	return !scene.intersectP(p0.generate_ray(p1));
 }
 
-Color Visibility::Tr(const Scene &scene, Sampler &sampler) const
+Spectrum Visibility::Tr(const Scene &scene, Sampler &sampler) const
 {
 	Ray ray(p0.generate_ray(p1));
-	Color Tr(1.f);
+	Spectrum Tr(1.f);
 	while (true) 
 	{
-		SurfaceIsect isect;
+		SurfaceInteraction isect;
 		bool hitSurface = scene.intersect(ray, &isect);
 		// Handle opaque surface along ray's path
 		if (hitSurface && isect.primitive->get_material() != nullptr)
-			return Color(0.0f);
+			return Spectrum(0.0f);
 
 		// Update transmittance for current ray segment
 		//if (ray.medium) Tr *= ray.medium->Tr(ray, sampler);
@@ -45,7 +45,7 @@ Color Visibility::Tr(const Scene &scene, Sampler &sampler) const
 	return Tr;
 }
 
-Color Light::Le(const RayDifferential &ray) const { return Color(0.f); }
+Spectrum Light::Le(const RayDifferential &ray) const { return Spectrum(0.f); }
 
 AreaLight::AreaLight(const Transform& LightToWorld,
   //const MediumInterface& medium,

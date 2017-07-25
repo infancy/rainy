@@ -28,7 +28,7 @@
     <ClCompile Include="..\src\core\filter.cpp" />
     <ClCompile Include="..\src\core\image.cpp" />
     <ClCompile Include="..\src\core\integrator.cpp" />
-    <ClCompile Include="..\src\core\intersection.cpp" />
+    <ClCompile Include="..\src\core\interaction.cpp" />
     <ClCompile Include="..\src\core\light.cpp" />
     <ClCompile Include="..\src\core\material.cpp" />
     <ClCompile Include="..\src\core\primitive.cpp" />
@@ -56,13 +56,13 @@
     <ClInclude Include="..\src\core\api.h" />
     <ClInclude Include="..\src\core\bsdf.h" />
     <ClInclude Include="..\src\core\camera.h" />
-    <ClInclude Include="..\src\core\color.h" />
+    <ClInclude Include="..\src\core\spectrum.h" />
     <ClInclude Include="..\src\core\film.h" />
     <ClInclude Include="..\src\core\filter.h" />
     <ClInclude Include="..\src\core\geometry.h" />
     <ClInclude Include="..\src\core\image.h" />
     <ClInclude Include="..\src\core\integrator.h" />
-    <ClInclude Include="..\src\core\intersection.h" />
+    <ClInclude Include="..\src\core\interaction.h" />
     <ClInclude Include="..\src\core\light.h" />
     <ClInclude Include="..\src\core\lightdistrib.h" />
     <ClInclude Include="..\src\core\material.h" />
@@ -78,7 +78,6 @@
     <ClInclude Include="..\src\core\texture.h" />
     <ClInclude Include="..\src\core\transform.h" />
     <ClInclude Include="..\src\core\valley.h" />
-    <ClInclude Include="..\src\integrator\bdpt.h" />
     <ClInclude Include="..\src\integrator\eyelight.h" />
     <ClInclude Include="..\src\integrator\lightracing.h" />
     <ClInclude Include="..\src\integrator\pathtracing.h" />

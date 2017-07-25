@@ -39,7 +39,7 @@ namespace valley
 {
 
 // GlassMaterial Method Definitions
-void GlassMaterial::compute_scattering(SurfaceIsect* si, //MemoryArena &arena,
+void GlassMaterial::compute_scattering(SurfaceInteraction* si, //MemoryArena &arena,
 	TransportMode mode,
 	bool allowMultipleLobes) const
 {
@@ -49,8 +49,8 @@ void GlassMaterial::compute_scattering(SurfaceIsect* si, //MemoryArena &arena,
 	Float eta = index->evaluate(*si);
 	Float urough = uRoughness->evaluate(*si);
 	Float vrough = vRoughness->evaluate(*si);
-	Color R = Kr->evaluate(*si).clamp();
-	Color T = Kt->evaluate(*si).clamp();
+	Spectrum R = Kr->evaluate(*si).clamp();
+	Spectrum T = Kt->evaluate(*si).clamp();
 
 	// Initialize _bsdf_ for smooth or rough dielectric
 	si->bsdf.reset(new BSDF(*si, eta));

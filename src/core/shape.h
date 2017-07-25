@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include"valley.h"
 #include"geometry.h"
-#include"intersection.h"
+#include"interaction.h"
 #include"transform.h"
 
 namespace valley
@@ -56,22 +56,22 @@ public:
 	virtual Bounds3f world_bound() const;
 
 	virtual bool intersect(const Ray &ray, 
-						   SurfaceIsect* isect /*bool testAlphaTexture*/) const = 0;
+						   SurfaceInteraction* isect /*bool testAlphaTexture*/) const = 0;
 	virtual bool intersectP(const Ray &ray,
 						    bool testAlphaTexture = true) const;
 
 	virtual Float area() const = 0;
-	virtual Float pdf(const Isect &) const { return 1 / area(); }
+	virtual Float pdf(const Interaction &) const { return 1 / area(); }
 
-	//传入一个[0,1]范围的采样点，在几何体表面计算一个Isect并返回相应的pdf(1/area())
-	virtual Isect sample(const Point2f &u, Float *pdf) const = 0;
+	//传入一个[0,1]范围的采样点，在几何体表面计算一个Interaction并返回相应的pdf(1/area())
+	virtual Interaction sample(const Point2f &u, Float *pdf) const = 0;
 
 	// Sample a point on the shape given a reference point |ref| and
 	// return the PDF with respect to solid angle from |ref|.
-	virtual Isect sample(const Isect &ref, const Point2f &u, Float *pdf) const;
+	virtual Interaction sample(const Interaction &ref, const Point2f &u, Float *pdf) const;
 
 	//传入一个isect和isect上的方向wi，若isect->wi->shape，则计算相应的pdf
-	virtual Float pdf(const Isect &ref, const Vector3f &wi) const;
+	virtual Float pdf(const Interaction &ref, const Vector3f &wi) const;
 
 	// Returns the solid angle subtended by the shape w.r.t. the reference
 	// point p, given in world space. Some shapes compute this value in

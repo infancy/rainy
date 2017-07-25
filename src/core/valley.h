@@ -9,6 +9,7 @@
 #include"platform.h"
 
 // Global Include Files
+#include <unordered_map>
 #include <type_traits>
 #include <algorithm>
 #include <iostream>
@@ -72,14 +73,15 @@ class Transform;
 struct Matrix4x4;
 
 // Global Forward Declarations
-class Color;
+class Spectrum;
 class RNG;
 class Image;
 class Scene;
 class Integrator;
 class SamplerIntegrator;
-class Isect;
-class SurfaceIsect;
+class Interaction;
+class SurfaceInteraction;
+class MediumInteraction;
 class Shape;
 class Primitive;
 class GeometricPrimitive;

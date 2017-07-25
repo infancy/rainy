@@ -38,9 +38,9 @@ public:
 
 	Float generate_ray(const CameraSample& sample, Ray* ray) const;
 
-	Color We(const Ray& ray, Point2f* pRaster2 = nullptr) const;
+	Spectrum We(const Ray& ray, Point2f* pRaster2 = nullptr) const;
 	void pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) const;
-	Color sample_Wi(const Isect& ref, const Point2f& u,
+	Spectrum sample_Wi(const Interaction& ref, const Point2f& u,
 		Vector3f* wi, Float* pdf, Point2f* pRaster, Visibility* vis) const;
 
 private:

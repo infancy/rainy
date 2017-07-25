@@ -14,17 +14,16 @@
 namespace valley
 {
 
-//Intersection 
-class Isect
+class Interaction
 {
 public:
-	Isect() {}
-	Isect(const Point3f &p  /*const MediumInterface &mediumInterface*/)
+	Interaction() {}
+	Interaction(const Point3f &p  /*const MediumInterface &mediumInterface*/)
 		: p(p) /*mediumInterface(mediumInterface)*/ {}
-	Isect(const Point3f &p, const Vector3f &wo 
+	Interaction(const Point3f &p, const Vector3f &wo 
 		/*const MediumInterface &mediumInterface*/)
 		: p(p), wo(wo) /*mediumInterface(mediumInterface)*/ {}
-	Isect(const Point3f &p, const Normal3f &n, const Vector3f &pError,
+	Interaction(const Point3f &p, const Normal3f &n, const Vector3f &pError,
 		const Vector3f &wo, /*const MediumInterface &mediumInterface, */ Float maxDist = Infinity);
 
 	Ray generate_ray(const Vector3f& d) const
@@ -42,7 +41,7 @@ public:
 		return Ray(origin, d, (p - p2).Length() * (1 - ShadowEpsilon));
 	}
 
-	Ray generate_ray(const Isect& isect) const 
+	Ray generate_ray(const Interaction& isect) const 
 	{
 		Point3f origin = offset_ray_origin(p, pError, n, isect.p - p);
 		Point3f target = offset_ray_origin(isect.p, isect.pError, isect.n, origin - isect.p);
@@ -62,11 +61,11 @@ public:
 	//MediumInterface mediumInterface;
 };
 
-class SurfaceIsect : public Isect 
+class SurfaceInteraction : public Interaction 
 {
 public:
-	SurfaceIsect() {}
-	SurfaceIsect(const Point3f& p, const Vector3f& pError,
+	SurfaceInteraction() {}
+	SurfaceInteraction(const Point3f& p, const Vector3f& pError,
 				 const Point2f& uv, const Vector3f& wo,
 				 const Vector3f& dpdu, const Vector3f& dpdv,
 				 const Normal3f& dndu, const Normal3f& dndv, 
@@ -83,7 +82,7 @@ public:
 
 	//void compute_differentials(const RayDifferential &r) const;
 
-	Color Le(const Vector3f& w) const;
+	Spectrum Le(const Vector3f& w) const;
 
 public:
 	Point2f uv;				//基于表面参数化的UV坐标
@@ -103,6 +102,47 @@ public:
 		Vector3f dpdu, dpdv;
 		Normal3f dndu, dndv;
 	} shading;
+};
+
+/*
+class MediumInteraction : public Interaction
+{
+public:
+	// MediumInteraction Public Methods
+	MediumInteraction() : phase(nullptr) {}
+	MediumInteraction(const Point3f &p, const Vector3f &wo, Float time,
+		const Medium *medium, const PhaseFunction *phase)
+		: Interaction(p, wo), phase(phase) {}
+
+	bool is_valid() const { return phase != nullptr; }
+
+	// MediumInteraction Public Data
+	const PhaseFunction *phase;
+};
+*/
+
+//记录相机或光源上的交点
+class EndpointInteraction : public Interaction 
+{
+public:
+	EndpointInteraction() : Interaction(), light(nullptr) {}
+	EndpointInteraction(const Interaction &it, const Camera *camera)
+		: Interaction(it), camera(camera) {}
+	EndpointInteraction(const Camera *camera, const Ray &ray)
+		: Interaction(ray.o), camera(camera) {}
+	EndpointInteraction(const Light *light, const Ray &r, const Normal3f &nl)
+		: Interaction(r.o), light(light) { n = nl; }
+	EndpointInteraction(const Interaction &it, const Light *light)
+		: Interaction(it), light(light) {}
+	EndpointInteraction(const Ray &ray)
+		: Interaction(ray(1)), light(nullptr) { n = Normal3f(-ray.d); }
+
+public:
+	union
+	{
+		const Camera *camera;
+		const Light *light;
+	};
 };
 
 }	//namespace valley

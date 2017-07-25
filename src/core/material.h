@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include"valley.h"
 #include"texture.h"
-#include"intersection.h"
+#include"interaction.h"
 
 namespace valley
 {
@@ -51,11 +51,11 @@ public:
 	//通过交点的几何特征确定散射属性并初始化交点处的BSDF
 	//allow-参数表示是否允许BxDF聚合多种类型（如 FresnelSpecular, 其
 	//包含了 specular reflection 和 transmission）
-	virtual void compute_scattering(SurfaceIsect* si, TransportMode mode,
+	virtual void compute_scattering(SurfaceInteraction* si, TransportMode mode,
 									bool allowMultipleLobes) const = 0;
 
 	//计算凹凸贴图
-	//static void bump(const std::shared_ptr<Texture<Float>>& d, SurfaceIsect* si);
+	//static void bump(const std::shared_ptr<Texture<Float>>& d, SurfaceInteraction* si);
 };
 
 }	//namespace valley

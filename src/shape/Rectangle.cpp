@@ -10,7 +10,7 @@ Bounds3f Rectangle::object_bound() const
 	return Bounds3f(point, point + first + second);
 }
 
-bool Rectangle::intersect(const Ray &r, SurfaceIsect* isect
+bool Rectangle::intersect(const Ray &r, SurfaceInteraction* isect
 	/*bool testAlphaTexture*/) const
 {
 	// Transform _Ray_ to object space
@@ -53,7 +53,7 @@ bool Rectangle::intersect(const Ray &r, SurfaceIsect* isect
 	Vector3f pError(0, 0, 0);
 
 	//新建一个SI赋值给isect
-	*isect = (*ObjectToWorld)(SurfaceIsect(pHit, pError, Point2f(u, v),
+	*isect = (*ObjectToWorld)(SurfaceInteraction(pHit, pError, Point2f(u, v),
 		-ray.d, dpdu, dpdv, dndu, dndv, this));
 
 	r.tMax = t;	//记录相交距离
@@ -98,11 +98,11 @@ bool Rectangle::intersectP(const Ray &r, bool testAlphaTexture) const
 Float Rectangle::area() const { return first.Length() * second.Length(); }
 
 //传入一个[0,1]^2范围内的随机点,返回一个交点和相应的pdf
-Isect Rectangle::sample(const Point2f &u, Float *pdf) const
+Interaction Rectangle::sample(const Point2f &u, Float *pdf) const
 {
 	//Point3f pObj(u.x * first.Length(), u.y * second.Length(), 0);
 	Point3f pObj = Point3f(u.x * first.Length(), u.y * second.Length(), 0) + point;
-	Isect it;
+	Interaction it;
 	//it.n = Normalize((*ObjectToWorld)(Normal3f(0, 0, 1)));
 	it.n = Normalize((*ObjectToWorld)(Normal3f(0, 0, 1)));
 	if (reverseOrientation) it.n *= -1;

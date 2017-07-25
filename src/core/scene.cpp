@@ -1,13 +1,13 @@
 #include"scene.h"
 #include"geometry.h"
-#include"color.h"
-#include"intersection.h"
+#include"spectrum.h"
+#include"interaction.h"
 
 namespace valley
 {
 
 // Scene Method Definitions
-bool Scene::intersect(const Ray& ray, SurfaceIsect* isect) const
+bool Scene::intersect(const Ray& ray, SurfaceInteraction* isect) const
 {
 	DCHECK_NE(ray.d, Vector3f(0, 0, 0));
 	return accelerator->intersect(ray, isect);
@@ -19,9 +19,9 @@ bool Scene::intersectP(const Ray &ray) const
 	return accelerator->intersectP(ray);
 }
 
-bool Scene::intersectTr(Ray ray, Sampler& sampler, SurfaceIsect* isect, Color* Tr) const 
+bool Scene::intersectTr(Ray ray, Sampler& sampler, SurfaceInteraction* isect, Spectrum* Tr) const 
 {
-	*Tr = Color(1.f);
+	*Tr = Spectrum(1.f);
 	while (true) {
 		bool hitSurface = intersect(ray, isect);
 		// Accumulate beam transmittance for ray segment

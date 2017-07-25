@@ -29,12 +29,12 @@ public:
 		}
 	}
 
-	virtual Color Li(const Ray& ray, const Scene &scene,
+	virtual Spectrum Li(const Ray& ray, const Scene &scene,
 		Sampler &sampler, int depth = 0) const
 	{
-		Color L(0.f);
+		Spectrum L(0.f);
 		// Find closest ray intersection or return background radiance
-		SurfaceIsect isect;
+		SurfaceInteraction isect;
 
 		//如果未被遮挡，则计算光源到视点的直接辐射度
 		if (!scene.intersect(ray, &isect)) 
@@ -44,7 +44,7 @@ public:
 		}
 
 		//否则计算这个交点向视点方向发射的辐射度
-		// Compute scattering functions for surface Isect
+		// Compute scattering functions for surface Interaction
 		isect.compute_scattering(ray);
 		if (!isect.bsdf)
 			return Li(isect.generate_ray(ray.d), scene, sampler, depth);

@@ -11,7 +11,7 @@ Bounds3f Sphere::object_bound() const
 					Point3f(radius, radius, radius));
 }
 
-bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
+bool Sphere::intersect(const Ray &r, SurfaceInteraction* isect
 	/*bool testAlphaTexture*/) const
 {
 	//static const Float kEpsilon = 0.001f; for shadow ray
@@ -96,7 +96,7 @@ bool Sphere::intersect(const Ray &r, SurfaceIsect* isect
 
 		Vector3f pError = gamma(5) * Abs((Vector3f)pHit);
 
-		*isect = (*ObjectToWorld)(SurfaceIsect(pHit, pError, Point2f(u, v),
+		*isect = (*ObjectToWorld)(SurfaceInteraction(pHit, pError, Point2f(u, v),
 			-ray.d, dpdu, dpdv, dndu, dndv, this));
 
 		// Update _tHit_ for quadric intersection
@@ -132,10 +132,10 @@ bool Sphere::intersectP(const Ray &r, bool testAlphaTexture) const
 
 Float Sphere::area() const { return 4 * Pi * radius * radius; }
 
-Isect Sphere::sample(const Point2f &u, Float *pdf) const 
+Interaction Sphere::sample(const Point2f &u, Float *pdf) const 
 {
 	Point3f pObj = Point3f(0, 0, 0) + radius * uniform_sample_sphere(u);
-	Isect it;
+	Interaction it;
 	it.n = Normalize((*ObjectToWorld)(Normal3f(pObj.x, pObj.y, pObj.z)));
 	if (reverseOrientation) it.n *= -1;
 	// Reproject _pObj_ to sphere surface and compute _pObjError_
@@ -146,7 +146,7 @@ Isect Sphere::sample(const Point2f &u, Float *pdf) const
 	return it;
 }
 
-Isect Sphere::sample(const Isect &ref, const Point2f &u, Float *pdf) const
+Interaction Sphere::sample(const Interaction &ref, const Point2f &u, Float *pdf) const
 {
 	Point3f pCenter = (*ObjectToWorld)(Point3f(0, 0, 0));
 
@@ -154,7 +154,7 @@ Isect Sphere::sample(const Isect &ref, const Point2f &u, Float *pdf) const
 	Point3f pOrigin =
 		offset_ray_origin(ref.p, ref.pError, ref.n, pCenter - ref.p);
 	if (DistanceSquared(pOrigin, pCenter) <= radius * radius) {
-		Isect intr = sample(u, pdf);
+		Interaction intr = sample(u, pdf);
 		Vector3f wi = intr.p - ref.p;
 		if (wi.LengthSquared() == 0)
 			*pdf = 0;
@@ -196,7 +196,7 @@ Isect Sphere::sample(const Isect &ref, const Point2f &u, Float *pdf) const
 	Point3f pWorld = pCenter + radius * Point3f(nWorld.x, nWorld.y, nWorld.z);
 
 	// Return _Interaction_ for sampled point on sphere
-	Isect it;
+	Interaction it;
 	it.p = pWorld;
 	it.pError = gamma(5) * Abs((Vector3f)pWorld);
 	it.n = Normal3f(nWorld);
@@ -208,7 +208,7 @@ Isect Sphere::sample(const Isect &ref, const Point2f &u, Float *pdf) const
 	return it;
 }
 
-Float Sphere::pdf(const Isect &ref, const Vector3f &wi) const 
+Float Sphere::pdf(const Interaction &ref, const Vector3f &wi) const 
 {
 	Point3f pCenter = (*ObjectToWorld)(Point3f(0, 0, 0));
 	// Return uniform PDF if point is inside sphere

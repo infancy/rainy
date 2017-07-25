@@ -6,17 +6,17 @@ namespace valley
 
 // Integrator Utility Functions
 //对所有光源进行uniform的采样
-Color uniform_sample_all_lights(const Isect& it, const Scene &scene, Sampler &sampler,
+Spectrum uniform_sample_all_lights(const Interaction& it, const Scene &scene, Sampler &sampler,
 	const std::vector<int> &nLightSamples, bool handleMedia)
 {
-	Color L(0.f);
+	Spectrum L(0.f);
 	for (size_t i = 0; i < scene.lights.size(); ++i) 
 	{
 		// Accumulate contribution of _j_th light to _L_
 		const std::shared_ptr<Light>& light = scene.lights[i];
 		int nSamples = nLightSamples[i];
 
-		Color Ld(0.f);
+		Spectrum Ld(0.f);
 		for (int k = 0; k < nSamples; ++k)
 			Ld += estimate_direct(it, sampler.get_2D(), *light, sampler.get_2D(), 
 				scene, sampler, handleMedia);
@@ -25,12 +25,12 @@ Color uniform_sample_all_lights(const Isect& it, const Scene &scene, Sampler &sa
 	return L;
 }
 
-Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sampler,
+Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sampler& sampler,
 	bool handleMedia, const Distribution1D* lightDistrib)
 {
 	// Randomly choose a single light to sample, _light_
 	int nLights = int(scene.lights.size());
-	if (nLights == 0) return Color(0.f);
+	if (nLights == 0) return Spectrum(0.f);
 	int lightNum;
 	Float lightPdf;
 
@@ -38,7 +38,7 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 	{
 		//随机选取一个light
 		lightNum = lightDistrib->sample_discrete(sampler.get_1D(), &lightPdf);
-		if (lightPdf == 0) return Color(0.f);
+		if (lightPdf == 0) return Spectrum(0.f);
 	}
 	else
 	{
@@ -68,19 +68,19 @@ Color uniform_sample_one_light(const Isect& it, const Scene& scene, Sampler& sam
 //因而使用MIS分别对light和brdf进行采样
 //在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=MIS(Le, Li)
 //默认不计算镜面BSDF项
-Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &light,
+Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)
 {
 	// Sample light source with multiple importance sampling
 	BxDF_type bsdfFlags = has_specular ? BxDF_type::All : BxDF_type::NonSpecular;
-	Color Ld(0.f);
+	Spectrum Ld(0.f);
 	Vector3f wi;
 	Float lightPdf = 0, scatteringPdf = 0;
 	Visibility visibility;
 
 	//计算Li,wi,pdf
-	Color Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
+	Spectrum Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
 	DVLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
 		<< wi << ", pdf: " << lightPdf;
 
@@ -89,11 +89,11 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 	{
 		//分段函数
 		// Compute BSDF or phase function's value for light sample
-		Color f;
+		Spectrum f;
 		if (it.in_surface()) 
 		{
 			// Evaluate BSDF for light sampling strategy
-			const SurfaceIsect& isect = (const SurfaceIsect&)it;
+			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
 			//计算f(p,wo,wi)cos(eta_light_isect)项
 			//f = isect.bsdf->f(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.shading.n);
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
@@ -108,7 +108,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			// Evaluate phase function for light sampling strategy
 			const MediumInteraction &mi = (const MediumInteraction &)it;
 			Float p = mi.phase->p(mi.wo, wi);
-			f = Color(p);
+			f = Spectrum(p);
 			scatteringPdf = p;
 			VLOG(2) << "  medium p: " << p;
 		}
@@ -127,7 +127,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 				if (!visibility.unoccluded(scene))
 				{
 					DVLOG(2) << "  shadow ray blocked";
-					Li = Color(0.f);
+					Li = Spectrum(0.f);
 				}
 				else
 					DVLOG(2) << "  shadow ray unoccluded";
@@ -152,13 +152,13 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 	//从bsdf部分进行采样
 	if (!is_delta_light(light.flags)) 
 	{
-		Color f;
+		Spectrum f;
 		bool sampledSpecular = false;
 		if (it.in_surface()) 
 		{
 			// Sample scattered direction for surface interactions
 			BxDF_type sampledType;
-			const SurfaceIsect& isect = (const SurfaceIsect&)it;
+			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
 			//使用采样点对bsdf进行采样，得到wi，pdf，f
 			f = isect.bsdf->sample_f(isect.wo, &wi, uScattering, &scatteringPdf,
 				bsdfFlags, &sampledType);
@@ -171,7 +171,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			// Sample scattered direction for medium interactions
 			const MediumInteraction &mi = (const MediumInteraction &)it;
 			Float p = mi.phase->Sample_p(mi.wo, &wi, uScattering);
-			f = Color(p);
+			f = Spectrum(p);
 			scatteringPdf = p;
 		}
 		*/
@@ -191,19 +191,19 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 			}
 
 			// Find intersection and compute transmittance
-			SurfaceIsect lightIsect;
+			SurfaceInteraction lightInteraction;
 			Ray ray = it.generate_ray(wi);
-			Color Tr(1.f);
-			bool foundSurfaceIsect =
-				handleMedia ? scene.intersectTr(ray, sampler, &lightIsect, &Tr)
-				: scene.intersect(ray, &lightIsect);
+			Spectrum Tr(1.f);
+			bool foundSurfaceInteraction =
+				handleMedia ? scene.intersectTr(ray, sampler, &lightInteraction, &Tr)
+				: scene.intersect(ray, &lightInteraction);
 
 			// Add light contribution from material sampling
-			Color Li(0.f);
-			if (foundSurfaceIsect) 
+			Spectrum Li(0.f);
+			if (foundSurfaceInteraction) 
 			{
-				if (lightIsect.primitive->get_AreaLight() == &light)
-					Li = lightIsect.Le(-wi);	//调用SurIsect的Le
+				if (lightInteraction.primitive->get_AreaLight() == &light)
+					Li = lightInteraction.Le(-wi);	//调用SurInteraction的Le
 			}
 			else
 				Li = light.Le(ray);		//调用light的Le
@@ -213,7 +213,7 @@ Color estimate_direct(const Isect& it, const Point2f &uScattering, const Light &
 	return Ld;
 }
 
-void check_radiance(int x, int y, Color& L)
+void check_radiance(int x, int y, Spectrum& L)
 {
 	// Issue warning if unexpected radiance value returned
 	if (L.isnan())
@@ -221,21 +221,21 @@ void check_radiance(int x, int y, Color& L)
 		LOG(ERROR) <<
 			"Not-a-number radiance value returned "
 			"for pixel( " << x << " , " << y << " ). Setting to black.";
-		L = Color(0.f);
+		L = Spectrum(0.f);
 	}
 	else if (L.luminance() < -1e-5)
 	{
 		LOG(ERROR) <<
 			"Negative luminance value returned "
 			"for pixel( " << x << " , " << y << " ). Setting to black.";
-		L = Color(0.f);
+		L = Spectrum(0.f);
 	}
 	else if (std::isinf(L.luminance()))
 	{
 		LOG(ERROR) <<
 			"Infinite luminance value returned "
 			"for pixel( " << x << " , " << y << " ). Setting to black.";
-		L = Color(0.f);
+		L = Spectrum(0.f);
 	}
 }
 
@@ -253,25 +253,25 @@ void SamplerIntegrator::render(const Scene &scene)
 				CameraSample cs = sampler->get_CameraSample(x, y);
 				camera->generate_ray(cs, &ray);
 
-				Color L = Li(ray, scene, *sampler);
+				Spectrum L = Li(ray, scene, *sampler);
 
 				check_radiance(x, y, L);
 				camera->film->add(cs.pFilm, L);
 			}
 		}
-
+	camera->film->flush();
 	//对一个像素采样n次，可否理解为长时间曝光
 	//return camera->film->scale(1.f / sampler->samples_PerPixel);	//filter、flush
 }
 
-Color SamplerIntegrator::specular_reflect(const Ray& ray, const SurfaceIsect& isect,
+Spectrum SamplerIntegrator::specular_reflect(const Ray& ray, const SurfaceInteraction& isect,
 	const Scene &scene, Sampler &sampler, int depth) const
 {
 	// Compute specular reflection direction _wi_ and BSDF value
 	Vector3f wo = isect.wo, wi;
 	Float pdf;
 	BxDF_type type = BxDF_type::Reflection | BxDF_type::Specular;
-	Color f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
+	Spectrum f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
 
 	// Return contribution of specular reflection
 	const Normal3f &ns = isect.shading.n;
@@ -304,10 +304,10 @@ Color SamplerIntegrator::specular_reflect(const Ray& ray, const SurfaceIsect& is
 			pdf;
 	}
 	else
-		return Color(0.f);
+		return Spectrum(0.f);
 }
 
-Color SamplerIntegrator::specular_transmit(const Ray& ray, const SurfaceIsect& isect,
+Spectrum SamplerIntegrator::specular_transmit(const Ray& ray, const SurfaceInteraction& isect,
 	const Scene &scene, Sampler &sampler, int depth) const
 {
 	Vector3f wo = isect.wo, wi;
@@ -317,8 +317,8 @@ Color SamplerIntegrator::specular_transmit(const Ray& ray, const SurfaceIsect& i
 	const BSDF &bsdf = *isect.bsdf;
 	BxDF_type type = BxDF_type::Transmission | BxDF_type::Specular;
 
-	Color f = bsdf.sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
-	Color L = Color(0.f);
+	Spectrum f = bsdf.sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
+	Spectrum L = Spectrum(0.f);
 
 	if (pdf > 0.f && !f.is_black() && AbsDot(wi, ns) != 0.f) 
 	{

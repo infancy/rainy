@@ -30,17 +30,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include"bsdf.h"
-#include"color.h"
+#include"spectrum.h"
 #include"rng.h"
 #include"sampling.h"
-#include"intersection.h"
+#include"interaction.h"
 
 namespace valley
 {
 
 // BxDF Method Definitions
 //在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
-Color BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
+Spectrum BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 					   Float* Pdf, BxDF_type* sampledType) const
 {
 	// Cosine-sample the hemisphere, flipping the direction if necessary
@@ -51,29 +51,29 @@ Color BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 	return f(wo, *wi);
 }
 
-Color BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
-	Color r(0.);
+Spectrum BxDF::rho(const Vector3f& w, int nSamples, const Point2f* u) const {
+	Spectrum r(0.);
 	for (int i = 0; i < nSamples; ++i) 
 	{
 		// Estimate one term of $\rho_\roman{hd}$
 		Vector3f wi;
 		Float pdf = 0;
-		Color f = sample_f(w, &wi, u[i], &pdf);
+		Spectrum f = sample_f(w, &wi, u[i], &pdf);
 		if (pdf > 0) r += f * AbsCosTheta(wi) / pdf;
 	}
 	return r / nSamples;
 }
 
-Color BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const
+Spectrum BxDF::rho(int nSamples, const Point2f* u1, const Point2f* u2) const
 {
-	Color r(0.f);
+	Spectrum r(0.f);
 	for (int i = 0; i < nSamples; ++i)
 	{
 		// Estimate one term of $\rho_\roman{hh}$
 		Vector3f wo, wi;
 		wo = uniform_sample_hemisphere(u1[i]);
 		Float pdfo = uniform_hemisphere_pdf(), pdfi = 0;
-		Color f = sample_f(wo, &wi, u2[i], &pdfi);
+		Spectrum f = sample_f(wo, &wi, u2[i], &pdfi);
 		if (pdfi > 0)
 			r += f * AbsCosTheta(wi) * AbsCosTheta(wo) / (pdfo * pdfi);
 	}
@@ -88,7 +88,7 @@ Float BxDF::pdf(const Vector3f &wo, const Vector3f &wi) const
 
 // BSDF Method Definitions
 
-BSDF::BSDF(const SurfaceIsect& si, Float eta) :
+BSDF::BSDF(const SurfaceInteraction& si, Float eta) :
 	eta(eta),
 	ns(si.shading.n),	//z轴
 	ng(si.n),
@@ -103,14 +103,14 @@ int BSDF::components_num(BxDF_type flags) const
 	return num;
 }
 
-Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
+Spectrum BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 				BxDF_type flags) const 
 {
 	Vector3f wi = world_to_local(wiW), wo = world_to_local(woW);
 	if (wo.z == 0.f) return 0.f;
 
 	bool reflect = Dot(wiW, ng) * Dot(woW, ng) > 0;	//处理着色法线的缺陷
-	Color f(0.f);
+	Spectrum f(0.f);
 
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags) &&
@@ -121,7 +121,7 @@ Color BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 }
 
 //uniformSamplePoint in [0,1]^2
-Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
+Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 					 const Point2f& u, Float *pdf, BxDF_type type,
 					 BxDF_type* sampledType) const
 {
@@ -132,7 +132,7 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	{
 		*pdf = 0;
 		if (sampledType) *sampledType = BxDF_type(0);
-		return Color(0);
+		return Spectrum(0);
 	}
 	int comp =
 		std::min((int)std::floor(u[0] * matchingComps), matchingComps - 1);
@@ -162,10 +162,10 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	*pdf = 0;
 	if (sampledType) *sampledType = bxdf->type;
 
-	Color f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
+	Spectrum f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
 	
 	DVLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
-	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Color(0.f))
+	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Spectrum(0.f))
 	<< ", wi = " << wi;
 	
 	if (*pdf == 0) 
@@ -196,25 +196,25 @@ Color BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	}
 	
 	DVLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
-	<< ((*pdf > 0) ? (f / *pdf) : Color(0.f));
+	<< ((*pdf > 0) ? (f / *pdf) : Spectrum(0.f));
 	
 	return f;
 }
 
-Color BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
+Spectrum BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
 				  BxDF_type flags) const
 {
-	Color ret(0.f);
+	Spectrum ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags))
 			ret += bxdfs[i]->rho(nSamples, samples1, samples2);
 	return ret;
 }
 
-Color BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
+Spectrum BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
 				  BxDF_type flags) const 
 {
-	Color ret(0.f);
+	Spectrum ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags))
 			ret += bxdfs[i]->rho(wo, nSamples, samples);

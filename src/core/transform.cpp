@@ -34,7 +34,7 @@
 // core/transform.cpp*
 #include "transform.h"
 //#include "error.h"		
-#include"intersection.h"
+#include"interaction.h"
 
 //namespace pbrt
 
@@ -269,9 +269,9 @@ bool Transform::SwapsHandedness() const {
     return det < 0;
 }
 
-SurfaceIsect Transform::operator()(const SurfaceIsect& si) const 
+SurfaceInteraction Transform::operator()(const SurfaceInteraction& si) const 
 {
-	SurfaceIsect ret;
+	SurfaceInteraction ret;
     // Transform _p_ and _pError_ in _SurfaceInteraction_
     ret.p = (*this)(si.p, si.pError, &ret.pError);
 

@@ -47,8 +47,8 @@ namespace valley
 class GlassMaterial : public Material
 {
 public:
-	GlassMaterial(const std::shared_ptr<Texture<Color>> &Kr,
-		const std::shared_ptr<Texture<Color>> &Kt,
+	GlassMaterial(const std::shared_ptr<Texture<Spectrum>> &Kr,
+		const std::shared_ptr<Texture<Spectrum>> &Kt,
 		const std::shared_ptr<Texture<Float>> &uRoughness,
 		const std::shared_ptr<Texture<Float>> &vRoughness,
 		const std::shared_ptr<Texture<Float>> &index,
@@ -62,12 +62,12 @@ public:
 		bumpMap(bumpMap),
 		remapRoughness(remapRoughness) {}
 
-	void compute_scattering(SurfaceIsect* si, //MemoryArena &arena,
+	void compute_scattering(SurfaceInteraction* si, //MemoryArena &arena,
 		TransportMode mode,
 		bool allowMultipleLobes) const;
 
 private:
-	std::shared_ptr<Texture<Color>> Kr, Kt;
+	std::shared_ptr<Texture<Spectrum>> Kr, Kt;
 	std::shared_ptr<Texture<Float>> uRoughness, vRoughness;
 	std::shared_ptr<Texture<Float>> index;
 	std::shared_ptr<Texture<Float>> bumpMap;

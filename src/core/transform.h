@@ -197,7 +197,7 @@ class Transform {
     Bounds3f operator()(const Bounds3f &b) const;
     Transform operator*(const Transform &t2) const;
     bool SwapsHandedness() const;
-    SurfaceIsect operator()(const SurfaceIsect &si) const;
+    SurfaceInteraction operator()(const SurfaceInteraction &si) const;
     template <typename T>
     inline Point3<T> operator()(const Point3<T> &pt,
                                 Vector3<T> *absError) const;

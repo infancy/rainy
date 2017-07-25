@@ -48,9 +48,6 @@
     <ClCompile Include="..\src\core\bsdf.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\intersection.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\bsdf\lambertian.cpp">
       <Filter>bsdf</Filter>
     </ClCompile>
@@ -114,6 +111,9 @@
     <ClCompile Include="..\src\camera\perspective.cpp">
       <Filter>camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\interaction.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\platform.h">
@@ -135,12 +135,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\core\integrator.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\core\intersection.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\core\color.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\core\geometry.h">
@@ -215,9 +209,6 @@
     <ClInclude Include="..\src\integrator\whitted.h">
       <Filter>integrator</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\integrator\bdpt.h">
-      <Filter>integrator</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\integrator\eyelight.h">
       <Filter>integrator</Filter>
     </ClInclude>
@@ -250,6 +241,12 @@
     </ClInclude>
     <ClInclude Include="..\src\camera\perspective.h">
       <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\interaction.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\spectrum.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

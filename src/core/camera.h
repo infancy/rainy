@@ -30,9 +30,9 @@ public:
 	//根据采样数据生成世界空间光线，并返回一个在最终生成图像上的权值
 	virtual Float generate_ray(const CameraSample& sample, Ray* ray) const = 0;
 
-	virtual Color We(const Ray& ray, Point2f* pRaster2 = nullptr) const = 0;
+	virtual Spectrum We(const Ray& ray, Point2f* pRaster2 = nullptr) const = 0;
 	virtual void pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) const = 0;
-	virtual Color sample_Wi(const Isect& ref, const Point2f& u,
+	virtual Spectrum sample_Wi(const Interaction& ref, const Point2f& u,
 		Vector3f* wi, Float* pdf, Point2f* pRaster, Visibility* vis) const = 0;
 
 public:

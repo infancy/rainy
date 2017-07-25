@@ -17,15 +17,15 @@ class Matte : public Material
 {
 public:
 	// MatteMaterial Public Methods
-	Matte(const std::shared_ptr<Texture<Color>>& kd,
+	Matte(const std::shared_ptr<Texture<Spectrum>>& kd,
 		  const std::shared_ptr<Texture<Float>>& sigma,   //´Ö²Ú¶È
 		  const std::shared_ptr<Texture<Float>>& bumpMap = nullptr);
 
-	void compute_scattering(SurfaceIsect* si, TransportMode mode,
+	void compute_scattering(SurfaceInteraction* si, TransportMode mode,
 		bool allowMultipleLobes) const override;
 
 private:
-	std::shared_ptr<Texture<Color>> kd;
+	std::shared_ptr<Texture<Spectrum>> kd;
 	std::shared_ptr<Texture<Float>> sigma;	//´Ö²Ú¶È
 	std::shared_ptr<Texture<Float>> bumpMap;
 };

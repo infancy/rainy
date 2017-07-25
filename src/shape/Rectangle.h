@@ -23,13 +23,13 @@ public:
 
 	Bounds3f object_bound() const;
 
-	bool intersect(const Ray &ray, SurfaceIsect* isect
+	bool intersect(const Ray &ray, SurfaceInteraction* isect
 		/*bool testAlphaTexture*/) const;
 	bool intersectP(const Ray &ray, bool testAlphaTexture) const;
 
 	Float area() const;
 
-	Isect sample(const Point2f &u, Float *pdf) const;
+	Interaction sample(const Point2f &u, Float *pdf) const;
 
 private:
 	Point3f 		point; //可以通过变换矩阵来定义位置，但point不是多余的

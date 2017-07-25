@@ -39,7 +39,7 @@ namespace valley
 {
 
 // MirrorMaterial Method Definitions
-void MirrorMaterial::compute_scattering(SurfaceIsect *si, //MemoryArena &arena,
+void MirrorMaterial::compute_scattering(SurfaceInteraction *si, //MemoryArena &arena,
 										TransportMode mode,
 										bool allowMultipleLobes) const
 {
@@ -48,14 +48,14 @@ void MirrorMaterial::compute_scattering(SurfaceIsect *si, //MemoryArena &arena,
 
 	si->bsdf.reset(new BSDF(*si));
 
-    Color R = Kr->evaluate(*si).clamp();
+    Spectrum R = Kr->evaluate(*si).clamp();
     if (!R.is_black())
         si->bsdf->add_BxDF(new SpecularReflection(R, new FresnelNoOp()));
 }
 /*
 MirrorMaterial *CreateMirrorMaterial(const TextureParams &mp) {
-    std::shared_ptr<Texture<Color>> Kr =
-        mp.GetColorTexture("Kr", Color(0.9f));
+    std::shared_ptr<Texture<Spectrum>> Kr =
+        mp.GetSpectrumTexture("Kr", Spectrum(0.9f));
     std::shared_ptr<Texture<Float>> bumpMap =
         mp.GetFloatTextureOrNull("bumpmap");
     return new MirrorMaterial(Kr, bumpMap);

@@ -7,7 +7,7 @@
 #define VALLEY_CORE_FILM_H
 
 #include"valley.h"
-#include"color.h"
+#include"spectrum.h"
 #include"geometry.h"
 #include"image.h"
 #include"filter.h"
@@ -18,7 +18,7 @@ namespace valley
 struct Pixel
 {
 	Pixel() { FilterWeightSum = 0.0; }
-	Color c;
+	Spectrum c;
 	Float FilterWeightSum;
 };
 
@@ -85,7 +85,7 @@ public:
 		return (Bounds2i)floatBounds;
 	}
 
-	void add(const Point2f& pFilm, Color& L, Float sampleWeight = 1.0)
+	void add(const Point2f& pFilm, Spectrum& L, Float sampleWeight = 1.0)
 	{
 		// Compute sample's raster bounds
 		Point2f pFilmDiscrete = pFilm - Vector2f(0.5f, 0.5f);
@@ -149,12 +149,12 @@ public:
 		}
 
 		//执行像素滤波的最后一步除法操作
-		std::unique_ptr<Color[]> colors(new Color[width * height]);
+		std::unique_ptr<Spectrum[]> colors(new Spectrum[width * height]);
 
 		for(int i = 0; i < width * height; ++i)
 		{ 
 			Pixel& p = pixels[i];
-			Color& c = colors[i];
+			Spectrum& c = colors[i];
 
 			if (p.FilterWeightSum != 0)
 				c = p.c / p.FilterWeightSum;

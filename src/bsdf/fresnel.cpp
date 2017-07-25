@@ -36,28 +36,28 @@ Float FrDielectric(Float cosThetaI, Float etaI, Float etaT)
 // https: //seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
 //计算金属等导体的反射率，导体会吸收而不是透射光线，k为吸收率
 //待检查
-Color FrConductor(Float cosThetaI, const Color &etai,
-				  const Color &etat, const Color &k) 
+Spectrum FrConductor(Float cosThetaI, const Spectrum &etai,
+				  const Spectrum &etat, const Spectrum &k) 
 {
 	cosThetaI = Clamp(cosThetaI, -1, 1);
-	Color eta = etat / etai;
-	Color etak = k / etai;
+	Spectrum eta = etat / etai;
+	Spectrum etak = k / etai;
 
 	Float cosThetaI2 = cosThetaI * cosThetaI;
 	Float sinThetaI2 = 1. - cosThetaI2;
-	Color eta2 = eta * eta;
-	Color etak2 = etak * etak;
+	Spectrum eta2 = eta * eta;
+	Spectrum etak2 = etak * etak;
 
-	Color t0 = eta2 - etak2 - sinThetaI2;
-	Color a2plusb2 = (t0 * t0 + 4 * eta2 * etak2).sqrt();
-	Color t1 = a2plusb2 + cosThetaI2;
-	Color a = (0.5f * (a2plusb2 + t0)).sqrt();
-	Color t2 = (Float)2 * cosThetaI * a;
-	Color Rs = (t1 - t2) / (t1 + t2);
+	Spectrum t0 = eta2 - etak2 - sinThetaI2;
+	Spectrum a2plusb2 = (t0 * t0 + 4 * eta2 * etak2).sqrt();
+	Spectrum t1 = a2plusb2 + cosThetaI2;
+	Spectrum a = (0.5f * (a2plusb2 + t0)).sqrt();
+	Spectrum t2 = (Float)2 * cosThetaI * a;
+	Spectrum Rs = (t1 - t2) / (t1 + t2);
 
-	Color t3 = cosThetaI2 * a2plusb2 + sinThetaI2 * sinThetaI2;
-	Color t4 = t2 * sinThetaI2;
-	Color Rp = Rs * (t3 - t4) / (t3 + t4);
+	Spectrum t3 = cosThetaI2 * a2plusb2 + sinThetaI2 * sinThetaI2;
+	Spectrum t4 = t2 * sinThetaI2;
+	Spectrum Rp = Rs * (t3 - t4) / (t3 + t4);
 
 	return 0.5 * (Rp + Rs);
 }

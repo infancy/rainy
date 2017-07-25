@@ -50,18 +50,18 @@ class MirrorMaterial : public Material
 {
   public:
     // MirrorMaterial Public Methods
-    MirrorMaterial(const std::shared_ptr<Texture<Color>> &r,
+    MirrorMaterial(const std::shared_ptr<Texture<Spectrum>> &r,
                    const std::shared_ptr<Texture<Float>> &bump = nullptr) {
         Kr = r;
         bumpMap = bump;
     }
-    void compute_scattering(SurfaceIsect *si, //MemoryArena &arena,
+    void compute_scattering(SurfaceInteraction *si, //MemoryArena &arena,
                             TransportMode mode,
                             bool allowMultipleLobes) const;
 
   private:
     // MirrorMaterial Private Data
-    std::shared_ptr<Texture<Color>> Kr;
+    std::shared_ptr<Texture<Spectrum>> Kr;
     std::shared_ptr<Texture<Float>> bumpMap;
 };
 

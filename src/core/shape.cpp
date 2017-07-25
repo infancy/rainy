@@ -43,7 +43,8 @@ Shape::Shape(const Transform* ObjectToWorld, const Transform* WorldToObject,
 	: ObjectToWorld(ObjectToWorld),
 	WorldToObject(WorldToObject),
 	reverseOrientation(reverseOrientation),
-	transformSwapsHandedness(ObjectToWorld->SwapsHandedness()) {
+	transformSwapsHandedness(ObjectToWorld->SwapsHandedness())	//坐标系的左右手规则是否发生变化
+{
 	//++nShapesCreated;
 }
 
@@ -62,10 +63,10 @@ bool Shape::intersectP(const Ray &ray,
 //		  \/
 //		------
 //		isect
-Isect Shape::sample(const Isect &isect, const Point2f &u,
+Interaction Shape::sample(const Interaction &isect, const Point2f &u,
 	Float *pdf) const 
 {
-	Isect next = sample(u, pdf);
+	Interaction next = sample(u, pdf);
 	Vector3f wi = next.p - isect.p;
 	if (wi.LengthSquared() == 0)
 		*pdf = 0;
@@ -85,11 +86,11 @@ Isect Shape::sample(const Isect &isect, const Point2f &u,
 	return next;
 }
 
-Float Shape::pdf(const Isect &ref, const Vector3f &wi) const 
+Float Shape::pdf(const Interaction &ref, const Vector3f &wi) const 
 {
 	// Intersect sample ray with area light geometry
 	Ray ray = ref.generate_ray(wi);
-	SurfaceIsect isectLight;
+	SurfaceInteraction isectLight;
 	// Ignore any alpha textures used for trimming the shape when performing
 	// this intersection. Hack for the "San Miguel" scene, where this is used
 	// to make an invisible area light.
@@ -104,7 +105,7 @@ Float Shape::pdf(const Isect &ref, const Vector3f &wi) const
 
 Float Shape::solid_angle(const Point3f &p, int nSamples) const
 {
-	Isect ref(p, Normal3f(), Vector3f(), Vector3f(0, 0, 1));
+	Interaction ref(p, Normal3f(), Vector3f(), Vector3f(0, 0, 1));
 	double solidAngle = 0;
 
 	for (int i = 0; i < nSamples; ++i)
@@ -112,7 +113,7 @@ Float Shape::solid_angle(const Point3f &p, int nSamples) const
 		//Point2f u{ RadicalInverse(0, i), RadicalInverse(1, i) };
 		Point2f u{ 0, 1 };
 		Float pdf;
-		Isect pShape = sample(ref, u, &pdf);
+		Interaction pShape = sample(ref, u, &pdf);
 		if (pdf > 0 && !intersectP(Ray(p, pShape.p - p, .999f)))
 		{
 			solidAngle += 1 / pdf;

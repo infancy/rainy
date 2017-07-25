@@ -1,5 +1,5 @@
 #include"primitive.h"
-#include"intersection.h"
+#include"interaction.h"
 #include"shape.h"
 
 namespace valley
@@ -17,7 +17,7 @@ bool GeometricPrimitive::intersectP(const Ray &r) const
 }
 
 bool GeometricPrimitive::intersect(
-	const Ray& r, SurfaceIsect* isect) const 
+	const Ray& r, SurfaceInteraction* isect) const 
 {
 	if (!shape->intersect(r, isect)) return false;
 
@@ -43,7 +43,7 @@ const Material *GeometricPrimitive::get_material() const
 }
 
 void GeometricPrimitive::compute_scattering(
-	SurfaceIsect *isect, 
+	SurfaceInteraction *isect, 
 //	MemoryArena &arena,
 	TransportMode mode,
 	bool allowMultipleLobes) const
@@ -73,7 +73,7 @@ const Material* Accelerator::get_material() const
 }
 
 void Accelerator::compute_scattering(
-	SurfaceIsect* isect,
+	SurfaceInteraction* isect,
 //	MemoryArena &arena,
 	TransportMode mode,
 	bool allowMultipleLobes) const 
@@ -83,7 +83,7 @@ void Accelerator::compute_scattering(
 		"called; should have gone to GeometricPrimitive";
 }
 
-bool Accelerator::intersect(const Ray& r, SurfaceIsect* isect) const
+bool Accelerator::intersect(const Ray& r, SurfaceInteraction* isect) const
 {
 	bool flag = false;
 	for (auto& p : primitives)

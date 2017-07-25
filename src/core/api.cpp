@@ -18,7 +18,7 @@ void valley_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
 			std::cout << "\n";
 			Ray ray;
 			ior->camera->generate_ray(sampler.get_CameraSample(x, y), &ray);
-			Color L = ior->Li(ray, scene, sampler);
+			Spectrum L = ior->Li(ray, scene, sampler);
 			std::cout << "\n";
 		}
 		else
@@ -34,7 +34,6 @@ void valley_render()
 	valley_interactive(integrator, *scene);
 #else
 	integrator->render(*scene);
-	integrator->camera->film->flush();
 #endif
 };
 //valley_CornellBox_integrator
@@ -60,23 +59,23 @@ shared_ptr<Scene> valley_create_scene()
 	auto sigma(make_shared<ConstantTexture<Float>>(Float(1.f)));
 
 	//diffuse material
-	auto green_kd(make_shared<ConstantTexture<Color>>(Color{ 0.156863f, 0.803922f, 0.172549f }));
+	auto green_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 0.156863f, 0.803922f, 0.172549f }));
 	auto green_mat(make_shared<Matte>(green_kd, sigma));
 
-	auto red_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f, 0.152941f, 0.152941f }));
+	auto red_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 0.803922f, 0.152941f, 0.152941f }));
 	auto red_mat(make_shared<Matte>(red_kd, sigma));
 
-	auto blue_kd(make_shared<ConstantTexture<Color>>(Color{ 0.156863f, 0.172549f, 0.803922f }));
+	auto blue_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 0.156863f, 0.172549f, 0.803922f }));
 	auto blue_mat(make_shared<Matte>(blue_kd, sigma));
 
-	auto white_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f }));
+	auto white_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 0.803922f }));
 	auto white_mat(make_shared<Matte>(white_kd, sigma));
 
 	//mirror material
-	auto mirror_ball_kd(make_shared<ConstantTexture<Color>>(Color{ 1.f }));
+	auto mirror_ball_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 1.f }));
 	auto mirror_ball(make_shared<MirrorMaterial>(mirror_ball_kd));
 
-	auto mirror_wall_kd(make_shared<ConstantTexture<Color>>(Color{ 0.803922f }));
+	auto mirror_wall_kd(make_shared<ConstantTexture<Spectrum>>(Spectrum{ 0.803922f }));
 	auto mirror_wall(make_shared<MirrorMaterial>(mirror_wall_kd));
 
 	//glossy material
@@ -133,18 +132,18 @@ shared_ptr<Scene> valley_create_scene()
 	Transform ml_upp(Transform(Translate(Vector3f(0, 49.99, 0))*Rotate(90, Vector3f(1, 0, 0))));
 	shared_ptr<Shape> light_up{ new Rectangle(ml_up, false, 30, 30) };
 	//区域光必须进行多次采样
-	shared_ptr<AreaLight> area_light{ new DiffuseAreaLight(ml_upp, Color(50), 4, light_up) };
+	shared_ptr<AreaLight> area_light{ new DiffuseAreaLight(ml_upp, Spectrum(50), 4, light_up) };
 
 	//带区域光源的 shape ： L = Le（area） + Li(material->brdf),两者是不关联的
 	primitive.push_back(make_unique<GeometricPrimitive>(light_up, white_mat, area_light));
 
 	//LightToWorld
 	Transform ml_point(Transform(Translate(Vector3f(0, 45, 0))));
-	shared_ptr<Light> point_light{ new PointLight(ml_point, Color(5000,5000,5000)) };
+	shared_ptr<Light> point_light{ new PointLight(ml_point, Spectrum(5000,5000,5000)) };
 
 	//Transform ml_distance;
 	//最后的Vector3f表示的是光源所处的方向，而不是光源发出的光的方向
-	//shared_ptr<Light> distance_light{ new DistantLight(ml_distance, Color(0,2,2), Vector3f(-1, -1, 0)) };
+	//shared_ptr<Light> distance_light{ new DistantLight(ml_distance, Spectrum(0,2,2), Vector3f(-1, -1, 0)) };
 
 	std::vector<std::shared_ptr<Light>> lights;
 	lights.push_back(area_light);

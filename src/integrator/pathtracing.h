@@ -24,9 +24,9 @@ public:
 		lightDistribution = std::unique_ptr<LightDistribution>{new PowerDistribution(scene)};
 	}
 
-	Color Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
+	Spectrum Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
 	{
-		Color L(0.f), beta(1.f);	//beta为 path throughput 项
+		Spectrum L(0.f), beta(1.f);	//beta为 path throughput 项
 		Ray ray(r);
 		bool specularBounce = false;	//记录最后一个顶点是否有镜面反射
 		int bounces;
@@ -47,7 +47,7 @@ public:
 				<< ", beta = " << beta;
 
 			// Intersect _ray_ with scene and store intersection in _isect_
-			SurfaceIsect isect;
+			SurfaceInteraction isect;
 			bool foundIntersection = scene.intersect(ray, &isect);
 
 			// Possibly add emitted light at intersection
@@ -90,7 +90,7 @@ public:
 			if (isect.bsdf->components_num(
 				BxDF_type(static_cast<int>(BxDF_type::All) & ~static_cast<int>(BxDF_type::Specular))) > 0)
 			{
-				Color Ld = beta * uniform_sample_one_light(isect, scene, //arena,
+				Spectrum Ld = beta * uniform_sample_one_light(isect, scene, //arena,
 					sampler, false, distrib);
 				DVLOG(2) << "Sampled direct lighting Ld = " << Ld;
 				//if (Ld.IsBlack()) ++zeroRadiancePaths;
@@ -102,7 +102,7 @@ public:
 			Vector3f wo = -ray.d, wi;
 			Float pdf;
 			BxDF_type flags;
-			Color f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf,
+			Spectrum f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf,
 				BxDF_type::All, &flags);
 			DVLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
 			if (f.is_black() || pdf == 0.f) break;
@@ -131,7 +131,7 @@ public:
 			{
 				// Importance sample the BSSRDF
 				SurfaceInteraction pi;
-				Color S = isect.bssrdf->Sample_S(
+				Spectrum S = isect.bssrdf->Sample_S(
 					scene, sampler.Get1D(), sampler.Get2D(), arena, &pi, &pdf);
 				DCHECK(!std::isinf(beta.y()));
 				if (S.IsBlack() || pdf == 0) break;
@@ -142,7 +142,7 @@ public:
 					lightDistribution->Lookup(pi.p));
 
 				// Account for the indirect subsurface scattering component
-				Color f = pi.bsdf->Sample_f(pi.wo, &wi, sampler.Get2D(), &pdf,
+				Spectrum f = pi.bsdf->Sample_f(pi.wo, &wi, sampler.Get2D(), &pdf,
 					BSDF_ALL, &flags);
 				if (f.IsBlack() || pdf == 0) break;
 				beta *= f * AbsDot(wi, pi.shading.n) / pdf;
@@ -154,7 +154,7 @@ public:
 
 			// Possibly terminate the path with Russian roulette.
 			// Factor out radiance scaling due to refraction in rrBeta.
-			Color rrBeta = beta * etaScale;
+			Spectrum rrBeta = beta * etaScale;
 			//3次反射后开始考虑终止路径
 			if (rrBeta.max_value() < rrThreshold && bounces > 3)
 			{

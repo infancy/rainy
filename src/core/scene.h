@@ -31,12 +31,12 @@ public:
 	}
 	const Bounds3f& WorldBound() const { return worldBound; }
 
-	bool intersect(const Ray& ray, SurfaceIsect* isect) const;
+	bool intersect(const Ray& ray, SurfaceInteraction* isect) const;
 
 	bool intersectP(const Ray& ray) const;
 	//transmittance
-	bool intersectTr(Ray ray, Sampler& sampler, SurfaceIsect* isect,
-		Color* transmittance) const;
+	bool intersectTr(Ray ray, Sampler& sampler, SurfaceInteraction* isect,
+		Spectrum* transmittance) const;
 
 public:
 	std::vector<std::shared_ptr<Light>> lights;

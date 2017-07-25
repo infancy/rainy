@@ -8,7 +8,7 @@
 
 #include"valley.h"
 #include"geometry.h"
-#include"color.h"
+#include"spectrum.h"
 
 namespace valley
 {
@@ -18,7 +18,7 @@ class Texture
 {
 public:
 	//返回模板类型
-	virtual T evaluate(const SurfaceIsect& si) const = 0;
+	virtual T evaluate(const SurfaceInteraction& si) const = 0;
 	virtual ~Texture() {}
 };
 
@@ -27,14 +27,14 @@ class ConstantTexture : public Texture<T> {
 public:
 	// ConstantTexture Public Methods
 	ConstantTexture(const T& value) : value(value) {}
-	T evaluate(const SurfaceIsect&) const { return value; }
+	T evaluate(const SurfaceInteraction&) const { return value; }
 
 private:
 	T value;
 };
 
 //using constant = Texture<Float>;
-//using Color4 = Texture<Color>;
+//using Spectrum4 = Texture<Spectrum>;
 
 }	//namespace valley
 

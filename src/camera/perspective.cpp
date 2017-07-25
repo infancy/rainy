@@ -1,6 +1,6 @@
 #include"perspective.h"
 #include"sampling.h"
-#include"intersection.h"
+#include"interaction.h"
 #include"light.h"
 
 namespace valley
@@ -89,7 +89,7 @@ Float PerspectiveCamera::generate_ray(const CameraSample& sample, Ray* ray) cons
 	return 1;
 }
 
-Color PerspectiveCamera::We(const Ray& ray, Point2f* pRaster2) const
+Spectrum PerspectiveCamera::We(const Ray& ray, Point2f* pRaster2) const
 {
 	Float cosTheta = Dot(ray.d, camera_to_world(Vector3f(0, 0, 1)));
 	if (cosTheta <= 0) return 0;
@@ -112,7 +112,7 @@ Color PerspectiveCamera::We(const Ray& ray, Point2f* pRaster2) const
 
 	// Return importance for point on image plane
 	Float cos2Theta = cosTheta * cosTheta;
-	return Color(1 / (Area * lensArea * cos2Theta * cos2Theta));
+	return Spectrum(1 / (Area * lensArea * cos2Theta * cos2Theta));
 }
 
 void PerspectiveCamera::pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) const
@@ -142,13 +142,13 @@ void PerspectiveCamera::pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) con
 	*pdfDir = 1 / (Area * cosTheta * cosTheta * cosTheta);
 }
 
-Color PerspectiveCamera::sample_Wi(const Isect& ref, const Point2f& u,
+Spectrum PerspectiveCamera::sample_Wi(const Interaction& ref, const Point2f& u,
 	Vector3f* wi, Float* pdf, Point2f* pRaster, Visibility* vis) const
 {
 	// Uniformly sample a lens interaction _lensIntr_
 	Point2f pLens = lensRadius * concentric_sample_disk(u);
 	Point3f pLensWorld = camera_to_world(Point3f(pLens.x, pLens.y, 0));
-	Isect lensIntr(pLensWorld);
+	Interaction lensIntr(pLensWorld);
 	lensIntr.n = Normal3f(camera_to_world(Vector3f(0, 0, 1)));
 
 	// Populate arguments and compute the importance value

@@ -14,7 +14,7 @@ namespace valley
 void save_ppm(std::string filename, const Float* pixel,
 			 int width, int height);
 
-void save_ppm(std::string filename, const Color* pixel,
+void save_ppm(std::string filename, const Spectrum* pixel,
 	int width, int height, bool red = false);
 
 }	//namespace valley

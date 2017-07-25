@@ -1,5 +1,5 @@
 #include"image.h"
-#include"color.h"
+#include"spectrum.h"
 #include<fstream>
 
 namespace valley
@@ -35,7 +35,7 @@ void save_ppm(std::string filename, const Float* pixel,
 	}
 }
 
-void save_ppm(std::string filename, const Color* pixel,
+void save_ppm(std::string filename, const Spectrum* pixel,
 	int width, int height, bool red)
 {
 	std::ofstream ppm(filename);

@@ -4,7 +4,7 @@
 namespace valley
 {
 
-Color LambertianTransmission::sample_f(const Vector3f& wo, Vector3f* wi,
+Spectrum LambertianTransmission::sample_f(const Vector3f& wo, Vector3f* wi,
 	const Point2f& u, Float* Pdf, BxDF_type* sampledType) const 
 {
 	*wi = cosine_sample_hemisphere(u);

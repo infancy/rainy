@@ -40,8 +40,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include"valley.h"
 #include"transform.h"
-#include"intersection.h"
-#include"color.h"
+#include"interaction.h"
+#include"spectrum.h"
 
 namespace valley
 {
@@ -71,28 +71,28 @@ public:
 	virtual ~Light();
 
 	//总发射功率，只需要计算近似值即可
-	virtual Color power() const = 0;
+	virtual Spectrum power() const = 0;
 
 	//在开始渲染前记录场景的一些特征，如DistanceLight记录场景包围盒
 	virtual void preprocess(const Scene &scene) {}
 
 	//光源向-r方向发射的辐射度
 	//比如当视点发出的光线与场景中物体未相交时，计算光源朝视点方向的辐射度
-	virtual Color Le(const RayDifferential &r) const;
+	virtual Spectrum Le(const RayDifferential &r) const;
 
-	virtual Float pdf_Li(const Isect& ref, const Vector3f &wi) const = 0;
+	virtual Float pdf_Li(const Interaction& ref, const Vector3f &wi) const = 0;
 	virtual void  pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
 						 Float *pdfDir) const = 0;
 
-	//传入Isect，返回到达该点的incident Radiance及其的方向wi
+	//传入Interaction，返回到达该点的incident Radiance及其的方向wi
 	//当光源是面积光源时，还需传入一个[0,1]^2范围的采样点，对光源上一点进行采样并记录概率密度值pdf
 	//Visibility用于记录阴影光线等信息
-	virtual Color sample_Li(const Isect& ref, const Point2f& u,
+	virtual Spectrum sample_Li(const Interaction& ref, const Point2f& u,
 							Vector3f* wi, Float* pdf, Visibility* vis) const = 0;
 
 	//pdf of position、pdf of direction
 	//在光源上取一点 pos，在 pos 上取一个方向 dir，生成 ray
-	virtual Color sample_Le(const Point2f& u1, const Point2f& u2,  Ray* ray, 
+	virtual Spectrum sample_Le(const Point2f& u1, const Point2f& u2,  Ray* ray, 
 							Normal3f* nLight, Float* pdfPos, Float* pdfDir) const = 0;
 
 public:
@@ -110,22 +110,22 @@ class Visibility
 public:
 	Visibility() {}
 	// VisibilityTester Public Methods
-	Visibility(const Isect& p0, const Isect& p1)
+	Visibility(const Interaction& p0, const Interaction& p1)
 		: p0(p0), p1(p1) {}
 
 	//某些光线传输方法需要这两个点
-	const Isect& P0() const { return p0; }
-	const Isect& P1() const { return p1; }
+	const Interaction& P0() const { return p0; }
+	const Interaction& P1() const { return p1; }
 
 	bool unoccluded(const Scene &scene) const;
 
 	//transmittance
 	//处理在介质中的光线与目标点之间的辐射度
-	Color Tr(const Scene &scene, Sampler &sampler) const;
+	Spectrum Tr(const Scene &scene, Sampler &sampler) const;
 
 private:
 	//交点、光源，用于构造阴影光线
-	Isect p0, p1;
+	Interaction p0, p1;
 };
 
 class AreaLight : public Light 
@@ -137,7 +137,7 @@ public:
 		int nSamples);
 
 	//根据光源表面一点与表面法线计算出射方向上的发射辐射度L
-	virtual Color L(const Isect& intr, const Vector3f& w) const = 0;
+	virtual Spectrum L(const Interaction& intr, const Vector3f& w) const = 0;
 };
 
 }	//namespace valley

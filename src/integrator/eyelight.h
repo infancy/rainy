@@ -17,10 +17,10 @@ public:
 	EyeLight(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler) :
 		SamplerIntegrator(camera, sampler, 1) {}
 
-	virtual Color Li(const Ray& ray, const Scene &scene,
+	virtual Spectrum Li(const Ray& ray, const Scene &scene,
 		Sampler &sampler, int depth = 0) const 
 	{
-		SurfaceIsect isect;
+		SurfaceInteraction isect;
 
 		//cout << "x: " << x << " y: " << y << "\n";
 		if (scene.intersect(ray, &isect))
@@ -28,12 +28,12 @@ public:
 			Float dotLN = Dot(isect.n, -ray.d);
 
 			if (dotLN > 0.f)
-				return Color(dotLN);
+				return Spectrum(dotLN);
 			else
-				return Color(-dotLN, 0, 0);
+				return Spectrum(-dotLN, 0, 0);
 		}
 		else
-			return Color();
+			return Spectrum();
 	}
 };
 
