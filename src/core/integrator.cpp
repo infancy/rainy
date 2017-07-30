@@ -73,7 +73,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 	bool handleMedia, bool has_specular)
 {
 	// Sample light source with multiple importance sampling
-	BxDF_type bsdfFlags = has_specular ? BxDF_type::All : BxDF_type::NonSpecular;
+	BxDFType bsdfFlags = has_specular ? BxDFType::All : BxDFType::NonSpecular;
 	Spectrum Ld(0.f);
 	Vector3f wi;
 	Float lightPdf = 0, scatteringPdf = 0;
@@ -81,7 +81,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 
 	//计算Li,wi,pdf
 	Spectrum Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
-	DVLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
+	VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
 		<< wi << ", pdf: " << lightPdf;
 
 	//从光源部分进行采样
@@ -90,7 +90,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 		//分段函数
 		// Compute BSDF or phase function's value for light sample
 		Spectrum f;
-		if (it.in_surface()) 
+		if (it.on_surface()) 
 		{
 			// Evaluate BSDF for light sampling strategy
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
@@ -100,7 +100,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			f *= AbsDot(wi, isect.shading.n);
 			scatteringPdf = isect.bsdf->pdf(isect.wo, wi, bsdfFlags);
 
-			DVLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
+			VLOG(2) << "  surf f*dot :" << f << ", scatteringPdf: " << scatteringPdf;
 		}
 		/*
 		else 
@@ -120,24 +120,24 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			if (handleMedia) 
 			{
 				Li *= visibility.Tr(scene, sampler);
-				DVLOG(2) << "  after Tr, Li: " << Li;
+				VLOG(2) << "  after Tr, Li: " << Li;
 			}
 			else 
 			{
 				if (!visibility.unoccluded(scene))
 				{
-					DVLOG(2) << "  shadow ray blocked";
+					VLOG(2) << "  shadow ray blocked";
 					Li = Spectrum(0.f);
 				}
 				else
-					DVLOG(2) << "  shadow ray unoccluded";
+					VLOG(2) << "  shadow ray unoccluded";
 			}
 
 			// Add light's contribution to reflected radiance
 			//计算最终结果
 			if (!Li.is_black()) 
 			{
-				if (is_delta_light(light.flags))	//如果是delta光源，无需使用MIS
+				if (is_DeltaLight(light.flags))	//如果是delta光源，无需使用MIS
 					Ld += f * Li / lightPdf;		//对普通光源，pdf=1，对区域光源，pdf=1/area
 				else 
 				{
@@ -150,20 +150,20 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 	}
 
 	//从bsdf部分进行采样
-	if (!is_delta_light(light.flags)) 
+	if (!is_DeltaLight(light.flags)) 
 	{
 		Spectrum f;
 		bool sampledSpecular = false;
-		if (it.in_surface()) 
+		if (it.on_surface()) 
 		{
 			// Sample scattered direction for surface interactions
-			BxDF_type sampledType;
+			BxDFType sampledType;
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
 			//使用采样点对bsdf进行采样，得到wi，pdf，f
 			f = isect.bsdf->sample_f(isect.wo, &wi, uScattering, &scatteringPdf,
 				bsdfFlags, &sampledType);
 			f *= AbsDot(wi, isect.shading.n);
-			sampledSpecular = static_cast<int>(sampledType & BxDF_type::Specular) != 0;
+			sampledSpecular = static_cast<int>(sampledType & BxDFType::Specular) != 0;
 		}
 		/*
 		else 
@@ -175,7 +175,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			scatteringPdf = p;
 		}
 		*/
-		DVLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
+		VLOG(2) << "  BSDF / phase sampling f: " << f << ", scatteringPdf: " <<
 			scatteringPdf;
 
 		if (!f.is_black() && scatteringPdf > 0) 
@@ -242,8 +242,6 @@ void check_radiance(int x, int y, Spectrum& L)
 // SamplerIntegrator Method Definitions
 void SamplerIntegrator::render(const Scene &scene)
 {
-	preprocess(scene, *sampler);
-
 	for (int y = 0; y < camera->film->height; ++y)
 		for (int x = 0; x < camera->film->width; ++x)
 		{
@@ -270,7 +268,7 @@ Spectrum SamplerIntegrator::specular_reflect(const Ray& ray, const SurfaceIntera
 	// Compute specular reflection direction _wi_ and BSDF value
 	Vector3f wo = isect.wo, wi;
 	Float pdf;
-	BxDF_type type = BxDF_type::Reflection | BxDF_type::Specular;
+	BxDFType type = BxDFType::Reflection | BxDFType::Specular;
 	Spectrum f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
 
 	// Return contribution of specular reflection
@@ -315,7 +313,7 @@ Spectrum SamplerIntegrator::specular_transmit(const Ray& ray, const SurfaceInter
 	const Point3f &p = isect.p;
 	const Normal3f &ns = isect.shading.n;
 	const BSDF &bsdf = *isect.bsdf;
-	BxDF_type type = BxDF_type::Transmission | BxDF_type::Specular;
+	BxDFType type = BxDFType::Transmission | BxDFType::Specular;
 
 	Spectrum f = bsdf.sample_f(wo, &wi, sampler.get_2D(), &pdf, type);
 	Spectrum L = Spectrum(0.f);

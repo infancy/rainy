@@ -16,6 +16,7 @@
 #include"texture.h"
 
 #include"camera/perspective.h"
+#include"integrator/bdpt.h"
 #include"integrator/eyelight.h"
 #include"integrator/pathtracing.h"
 #include"integrator/directlight.h"
@@ -46,7 +47,7 @@ void valley_render();
 
 shared_ptr<Scene> valley_create_scene();
 
-Integrator* valley_create_integrator();
+Integrator* valley_create_integrator(const Scene& scene);
 
 }	//namespace valley
 

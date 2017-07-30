@@ -18,7 +18,7 @@ class LambertianReflection : public BxDF
 public:
 	// LambertianReflection Public Methods
 	LambertianReflection(const Spectrum& R)
-		: BxDF(BxDF_type(BxDF_type::Reflection | BxDF_type::Diffuse)), R(R) {}
+		: BxDF(BxDFType(BxDFType::Reflection | BxDFType::Diffuse)), R(R) {}
 
 	Spectrum f(const Vector3f& wo, const Vector3f& wi) const { return R * InvPi; }
 	Spectrum rho(const Vector3f&, int, const Point2f*) const { return R; }
@@ -34,14 +34,14 @@ class LambertianTransmission : public BxDF {
 public:
 	// LambertianTransmission Public Methods
 	LambertianTransmission(const Spectrum& T)
-		: BxDF(BxDF_type(BxDF_type::Transmission | BxDF_type::Diffuse)), T(T) {}
+		: BxDF(BxDFType(BxDFType::Transmission | BxDFType::Diffuse)), T(T) {}
 
 	Spectrum f(const Vector3f& wo, const Vector3f& wi) const { return T * InvPi; }
 	Spectrum rho(const Vector3f&, int, const Point2f*) const { return T; }
 	Spectrum rho(int, const Point2f*, const Point2f*) const  { return T; }
 
 	Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
-					 Float* pdf, BxDF_type* sampledType) const;
+					 Float* pdf, BxDFType* sampledType) const;
 	Float pdf(const Vector3f& wo, const Vector3f& wi) const;
 	//std::string ToString() const;
 

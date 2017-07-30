@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace valley
 {
 
-enum class Light_type
+enum class LightType
 {
 	DeltaPosition  = 1,
 	DeltaDirection = 2,
@@ -54,10 +54,10 @@ enum class Light_type
 	Infinite       = 8
 };
 
-inline bool is_delta_light(int flags) 
+inline bool is_DeltaLight(int flags) 
 {
-	return flags & static_cast<int>(Light_type::DeltaPosition) ||
-		   flags & static_cast<int>(Light_type::DeltaDirection);
+	return flags & static_cast<int>(LightType::DeltaPosition) ||
+		   flags & static_cast<int>(LightType::DeltaDirection);
 }
 
 class Light

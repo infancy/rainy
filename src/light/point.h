@@ -18,7 +18,7 @@ public:
 	PointLight(const Transform& LightToWorld,
 		//const MediumInterface &mediumInterface, 
 		const Spectrum& i) : 
-		Light((int)Light_type::DeltaPosition, LightToWorld /*,mediumInterface*/),
+		Light((int)LightType::DeltaPosition, LightToWorld /*,mediumInterface*/),
 		pLight(LightToWorld(Point3f(0, 0, 0))),
 		intensity(i) {}
 

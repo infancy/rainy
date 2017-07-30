@@ -41,7 +41,7 @@ namespace valley
 // BxDF Method Definitions
 //在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
 Spectrum BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
-					   Float* Pdf, BxDF_type* sampledType) const
+					   Float* Pdf, BxDFType* sampledType) const
 {
 	// Cosine-sample the hemisphere, flipping the direction if necessary
 	*wi = cosine_sample_hemisphere(u);
@@ -95,7 +95,7 @@ BSDF::BSDF(const SurfaceInteraction& si, Float eta) :
 	ss(Normalize(si.shading.dpdu)),	//x轴
 	ts(Cross(ns, ss)) {}	//y轴
 
-int BSDF::components_num(BxDF_type flags) const
+int BSDF::components_num(BxDFType flags) const
 {
 	int num = 0;
 	for (int i = 0; i < nBxDFs; ++i)
@@ -104,7 +104,7 @@ int BSDF::components_num(BxDF_type flags) const
 }
 
 Spectrum BSDF::f(const Vector3f &woW, const Vector3f &wiW,
-				BxDF_type flags) const 
+				BxDFType flags) const 
 {
 	Vector3f wi = world_to_local(wiW), wo = world_to_local(woW);
 	if (wo.z == 0.f) return 0.f;
@@ -114,16 +114,16 @@ Spectrum BSDF::f(const Vector3f &woW, const Vector3f &wiW,
 
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(flags) &&
-		    ((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Reflection)) ||
-			(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Transmission))))
+		    ((reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Reflection)) ||
+			(!reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Transmission))))
 			f += bxdfs[i]->f(wo, wi);
 	return f;
 }
 
 //uniformSamplePoint in [0,1]^2
 Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
-					 const Point2f& u, Float *pdf, BxDF_type type,
-					 BxDF_type* sampledType) const
+					 const Point2f& u, Float *pdf, BxDFType type,
+					 BxDFType* sampledType) const
 {
 
 	// 选择被采样的BxDF
@@ -131,7 +131,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	if (matchingComps == 0) 
 	{
 		*pdf = 0;
-		if (sampledType) *sampledType = BxDF_type(0);
+		if (sampledType) *sampledType = BxDFType(0);
 		return Spectrum(0);
 	}
 	int comp =
@@ -164,45 +164,45 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 
 	Spectrum f = bxdf->sample_f(wo, &wi, uRemapped, pdf, sampledType);
 	
-	DVLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
+	VLOG(2) << "For wo = " << wo << ", sampled f = " << f << ", pdf = "
 	<< *pdf << ", ratio = " << ((*pdf > 0) ? (f / *pdf) : Spectrum(0.f))
 	<< ", wi = " << wi;
 	
 	if (*pdf == 0) 
 	{
-		if (sampledType) *sampledType = BxDF_type(0);
+		if (sampledType) *sampledType = BxDFType(0);
 		return 0;
 	}
 	*wiWorld = local_to_world(wi);
 
 	// Compute overall PDF with all matching _BxDF_s
 	//对于Specular，无需执行均值计算，因为其delta分布，pdf=1
-	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1)
+	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i] != bxdf && bxdfs[i]->match(type))
 				*pdf += bxdfs[i]->pdf(wo, wi);
 	if (matchingComps > 1) *pdf /= matchingComps;
 
 	// Compute value of BSDF for sampled direction
-	if (!static_cast<bool>(bxdf->type & BxDF_type::Specular) && matchingComps > 1) 
+	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1) 
 	{
 		bool reflect = Dot(*wiWorld, ng) * Dot(woWorld, ng) > 0;
 		f = 0.;
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i]->match(type) &&
-				((reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Reflection)) ||
-				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDF_type::Transmission))))
+				((reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Reflection)) ||
+				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Transmission))))
 				f += bxdfs[i]->f(wo, wi);
 	}
 	
-	DVLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
+	VLOG(2) << "Overall f = " << f << ", pdf = " << *pdf << ", ratio = "
 	<< ((*pdf > 0) ? (f / *pdf) : Spectrum(0.f));
 	
 	return f;
 }
 
 Spectrum BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
-				  BxDF_type flags) const
+				  BxDFType flags) const
 {
 	Spectrum ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
@@ -212,7 +212,7 @@ Spectrum BSDF::rho(int nSamples, const Point2f* samples1, const Point2f* samples
 }
 
 Spectrum BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
-				  BxDF_type flags) const 
+				  BxDFType flags) const 
 {
 	Spectrum ret(0.f);
 	for (int i = 0; i < nBxDFs; ++i)
@@ -222,7 +222,7 @@ Spectrum BSDF::rho(const Vector3f& wo, int nSamples, const Point2f* samples,
 }
 
 Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
-	BxDF_type flags) const 
+	BxDFType flags) const 
 {
 	if (nBxDFs == 0) return 0.f;
 	Vector3f wo = world_to_local(woWorld), wi = world_to_local(wiWorld);

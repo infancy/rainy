@@ -18,8 +18,10 @@ namespace valley
 struct Pixel
 {
 	Pixel() { FilterWeightSum = 0.0; }
-	Spectrum c;
+	Spectrum color;
 	Float FilterWeightSum;
+	Spectrum splat;
+	Float pad;	//占位
 };
 
 /*
@@ -74,7 +76,7 @@ public:
 	void scale(Float factor)
 	{
 		for (int i = 0; i < width * height; ++i)
-			pixels[i].c *= factor;
+			pixels[i].color *= factor;
 	}
 
 	Bounds2i get_sample_bounds() const 
@@ -85,7 +87,7 @@ public:
 		return (Bounds2i)floatBounds;
 	}
 
-	void add(const Point2f& pFilm, Spectrum& L, Float sampleWeight = 1.0)
+	void add(const Point2f pFilm, Spectrum L, Float sampleWeight = 1.0)
 	{
 		// Compute sample's raster bounds
 		Point2f pFilmDiscrete = pFilm - Vector2f(0.5f, 0.5f);
@@ -95,7 +97,13 @@ public:
 		p0 = Max(p0, bounds.pMin);
 		p1 = Min(p1, bounds.pMax);
 
+		//if (!(InsideExclusive(p0, bounds) && InsideExclusive(p1, bounds))) 
+		if(!(p0.x < p1.x && p0.y < p1.y))
+			return;
+
 		// Loop over filter support and add sample to pixel arrays
+		VLOG(2) << "add_Li p0: " << p0.x << ' ' << p0.y << " p1: " << p1.x << ' ' << p1.y
+			<< " pFilm: " << pFilm.x << ' ' << pFilm.y;
 
 		// Precompute $x$ and $y$ filter table offsets
 		//预先计算所有的偏移量
@@ -126,9 +134,27 @@ public:
 				// Update pixel values with filtered sample contribution
 				//根据像素滤波方程分别计算分子和分母，在最后保存图像的时候进行除法操作
 				Pixel& pixel = (*this)(y, x);
-				pixel.c += L * sampleWeight * filterWeight;    //这里是 += 号
+				pixel.color += L * sampleWeight * filterWeight;    //这里是 += 号
 				pixel.FilterWeightSum += filterWeight;
+
+				//VLOG(1) << " x: " << x << " y: " << y << " L: " << L << " color: " << pixel.c 
+				//	<< " weight: " << pixel.FilterWeightSum;
 			}
+	}
+
+	void add_splat(const Point2f &p, Spectrum L)
+	{
+		if (L.isnan() || L.luminance() < 0 || std::isinf(L.luminance())) 
+		{
+			LOG(ERROR) << "Ignoring splatted spectrum values at " << p.x << " " << p.y;
+			return;
+		}
+
+		if (!InsideExclusive((Point2i)p, bounds)) 
+			return;
+
+		Pixel& pixel = (*this)(p.y, p.x);
+		pixel.splat = L;
 	}
 
 	void flush()
@@ -157,7 +183,10 @@ public:
 			Spectrum& c = colors[i];
 
 			if (p.FilterWeightSum != 0)
-				c = p.c / p.FilterWeightSum;
+				c = p.color / p.FilterWeightSum;
+			c += p.splat;
+			//VLOG(1) << "i: " << i << " color: " << p.c << " weight: " << p.FilterWeightSum
+			//	<< " final: " << c;
 		}
 
 		save_ppm(filename, colors.get(), width, height);

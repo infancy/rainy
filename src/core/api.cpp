@@ -8,17 +8,13 @@ namespace valley
 
 void valley_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
 {
-	RandomSampler sampler(1);
-	ior->preprocess(scene, sampler);
 	int x = 0, y = 0;
 
 	while (std::cin >> x >> y)
 		if (y >= 0 && y < ior->camera->film->height && x >= 0 && x < ior->camera->film->width)
 		{
 			std::cout << "\n";
-			Ray ray;
-			ior->camera->generate_ray(sampler.get_CameraSample(x, y), &ray);
-			Spectrum L = ior->Li(ray, scene, sampler);
+			ior->interactive(scene, x, y);
 			std::cout << "\n";
 		}
 		else
@@ -29,27 +25,44 @@ void valley_render()
 {
 	shared_ptr<Scene> scene = valley_create_scene();
 	//shared_ptr<Integrator> integrator = valley_create_integrator(); 不接受等号的重载
-	shared_ptr<Integrator> integrator(valley_create_integrator());
-#if defined _DEBUG
+	shared_ptr<Integrator> integrator(valley_create_integrator(*scene));
+	
+//#define VALLEY_INTERACTIVE_MODE
+//#define VALLEY_STDERR_LOG
+
+#if defined VALLEY_STDERR_LOG
+	FLAGS_v = 1;
+	FLAGS_logtostderr = true;
+#endif
+
+#if defined VALLEY_INTERACTIVE_MODE //_DEBUG
 	valley_interactive(integrator, *scene);
 #else
 	integrator->render(*scene);
 #endif
 };
 //valley_CornellBox_integrator
-Integrator* valley_create_integrator()
+Integrator* valley_create_integrator(const Scene& scene)
 {
+	//Film* film{ new Film(128, 128, new BoxFilter) };
 	Film* film{ new Film(512, 512, new BoxFilter) };
+
 	Point3f eye(0, 0, -130), tar(0, 0, 0);
 	Vector3f up(0, 1, 0);
 	auto camera{ make_shared<PerspectiveCamera>(eye, tar, up, 60, film) };
 
+#define VALLEY_FIXED_RANDOM
+#if defined VALLEY_FIXED_RANDOM
+	auto sampler{ make_shared<RandomSampler>(1, 1234) };
+#else
 	srand(time(nullptr));
-	auto sampler{ make_shared<RandomSampler>(4, rand()) };
+	auto sampler{ make_shared<RandomSampler>(1, rand()) };
+#endif
 
 	//选择策略
 	//return  make_shared<Integrator>(new RayCast(camera, sampler, 1));
-	return new PathTracing(camera, sampler);
+	//return new BDPT(scene, camera, sampler, 3, 3);
+	return new PathTracing(scene, camera, sampler);
 }
 //valley_CornellBox_scene
 shared_ptr<Scene> valley_create_scene()
@@ -115,12 +128,12 @@ shared_ptr<Scene> valley_create_scene()
 	//primitive
 	vector<shared_ptr<Primitive>> primitive;
 
-	primitive.push_back(make_unique<GeometricPrimitive>(ball, mirror_ball));
+	primitive.push_back(make_unique<GeometricPrimitive>(ball, white_mat));
 
-	primitive.push_back(make_unique<GeometricPrimitive>(wall_back, white_mat));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_back, blue_mat));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_left, green_mat));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_right, red_mat));
-	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, mirror_wall));
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, white_mat));
 
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_up, white_mat));
 
@@ -133,13 +146,12 @@ shared_ptr<Scene> valley_create_scene()
 	shared_ptr<Shape> light_up{ new Rectangle(ml_up, false, 30, 30) };
 	//区域光必须进行多次采样
 	shared_ptr<AreaLight> area_light{ new DiffuseAreaLight(ml_upp, Spectrum(50), 4, light_up) };
-
 	//带区域光源的 shape ： L = Le（area） + Li(material->brdf),两者是不关联的
 	primitive.push_back(make_unique<GeometricPrimitive>(light_up, white_mat, area_light));
 
 	//LightToWorld
-	Transform ml_point(Transform(Translate(Vector3f(0, 45, 0))));
-	shared_ptr<Light> point_light{ new PointLight(ml_point, Spectrum(5000,5000,5000)) };
+	//Transform ml_point(Transform(Translate(Vector3f(0, 45, 0))));
+	//shared_ptr<Light> point_light{ new PointLight(ml_point, Spectrum(5000,5000,5000)) };
 
 	//Transform ml_distance;
 	//最后的Vector3f表示的是光源所处的方向，而不是光源发出的光的方向

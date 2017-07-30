@@ -32,8 +32,8 @@ public:
 	Spectrum operator*(const float f) const { return Spectrum(r * f, g * f, b * f, a * f); }
 	Spectrum operator/(const float f) const { return operator*(1.f / f); }
 
-	Spectrum& operator*=(const float f) { r *= f; g *= f; b *= f; a *= f; return *this; }
-	Spectrum& operator/=(const float f) { return operator*=(1.f / f); }
+	Spectrum& operator*=(const Float f) { r *= f; g *= f; b *= f; a *= f; return *this; }
+	Spectrum& operator/=(const Float f) { return operator*=(1.f / f); }
 
 	bool operator==(const Spectrum& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
 	bool operator!=(const Spectrum& c) const { return !operator==(c); }

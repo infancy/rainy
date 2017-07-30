@@ -67,7 +67,7 @@ Float PerspectiveCamera::generate_ray(const CameraSample& sample, Ray* ray) cons
 	Point3f pFilm(sample.pFilm.x, sample.pFilm.y, 0);
 	Point3f pCamera = raster_to_camera(pFilm);
 
-	*ray = Ray(Point3f(0, 0, 0), Vector3f(pCamera));
+	*ray = Ray(Point3f(0, 0, 0), Normalize(Vector3f(pCamera)));
 
 	// Modify ray for depth of field
 	if (lensRadius > 0) 
@@ -119,7 +119,8 @@ void PerspectiveCamera::pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) con
 {
 	// Interpolate camera matrix and fail if $\w{}$ is not forward-facing
 	Float cosTheta = Dot(ray.d, camera_to_world(Vector3f(0, 0, 1)));
-	if (cosTheta <= 0) {
+	if (cosTheta <= 0) 
+	{
 		*pdfPos = *pdfDir = 0;
 		return;
 	}
@@ -131,7 +132,8 @@ void PerspectiveCamera::pdf_We(const Ray& ray, Float* pdfPos, Float* pdfDir) con
 	// Return zero probability for out of bounds points
 	Bounds2i sampleBounds = film->get_sample_bounds();
 	if (pRaster.x < sampleBounds.pMin.x || pRaster.x >= sampleBounds.pMax.x ||
-		pRaster.y < sampleBounds.pMin.y || pRaster.y >= sampleBounds.pMax.y) {
+		pRaster.y < sampleBounds.pMin.y || pRaster.y >= sampleBounds.pMax.y)
+	{
 		*pdfPos = *pdfDir = 0;
 		return;
 	}

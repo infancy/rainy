@@ -46,7 +46,7 @@ public:
 	const Distribution1D* lookup(const Point3f &p) const { return distrib.get(); }
 
 private:
-	std::unique_ptr<Distribution1D> distrib;
+	std::shared_ptr<Distribution1D> distrib;
 };
 
 inline std::unique_ptr<Distribution1D> light_power_distribution(const Scene &scene)
@@ -75,7 +75,7 @@ public:
 	const Distribution1D* lookup(const Point3f &p) const { return distrib.get(); }
 
 private:
-	std::unique_ptr<Distribution1D> distrib;
+	std::shared_ptr<Distribution1D> distrib;
 };
 
 }	//namespace valley

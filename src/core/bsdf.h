@@ -52,7 +52,7 @@ inline Float Cos2Theta(const Vector3f &w) { return w.z * w.z; }
 inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.z * wp.z > 0; }
 inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z * wp.z > 0; }
 
-enum class BxDF_type 
+enum class BxDFType 
 {
 	//每个type至少有Re或Tr之一
 	Reflection   = 1 << 0,
@@ -66,30 +66,30 @@ enum class BxDF_type
 	All			 = Reflection | Transmission | Diffuse | Glossy | Specular
 };
 
-constexpr BxDF_type operator&(BxDF_type a, BxDF_type b)
+constexpr BxDFType operator&(BxDFType a, BxDFType b)
 {
-	return static_cast<BxDF_type>(static_cast<int>(a) & static_cast<int>(b));
+	return static_cast<BxDFType>(static_cast<int>(a) & static_cast<int>(b));
 }
-constexpr BxDF_type operator|(BxDF_type a, BxDF_type b)
+constexpr BxDFType operator|(BxDFType a, BxDFType b)
 {
-	return static_cast<BxDF_type>(static_cast<int>(a) | static_cast<int>(b));
+	return static_cast<BxDFType>(static_cast<int>(a) | static_cast<int>(b));
 }
 
 //某些光线传输算法需要对BRDF和BTDF进行区分，所以对BxDF加入type成员
 class BxDF 
 {
 public:
-	BxDF(BxDF_type t) : type(t) {}
+	BxDF(BxDFType t) : type(t) {}
 	virtual ~BxDF() {}
 	
-	bool match(BxDF_type t) const { return (t & type) == type; }	
+	bool match(BxDFType t) const { return (t & type) == type; }	
 
 	//针对给定方向返回分布函数值
 	virtual Spectrum f(const Vector3f& wo, const Vector3f& wi) const = 0;
 
 	//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
 	virtual Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
-						   Float* Pdf, BxDF_type* sampledType = nullptr) const;
+						   Float* Pdf, BxDFType* sampledType = nullptr) const;
 
 	//针对某些无法通过闭式计算反射率的BxDF，可用rho来估算（使用蒙特卡洛方法）
 	//rho_hemisphere_direction
@@ -102,7 +102,7 @@ public:
 	virtual Float pdf(const Vector3f& wo, const Vector3f& wi) const;
 	//virtual std::string ToString() const = 0;
 
-	const BxDF_type type;
+	const BxDFType type;
 };
 
 class BSDF 
@@ -112,27 +112,27 @@ public:
 	~BSDF() {}				//使用系统的 new 和 delete
 
 	void add_BxDF(BxDF* b);
-	int components_num(BxDF_type flags = BxDF_type::All) const;
+	int components_num(BxDFType flags = BxDFType::All) const;
 
 	Vector3f world_to_local(const Vector3f& v) const;
 	Vector3f local_to_world(const Vector3f& v) const;
 
 	//针对给定方向返回分布函数值
 	Spectrum f(const Vector3f& woW, const Vector3f& wiW,
-			  BxDF_type flags = BxDF_type::All) const;
+			  BxDFType flags = BxDFType::All) const;
 
 	//根据采样值从bxdf[n]中选取一个bxdf（sampleType即为该bxdf），计算sample_f，得到wi，pdf
 	//然后需对pdf进行均值计算以得到平均值，最后计算f(wo,wi)
 	Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u, Float* pdf,
-					 BxDF_type type = BxDF_type::All, BxDF_type* sampledType = nullptr) const;
+					 BxDFType type = BxDFType::All, BxDFType* sampledType = nullptr) const;
 
 	Spectrum rho(int nSamples, const Point2f* samples1, const Point2f* samples2,
-				BxDF_type flags = BxDF_type::All) const;
+				BxDFType flags = BxDFType::All) const;
 	Spectrum rho(const Vector3f& wo, int nSamples, const Point2f* samples,
-				BxDF_type flags = BxDF_type::All) const;
+				BxDFType flags = BxDFType::All) const;
 
 	Float pdf(const Vector3f& wo, const Vector3f& wi,
-			  BxDF_type flags = BxDF_type::All) const;
+			  BxDFType flags = BxDFType::All) const;
 	//std::string ToString() const;
 
 public:

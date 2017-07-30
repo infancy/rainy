@@ -23,6 +23,7 @@ bool Rectangle::intersect(const Ray &r, SurfaceInteraction* isect
 	//tHit = (point - ray.o) * normal / (ray.d * normal); 
 	Float tmpa = (vec.x * n.x + vec.y * n.y + vec.z * n.z);
 	Float tmpb = (ray.d.x * n.x + ray.d.y * n.y + ray.d.z * n.z);
+	//CHECK(!(tmpa == 0 && tmpb == 0)) //在矩形上发射的平行于矩形的光线
 	if (tmpb == 0.f)
 		return false;		//平行
 	Float t = tmpa / tmpb;

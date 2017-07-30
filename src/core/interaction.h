@@ -50,8 +50,8 @@ public:
 		return Ray(origin, d, (p - isect.p).Length() * (1 - ShadowEpsilon));
 	}
 
-	bool in_surface() const { return n != Normal3f(0, 0, 0); }
-	bool in_medium() const { return !in_surface(); }
+	bool on_surface() const { return n != Normal3f(0, 0, 0); }
+	bool on_medium() const { return !on_surface(); }
 
 public:
 	Point3f p;			//交点
@@ -92,7 +92,7 @@ public:
 	const Shape*	 shape     = nullptr;  
 	const Primitive* primitive = nullptr;
 	
-	std::unique_ptr<BSDF>  bsdf	  = nullptr;
+	std::shared_ptr<BSDF>  bsdf	  = nullptr;
 	//std::unique_ptr<BSSRDF> bssrdf = nullptr;
 
 	//存储由凹凸纹理或三角形网格逐顶点法线插值得到的着色法线等值

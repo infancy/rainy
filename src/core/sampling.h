@@ -41,9 +41,11 @@ inline Float power_heuristic(int nf, Float fPdf, int ng, Float gPdf)
 	return (f * f) / (f * f + g * g);
 }
 
-class Distribution1D
+struct Distribution1D
 {
-public:
+	std::vector<Float> func, cdf;
+	Float funcInt;	//函数积分值
+
 	//传入light_power[n]
 	Distribution1D(const Float* f, int n) : func(f, f + n), cdf(n + 1)
 	{
@@ -127,10 +129,6 @@ public:
 		CHECK(index >= 0 && index < count());
 		return func[index] / (funcInt * count());
 	}
-
-public:
-	std::vector<Float> func, cdf;
-	Float funcInt;	//函数积分值
 };
 
 }	//namespace valley

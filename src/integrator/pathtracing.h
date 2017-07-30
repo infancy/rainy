@@ -15,13 +15,11 @@ namespace valley
 class PathTracing : public SamplerIntegrator
 {
 public:
-	PathTracing(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,  int maxDepth = 3,
-		const Float rrThreshold = 1.f) :
-		SamplerIntegrator(camera, sampler, maxDepth), rrThreshold(rrThreshold){}
-
-	void preprocess(const Scene &scene, Sampler &sampler)
+	PathTracing(const Scene &scene, std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,  
+		int maxDepth = 3, const Float rrThreshold = 1.f) :
+		SamplerIntegrator(camera, sampler), maxDepth(maxDepth), rrThreshold(rrThreshold)
 	{
-		lightDistribution = std::unique_ptr<LightDistribution>{new PowerDistribution(scene)};
+		lightDistribution = std::unique_ptr<LightDistribution>{ new PowerDistribution(scene) };
 	}
 
 	Spectrum Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
@@ -43,7 +41,7 @@ public:
 		{
 			// Find next path vertex and accumulate contribution
 			//计算下一个顶点和累计贡献
-			DVLOG(2) << "Path tracer bounce " << bounces << ", current L = " << L
+			VLOG(2) << "Path tracer bounce " << bounces << ", current L = " << L
 				<< ", beta = " << beta;
 
 			// Intersect _ray_ with scene and store intersection in _isect_
@@ -59,13 +57,13 @@ public:
 				if (foundIntersection)
 				{
 					L += beta * isect.Le(-ray.d);
-					DVLOG(2) << "Added Le -> L = " << L;
+					VLOG(2) << "Added Le -> L = " << L;
 				}
 				else
 				{
 					for (const auto &light : scene.infiniteLights)
 						L += beta * light->Le(ray);
-					DVLOG(2) << "Added infinite area lights -> L = " << L;
+					VLOG(2) << "Added infinite area lights -> L = " << L;
 				}
 			}
 
@@ -76,7 +74,7 @@ public:
 			isect.compute_scattering(ray, TransportMode::Importance, true);
 			if (!isect.bsdf)
 			{
-				DVLOG(2) << "Skipping intersection due to null bsdf";
+				VLOG(2) << "Skipping intersection due to null bsdf";
 				ray = isect.generate_ray(ray.d);
 				bounces--;
 				continue;
@@ -88,11 +86,11 @@ public:
 			// (But skip this for perfectly specular BSDFs.)
 			//不能直接在镜面 BSDF上计算着色，跳过
 			if (isect.bsdf->components_num(
-				BxDF_type(static_cast<int>(BxDF_type::All) & ~static_cast<int>(BxDF_type::Specular))) > 0)
+				BxDFType(static_cast<int>(BxDFType::All) & ~static_cast<int>(BxDFType::Specular))) > 0)
 			{
 				Spectrum Ld = beta * uniform_sample_one_light(isect, scene, //arena,
 					sampler, false, distrib);
-				DVLOG(2) << "Sampled direct lighting Ld = " << Ld;
+				VLOG(2) << "Sampled direct lighting Ld = " << Ld;
 				//if (Ld.IsBlack()) ++zeroRadiancePaths;
 				CHECK_GE(Ld.luminance(), 0.f);
 				L += Ld;
@@ -101,21 +99,21 @@ public:
 			// Sample BSDF to get new path direction
 			Vector3f wo = -ray.d, wi;
 			Float pdf;
-			BxDF_type flags;
+			BxDFType flags;
 			Spectrum f = isect.bsdf->sample_f(wo, &wi, sampler.get_2D(), &pdf,
-				BxDF_type::All, &flags);
-			DVLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
+				BxDFType::All, &flags);
+			VLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
 			if (f.is_black() || pdf == 0.f) break;
 			//更新throughput
 			beta *= f * AbsDot(wi, isect.shading.n) / pdf;
 
-			DVLOG(2) << "Updated beta = " << beta;
+			VLOG(2) << "Updated beta = " << beta;
 			CHECK_GE(beta.luminance(), 0.f);
 			DCHECK(!std::isinf(beta.luminance()));
 
-			specularBounce = static_cast<int>(flags & BxDF_type::Specular) != 0;
-			if (static_cast<int>(flags & BxDF_type::Specular) && 
-				static_cast<int>(flags & BxDF_type::Transmission)) 
+			specularBounce = static_cast<int>(flags & BxDFType::Specular) != 0;
+			if (static_cast<int>(flags & BxDFType::Specular) && 
+				static_cast<int>(flags & BxDFType::Transmission)) 
 			{
 				Float eta = isect.bsdf->eta;
 				// Update the term that tracks radiance scaling for refraction
@@ -169,6 +167,7 @@ public:
 
 private:
 	//const std::string lightSampleStrategy;
+	int maxDepth;
 	const Float rrThreshold;	//Russian Roulette Threshold
 	std::unique_ptr<LightDistribution> lightDistribution;
 };

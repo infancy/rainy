@@ -78,9 +78,9 @@ Interaction Shape::sample(const Interaction &isect, const Point2f &u,
 		Float dist = DistanceSquared(isect.p, next.p);
 		Float cosine = AbsDot(next.n, -wi);
 		*pdf *= dist / cosine;
-		//DLOG(INFO) << "isect.p: " << isect.p << " next.p: " << next.p << " DistSquared: " << dist;
-		//DLOG(INFO) << "next.n: " << next.n << " -wi: " << -wi << " AbsDot(intr.n, -wi):" << cosine;
-		//DLOG(INFO) << "lightPdf: " << *pdf;
+		//LOG(INFO) << "isect.p: " << isect.p << " next.p: " << next.p << " DistSquared: " << dist;
+		//LOG(INFO) << "next.n: " << next.n << " -wi: " << -wi << " AbsDot(intr.n, -wi):" << cosine;
+		//LOG(INFO) << "lightPdf: " << *pdf;
 		if (std::isinf(*pdf)) *pdf = 0.f;
 	}
 	return next;

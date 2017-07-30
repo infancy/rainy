@@ -36,13 +36,13 @@ class SpecularReflection : public BxDF
 {
 public:
 	SpecularReflection(const Spectrum &R, Fresnel *fresnel)
-		: BxDF(BxDF_type::Reflection | BxDF_type::Specular),
+		: BxDF(BxDFType::Reflection | BxDFType::Specular),
 		R(R), fresnel(fresnel) {}
 
 	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
 	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-				   Float *pdf, BxDF_type *sampledType) const
+				   Float *pdf, BxDFType*sampledType) const
 	{
 		// Compute perfect specular reflection direction
 		*wi = Vector3f(-wo.x, -wo.y, wo.z);
@@ -66,14 +66,14 @@ class SpecularTransmission : public BxDF
 public:
 	SpecularTransmission(const Spectrum &T, Float etaA, Float etaB,
 		TransportMode mode)
-		: BxDF(BxDF_type(BxDF_type::Transmission| BxDF_type::Specular)),
+		: BxDF(BxDFType(BxDFType::Transmission| BxDFType::Specular)),
 		T(T), etaA(etaA), etaB(etaB),
 		fresnel(etaA, etaB), mode(mode) {}
 
 	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
 	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-		Float *pdf, BxDF_type *sampledType) const
+		Float *pdf, BxDFType*sampledType) const
 	{
 		// Figure out which $\eta$ is incident and which is transmitted
 		bool entering = CosTheta(wo) > 0;
@@ -106,13 +106,13 @@ class FresnelSpecular : public BxDF
 public:
 	FresnelSpecular(const Spectrum &R, const Spectrum &T, Float etaA,
 		Float etaB, TransportMode mode)
-		: BxDF(BxDF_type(BxDF_type::Reflection | BxDF_type::Transmission | BxDF_type::Specular)),
+		: BxDF(BxDFType(BxDFType::Reflection | BxDFType::Transmission | BxDFType::Specular)),
 		R(R), T(T), etaA(etaA), etaB(etaB), mode(mode) {}
 
 	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
 
 	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
-		Float *pdf, BxDF_type *sampledType) const
+		Float *pdf, BxDFType*sampledType) const
 	{
 		//根据反射率来确定是计算反射还是折射
 		Float F = FrDielectric(CosTheta(wo), etaA, etaB);
@@ -123,7 +123,7 @@ public:
 			// Compute perfect specular reflection direction
 			*wi = Vector3f(-wo.x, -wo.y, wo.z);
 			if (sampledType)
-				*sampledType = BxDF_type::Specular | BxDF_type::Reflection;
+				*sampledType = BxDFType::Specular | BxDFType::Reflection;
 			*pdf = F;
 			return F * R / AbsCosTheta(*wi);
 		}
@@ -145,7 +145,7 @@ public:
 			if (mode == TransportMode::Radiance)
 				ft *= (etaI * etaI) / (etaT * etaT);
 			if (sampledType)
-				*sampledType = BxDF_type::Specular | BxDF_type::Transmission;
+				*sampledType = BxDFType::Specular | BxDFType::Transmission;
 			*pdf = 1 - F;
 			return ft / AbsCosTheta(*wi);
 		}

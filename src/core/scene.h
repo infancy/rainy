@@ -25,7 +25,7 @@ public:
 		for (const auto& light : lights)
 		{
 			light->preprocess(*this);
-			if (light->flags & static_cast<int>(Light_type::Infinite))
+			if (light->flags & static_cast<int>(LightType::Infinite))
 				infiniteLights.push_back(light);
 		}
 	}

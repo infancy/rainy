@@ -114,6 +114,9 @@
     <ClCompile Include="..\src\core\interaction.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\integrator\bdpt.cpp">
+      <Filter>integrator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\core\platform.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\spectrum.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\integrator\bdpt.h">
+      <Filter>integrator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

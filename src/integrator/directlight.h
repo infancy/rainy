@@ -15,17 +15,15 @@ namespace valley
 class DirectLight : public SamplerIntegrator
 {
 public:
-	DirectLight(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler, uint32_t maxDepth = 2,
-			bool sampler_all_light = true) :
-		SamplerIntegrator(camera, sampler, maxDepth), sampler_all_light(sampler_all_light) {}
-
-	virtual void preprocess(const Scene& scene, Sampler& sampler) 
+	DirectLight(const Scene& scene, std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler, 
+		uint32_t maxDepth = 2, bool sampler_all_light = true) :
+		SamplerIntegrator(camera, sampler), sampler_all_light(sampler_all_light), maxDepth(maxDepth)
 	{
-		if (sampler_all_light) 
+		if (sampler_all_light)
 		{
 			// Compute number of samples to use for each light
 			for (const auto &light : scene.lights)
-				nLightSamples.push_back(light->nSamples);							
+				nLightSamples.push_back(light->nSamples);
 		}
 	}
 
@@ -74,8 +72,9 @@ public:
 	}
 
 private:
+	int maxDepth;
 	bool sampler_all_light;
-	std::vector<int> nLightSamples;	//记录对每个light的采样数量
+	std::vector<int> nLightSamples;	//记录对每个light的采样数量，用于uniform_sample_all_lights
 };
 
 }	//namespace valley

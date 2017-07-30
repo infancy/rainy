@@ -8,7 +8,7 @@ namespace valley
 // DistantLight Method Definitions
 DistantLight::DistantLight(const Transform &LightToWorld, const Spectrum& L,
 	const Vector3f &wLight)
-	: Light((int)Light_type::DeltaDirection, LightToWorld /*MediumInterface()*/),
+	: Light((int)LightType::DeltaDirection, LightToWorld /*MediumInterface()*/),
 	L(L),
 	wLight(Normalize(LightToWorld(wLight))) {}
 

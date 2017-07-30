@@ -14,8 +14,8 @@ namespace valley
 class EyeLight : public SamplerIntegrator
 {
 public:
-	EyeLight(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler) :
-		SamplerIntegrator(camera, sampler, 1) {}
+	EyeLight(const Scene& scene, std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler) :
+		SamplerIntegrator(camera, sampler) {}
 
 	virtual Spectrum Li(const Ray& ray, const Scene &scene,
 		Sampler &sampler, int depth = 0) const 

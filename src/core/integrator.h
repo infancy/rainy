@@ -35,25 +35,14 @@ Spectrum estimate_direct(const Interaction& it,    const Point2f& uScattering,
 class Integrator 
 {
 public:
-	Integrator(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler,
-		uint32_t maxDepth) : camera(camera), sampler(sampler), maxDepth(maxDepth) {}
+	Integrator(std::shared_ptr<Camera> camera, std::shared_ptr<Sampler> sampler) : 
+		camera(camera), sampler(sampler){}
 	virtual ~Integrator() {}
 
-	//interactive(ray, scene){Li();}
-	//计算沿光线的辐射度
-	virtual Spectrum Li(const Ray& ray, const Scene &scene,
-		Sampler &sampler, int depth = 0) const
-	{
-		std::cerr << "error,should't call Li() in Integrator_base_class\n";
-		return Spectrum();
-	}
-
-	virtual void preprocess(const Scene& scene, Sampler& sampler) {}
 	virtual void render(const Scene &scene) = 0;
+	virtual void interactive(const Scene& scene, int x, int y) = 0;
 
 public:
-	int maxDepth;
-
 	std::shared_ptr<Sampler> sampler;
 	std::shared_ptr<Camera> camera;
 };
@@ -61,11 +50,21 @@ public:
 class SamplerIntegrator : public Integrator
 {
 public:
-	SamplerIntegrator(std::shared_ptr<Camera> camera,  std::shared_ptr<Sampler> sampler,
-			   int maxDepth) : Integrator(camera, sampler, maxDepth) {}
+	SamplerIntegrator(std::shared_ptr<Camera> camera,  std::shared_ptr<Sampler> sampler) : 
+		Integrator(camera, sampler) {}
 	virtual ~SamplerIntegrator() {}
 
 	virtual void render(const Scene& scene) override;
+	virtual void interactive(const Scene& scene, int x, int y)
+	{
+		Ray ray;
+		camera->generate_ray(sampler->get_CameraSample(x, y), &ray);
+		Li(ray, scene, *sampler);
+	}
+
+	//计算沿光线的辐射度
+	virtual Spectrum Li(const Ray& ray, const Scene &scene,
+		Sampler &sampler, int depth = 0) const = 0;
 
 	Spectrum specular_reflect(const Ray& ray, const SurfaceInteraction& isect,
 						  const Scene &scene, Sampler &sampler, int depth) const;
