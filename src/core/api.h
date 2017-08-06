@@ -16,10 +16,11 @@
 #include"texture.h"
 
 #include"camera/perspective.h"
-#include"integrator/bdpt.h"
+//#include"integrator/bdpt.h"
 #include"integrator/eyelight.h"
 #include"integrator/pathtracing.h"
 #include"integrator/directlight.h"
+#include"integrator/sppm.h"
 //#include"integrator/test.h"
 #include"light/diffuse.h"
 #include"light/distance.h"

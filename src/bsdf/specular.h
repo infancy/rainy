@@ -39,7 +39,7 @@ public:
 		: BxDF(BxDFType::Reflection | BxDFType::Specular),
 		R(R), fresnel(fresnel) {}
 
-	Spectrum f(const Vector3f &wo, const Vector3f &wi) const { return Spectrum(0.f); }
+	Spectrum f(const Vector3f &wo, const Vector3f &wi) const override { return Spectrum(0.f); }
 
 	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
 				   Float *pdf, BxDFType*sampledType) const
@@ -58,7 +58,7 @@ public:
 
 private:
 	const Spectrum R;
-	const Fresnel* fresnel;
+	const std::unique_ptr<Fresnel> fresnel;
 };
 
 class SpecularTransmission : public BxDF 

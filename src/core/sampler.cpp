@@ -13,6 +13,14 @@ CameraSample Sampler::get_CameraSample(int x, int y)
 	return cs;
 }
 
+CameraSample Sampler::get_CameraSample(Point2i p)
+{
+	CameraSample cs;
+	cs.pFilm = (Point2f)p + get_2D();
+	cs.pLens = get_2D();
+	return cs;
+}
+
 void Sampler::start_pixel(const Point2i& p)
 {
 	currentPixel = p;

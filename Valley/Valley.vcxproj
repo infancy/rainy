@@ -38,7 +38,7 @@
     <ClCompile Include="..\src\core\shape.cpp" />
     <ClCompile Include="..\src\core\stencil.cpp" />
     <ClCompile Include="..\src\core\transform.cpp" />
-    <ClCompile Include="..\src\integrator\bdpt.cpp" />
+    <ClCompile Include="..\src\integrator\sppm.cpp" />
     <ClCompile Include="..\src\light\diffuse.cpp" />
     <ClCompile Include="..\src\light\distance.cpp" />
     <ClCompile Include="..\src\light\point.cpp" />
@@ -79,11 +79,11 @@
     <ClInclude Include="..\src\core\texture.h" />
     <ClInclude Include="..\src\core\transform.h" />
     <ClInclude Include="..\src\core\valley.h" />
-    <ClInclude Include="..\src\integrator\bdpt.h" />
     <ClInclude Include="..\src\integrator\eyelight.h" />
     <ClInclude Include="..\src\integrator\lightracing.h" />
     <ClInclude Include="..\src\integrator\pathtracing.h" />
     <ClInclude Include="..\src\integrator\directlight.h" />
+    <ClInclude Include="..\src\integrator\sppm.h" />
     <ClInclude Include="..\src\integrator\whitted.h" />
     <ClInclude Include="..\src\light\diffuse.h" />
     <ClInclude Include="..\src\light\distance.h" />

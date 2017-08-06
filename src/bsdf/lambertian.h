@@ -20,7 +20,7 @@ public:
 	LambertianReflection(const Spectrum& R)
 		: BxDF(BxDFType(BxDFType::Reflection | BxDFType::Diffuse)), R(R) {}
 
-	Spectrum f(const Vector3f& wo, const Vector3f& wi) const { return R * InvPi; }
+	Spectrum f(const Vector3f& wo, const Vector3f& wi) const override { return R * InvPi; }
 	Spectrum rho(const Vector3f&, int, const Point2f*) const { return R; }
 	Spectrum rho(int, const Point2f*, const Point2f*) const  { return R; }
 	//std::string ToString() const;
@@ -36,7 +36,7 @@ public:
 	LambertianTransmission(const Spectrum& T)
 		: BxDF(BxDFType(BxDFType::Transmission | BxDFType::Diffuse)), T(T) {}
 
-	Spectrum f(const Vector3f& wo, const Vector3f& wi) const { return T * InvPi; }
+	Spectrum f(const Vector3f& wo, const Vector3f& wi) const override { return T * InvPi; }
 	Spectrum rho(const Vector3f&, int, const Point2f*) const { return T; }
 	Spectrum rho(int, const Point2f*, const Point2f*) const  { return T; }
 

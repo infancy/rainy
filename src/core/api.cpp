@@ -31,7 +31,7 @@ void valley_render()
 //#define VALLEY_STDERR_LOG
 
 #if defined VALLEY_STDERR_LOG
-	FLAGS_v = 1;
+	FLAGS_v = 2;
 	FLAGS_logtostderr = true;
 #endif
 
@@ -51,18 +51,18 @@ Integrator* valley_create_integrator(const Scene& scene)
 	Vector3f up(0, 1, 0);
 	auto camera{ make_shared<PerspectiveCamera>(eye, tar, up, 60, film) };
 
-#define VALLEY_FIXED_RANDOM
+//#define VALLEY_FIXED_RANDOM
 #if defined VALLEY_FIXED_RANDOM
-	auto sampler{ make_shared<RandomSampler>(1, 1234) };
+	auto sampler{ make_shared<RandomSampler>(16, 1234) };
 #else
 	srand(time(nullptr));
-	auto sampler{ make_shared<RandomSampler>(1, rand()) };
+	auto sampler{ make_shared<RandomSampler>(16, rand()) };
 #endif
 
 	//Ñ¡Ôñ²ßÂÔ
 	//return  make_shared<Integrator>(new RayCast(camera, sampler, 1));
-	//return new BDPT(scene, camera, sampler, 3, 3);
-	return new PathTracing(scene, camera, sampler);
+	return new SPPM(scene, camera, sampler, 64, 100000, 3, 0.5);
+	//return new PathTracing(scene, camera, sampler);
 }
 //valley_CornellBox_scene
 shared_ptr<Scene> valley_create_scene()
@@ -128,13 +128,12 @@ shared_ptr<Scene> valley_create_scene()
 	//primitive
 	vector<shared_ptr<Primitive>> primitive;
 
-	primitive.push_back(make_unique<GeometricPrimitive>(ball, white_mat));
+	primitive.push_back(make_unique<GeometricPrimitive>(ball, mirror_ball));
 
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_back, blue_mat));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_left, green_mat));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_right, red_mat));
-	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, white_mat));
-
+	primitive.push_back(make_unique<GeometricPrimitive>(wall_down, mirror_wall));
 	primitive.push_back(make_unique<GeometricPrimitive>(wall_up, white_mat));
 
 

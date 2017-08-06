@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include"valley.h"
 #include"geometry.h"
+#include"spectrum.h"
 //#include"interaction.h"
 
 namespace valley
@@ -85,7 +86,11 @@ public:
 	bool match(BxDFType t) const { return (t & type) == type; }	
 
 	//针对给定方向返回分布函数值
-	virtual Spectrum f(const Vector3f& wo, const Vector3f& wi) const = 0;
+	virtual Spectrum f(const Vector3f& wo, const Vector3f& wi) const
+	{
+		LOG(ERROR) << "should'n call this function";
+		return Spectrum(0);
+	}
 
 	//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
 	virtual Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
@@ -144,7 +149,7 @@ private:
 
 	static constexpr int MaxBxDFs = 8;	//最大挂载8个BxDF组件
 	int nBxDFs = 0;
-	BxDF* bxdfs[MaxBxDFs];
+	std::unique_ptr<BxDF> bxdfs[MaxBxDFs];
 	//friend class MixMaterial;
 };
 
@@ -153,7 +158,7 @@ private:
 inline void BSDF::add_BxDF(BxDF* b)
 {
 	CHECK_LT(nBxDFs, MaxBxDFs);
-	bxdfs[nBxDFs++] = b;
+	bxdfs[nBxDFs++].reset(b);
 }
 
 inline Vector3f BSDF::world_to_local(const Vector3f &v) const

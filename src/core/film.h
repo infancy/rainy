@@ -15,9 +15,9 @@
 namespace valley
 {
 
-struct Pixel
+struct FilmPixel
 {
-	Pixel() { FilterWeightSum = 0.0; }
+	FilmPixel() { FilterWeightSum = 0.0; }
 	Spectrum color;
 	Float FilterWeightSum;
 	Spectrum splat;
@@ -42,7 +42,7 @@ public:
 		 bool save_type = false) 
 		: width(width), height(height), 
 		bounds(Point2i(0, 0), Point2i(width, height)),
-		pixels(new Pixel[width * height]),
+		pixels(new FilmPixel[width * height]),
 		filter(filter), FilterRadius(filter->radius), 
 		invFilterRadius(1. / FilterRadius.x, 1. / FilterRadius.y),
 		filename(filename), 
@@ -62,12 +62,12 @@ public:
 
 	~Film() {}
 
-	Pixel& operator()(int y, int x)
+	FilmPixel& operator()(int y, int x)
 	{
 		DCHECK(0 <= x && x < width && 0 <= y && y < height);
 		return pixels[y * width + x];
 	}
-	Pixel operator()(int y, int x) const
+	FilmPixel operator()(int y, int x) const
 	{
 		DCHECK(0 <= x && x < width && 0 <= y && y < height);
 		return pixels[y * width + x];
@@ -133,7 +133,7 @@ public:
 
 				// Update pixel values with filtered sample contribution
 				//根据像素滤波方程分别计算分子和分母，在最后保存图像的时候进行除法操作
-				Pixel& pixel = (*this)(y, x);
+				FilmPixel& pixel = (*this)(y, x);
 				pixel.color += L * sampleWeight * filterWeight;    //这里是 += 号
 				pixel.FilterWeightSum += filterWeight;
 
@@ -153,8 +153,19 @@ public:
 		if (!InsideExclusive((Point2i)p, bounds)) 
 			return;
 
-		Pixel& pixel = (*this)(p.y, p.x);
+		FilmPixel& pixel = (*this)(p.y, p.x);
 		pixel.splat = L;
+	}
+
+	void set_image(const Spectrum* img) const 
+	{
+		int nPixels = bounds.Area();
+		for (int i = 0; i < nPixels; ++i) 
+		{
+			pixels[i].color = img[i];
+			pixels[i].FilterWeightSum = 1;
+			pixels[i].splat = 0;
+		}
 	}
 
 	void flush()
@@ -179,7 +190,7 @@ public:
 
 		for(int i = 0; i < width * height; ++i)
 		{ 
-			Pixel& p = pixels[i];
+			FilmPixel& p = pixels[i];
 			Spectrum& c = colors[i];
 
 			if (p.FilterWeightSum != 0)
@@ -198,7 +209,7 @@ public:
 	//Float resolution; 分辨率为单位面积的上的像素数量
 
 private:
-	std::unique_ptr<Pixel[]> pixels;
+	std::unique_ptr<FilmPixel[]> pixels;
 
 	std::unique_ptr<Filter> filter;
 	Vector2f FilterRadius, invFilterRadius;

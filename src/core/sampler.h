@@ -24,6 +24,7 @@ public:
 	virtual Point2f get_2D() = 0;
 
 	CameraSample get_CameraSample(int x, int y);
+	CameraSample get_CameraSample(Point2i p);
 
 	//调用 start_pixel 生成所有的一个像素中样本
 	virtual void start_pixel(const Point2i& p);

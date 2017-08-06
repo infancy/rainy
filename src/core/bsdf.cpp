@@ -143,7 +143,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	for (int i = 0; i < nBxDFs; ++i)
 		if (bxdfs[i]->match(type) && count-- == 0)	//选择第comp个BxDF
 		{
-			bxdf = bxdfs[i];
+			bxdf = bxdfs[i].get();
 			break;
 		}
 	CHECK_NOTNULL(bxdf);
@@ -179,7 +179,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	//对于Specular，无需执行均值计算，因为其delta分布，pdf=1
 	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
-			if (bxdfs[i] != bxdf && bxdfs[i]->match(type))
+			if (bxdfs[i].get() != bxdf && bxdfs[i]->match(type))
 				*pdf += bxdfs[i]->pdf(wo, wi);
 	if (matchingComps > 1) *pdf /= matchingComps;
 

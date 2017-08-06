@@ -92,7 +92,7 @@ public:
 	const Shape*	 shape     = nullptr;  
 	const Primitive* primitive = nullptr;
 	
-	std::shared_ptr<BSDF>  bsdf	  = nullptr;
+	std::unique_ptr<BSDF>  bsdf	  = nullptr;
 	//std::unique_ptr<BSSRDF> bssrdf = nullptr;
 
 	//存储由凹凸纹理或三角形网格逐顶点法线插值得到的着色法线等值
