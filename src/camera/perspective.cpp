@@ -11,7 +11,10 @@ PerspectiveCamera::PerspectiveCamera(const Point3f eye, const Point3f target, co
 	: Camera(film), lensRadius(lensRadius), 
 	focalDistance(focalDistance)
 {
-	//令近平面为z=1，则相当于Film在z=1的位置
+	// 光栅空间和相机空间的变换从 camera_to_raster（即光栅化中的顺序）更好理解
+	// 而 raster_to_camera 也只是**相机矩阵+像素大小+视距**方法的一种特例而已
+	
+	// 令近平面为z=1，则相当于Film在z=1的位置
 	Float n = 1.f, f = 1000.f, aspect = film->width / film->height;
 	Float tanAng = std::tan(Radians(fovy) / 2), cotAng = 1.f / tanAng;	//用于对x、y坐标进行缩放
 	Area = 4 * tanAng  * tanAng * aspect;			//计算在z=1时screen的面积

@@ -32,6 +32,7 @@
 #if defined(VALLEY_IN_MSVC)
 #include <float.h>
 #include <intrin.h>
+#pragma warning(disable : 4267)  // size_t -> int conversion
 #pragma warning(disable : 4305)  // double constant assigned to float
 #pragma warning(disable : 4244)  // int -> float conversion
 #pragma warning(disable : 4843)  // double -> float conversion

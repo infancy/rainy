@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="bsdf">
+      <UniqueIdentifier>{bab66185-33c6-4ffc-a2de-80db6928ebdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{e6dd776a-a5ed-44e9-b5f4-6abd6813c283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="camera">
+      <UniqueIdentifier>{8dcb347e-2aba-4173-995e-ba7c1be06b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="integrator">
+      <UniqueIdentifier>{3c0e520e-0dc9-470f-8160-9fea006d7576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="light">
+      <UniqueIdentifier>{ff218b4b-1601-4df6-9ab3-7633fbe15411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="material">
+      <UniqueIdentifier>{82d7333a-262f-43f8-ae94-54a351707624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sampler">
+      <UniqueIdentifier>{759936c8-f7bd-4acb-af60-146da85e6c79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shape">
+      <UniqueIdentifier>{9aac3711-9e4f-4a68-ad96-5863feb55701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="texture">
+      <UniqueIdentifier>{58d7e986-47bc-4fef-83e4-36d6f40430d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{f9e0c122-c911-488a-a041-08e9ad989acd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\bsdf\fresnel.cpp">
+      <Filter>bsdf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\bsdf\lambertian.cpp">
+      <Filter>bsdf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\camera\perspective.cpp">
+      <Filter>camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\api.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\bsdf.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\film.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\filter.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\image.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\integrator.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\interaction.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\light.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\material.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\primitive.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\sampler.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\sampling.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\scene.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\shape.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\transform.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\integrator\sppm.cpp">
+      <Filter>integrator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\light\diffuse.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\light\distance.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\light\point.cpp">
+      <Filter>light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\material\glass.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\material\matte.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\material\mirror.cpp">
+      <Filter>material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shape\sphere.cpp">
+      <Filter>shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shape\rectangle.cpp">
+      <Filter>shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\test\test_integrator.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\bsdf\fresnel.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\bsdf\lambertian.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\bsdf\specular.h">
+      <Filter>bsdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\camera\perspective.h">
+      <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\api.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\bsdf.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\camera.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\film.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\filter.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\geometry.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\image.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\integrator.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\interaction.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\light.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\lightdistrib.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\logger.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\material.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\pbrt.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\platform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\primitive.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\rng.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\sampler.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\sampling.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\scene.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\shape.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\spectrum.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\stencil.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\texture.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\transform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\valley.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\directlight.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\eyelight.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\lightracing.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\pathtracing.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\sppm.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\integrator\whitted.h">
+      <Filter>integrator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\light\diffuse.h">
+      <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\light\distance.h">
+      <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\light\point.h">
+      <Filter>light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\material\glass.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\material\matte.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\material\mirror.h">
+      <Filter>material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sampler\random.h">
+      <Filter>sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sampler\uniform.h">
+      <Filter>sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shape\sphere.h">
+      <Filter>shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shape\rectangle.h">
+      <Filter>shape</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

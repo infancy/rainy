@@ -38,7 +38,7 @@ class Film
 {
 public:
 	Film(int width = 800, int height = 600, Filter* filter = nullptr, 
-		 const std::string& filename = std::string("C:\\Users\\wyh32\\Desktop\\valley\\"),
+		 const std::string& filename = std::string("C:/Users/wyh32/Desktop/valley/"),
 		 bool save_type = false) 
 		: width(width), height(height), 
 		bounds(Point2i(0, 0), Point2i(width, height)),

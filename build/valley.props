@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\wyh32\Desktop\Core\Valley\src\utilities;C:\Users\wyh32\Desktop\Core\Valley\src\core;C:\Users\wyh32\Desktop\Core\Valley\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wyh32\Desktop\Core\valley\src\utilities;C:\Users\wyh32\Desktop\Core\valley\src\core;C:\Users\wyh32\Desktop\Core\valley\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

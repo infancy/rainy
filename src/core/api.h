@@ -31,7 +31,7 @@
 #include"sampler/random.h"
 #include"sampler/uniform.h"
 #include"shape/sphere.h"
-#include"shape/Rectangle.h"
+#include"shape/rectangle.h"
 
 using namespace std;
 

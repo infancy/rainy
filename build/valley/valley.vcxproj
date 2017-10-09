@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{E1F369E1-73D8-4C46-8087-F84B91B0BA24}</ProjectGuid>
+    <RootNamespace>valley</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\Library\lib_64d.props" />
+    <Import Project="..\valley.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\Library\lib_64.props" />
+    <Import Project="..\valley.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\bsdf\fresnel.cpp" />
+    <ClCompile Include="..\..\src\bsdf\lambertian.cpp" />
+    <ClCompile Include="..\..\src\camera\perspective.cpp" />
+    <ClCompile Include="..\..\src\core\api.cpp" />
+    <ClCompile Include="..\..\src\core\bsdf.cpp" />
+    <ClCompile Include="..\..\src\core\film.cpp" />
+    <ClCompile Include="..\..\src\core\filter.cpp" />
+    <ClCompile Include="..\..\src\core\image.cpp" />
+    <ClCompile Include="..\..\src\core\integrator.cpp" />
+    <ClCompile Include="..\..\src\core\interaction.cpp" />
+    <ClCompile Include="..\..\src\core\light.cpp" />
+    <ClCompile Include="..\..\src\core\material.cpp" />
+    <ClCompile Include="..\..\src\core\primitive.cpp" />
+    <ClCompile Include="..\..\src\core\sampler.cpp" />
+    <ClCompile Include="..\..\src\core\sampling.cpp" />
+    <ClCompile Include="..\..\src\core\scene.cpp" />
+    <ClCompile Include="..\..\src\core\shape.cpp" />
+    <ClCompile Include="..\..\src\core\transform.cpp" />
+    <ClCompile Include="..\..\src\integrator\sppm.cpp" />
+    <ClCompile Include="..\..\src\light\diffuse.cpp" />
+    <ClCompile Include="..\..\src\light\distance.cpp" />
+    <ClCompile Include="..\..\src\light\point.cpp" />
+    <ClCompile Include="..\..\src\material\glass.cpp" />
+    <ClCompile Include="..\..\src\material\matte.cpp" />
+    <ClCompile Include="..\..\src\material\mirror.cpp" />
+    <ClCompile Include="..\..\src\shape\rectangle.cpp" />
+    <ClCompile Include="..\..\src\shape\sphere.cpp" />
+    <ClCompile Include="..\..\src\test\test_integrator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\bsdf\fresnel.h" />
+    <ClInclude Include="..\..\src\bsdf\lambertian.h" />
+    <ClInclude Include="..\..\src\bsdf\specular.h" />
+    <ClInclude Include="..\..\src\camera\perspective.h" />
+    <ClInclude Include="..\..\src\core\api.h" />
+    <ClInclude Include="..\..\src\core\bsdf.h" />
+    <ClInclude Include="..\..\src\core\camera.h" />
+    <ClInclude Include="..\..\src\core\film.h" />
+    <ClInclude Include="..\..\src\core\filter.h" />
+    <ClInclude Include="..\..\src\core\geometry.h" />
+    <ClInclude Include="..\..\src\core\image.h" />
+    <ClInclude Include="..\..\src\core\integrator.h" />
+    <ClInclude Include="..\..\src\core\interaction.h" />
+    <ClInclude Include="..\..\src\core\light.h" />
+    <ClInclude Include="..\..\src\core\lightdistrib.h" />
+    <ClInclude Include="..\..\src\core\logger.h" />
+    <ClInclude Include="..\..\src\core\material.h" />
+    <ClInclude Include="..\..\src\core\pbrt.h" />
+    <ClInclude Include="..\..\src\core\platform.h" />
+    <ClInclude Include="..\..\src\core\primitive.h" />
+    <ClInclude Include="..\..\src\core\rng.h" />
+    <ClInclude Include="..\..\src\core\sampler.h" />
+    <ClInclude Include="..\..\src\core\sampling.h" />
+    <ClInclude Include="..\..\src\core\scene.h" />
+    <ClInclude Include="..\..\src\core\shape.h" />
+    <ClInclude Include="..\..\src\core\spectrum.h" />
+    <ClInclude Include="..\..\src\core\stencil.h" />
+    <ClInclude Include="..\..\src\core\texture.h" />
+    <ClInclude Include="..\..\src\core\transform.h" />
+    <ClInclude Include="..\..\src\core\valley.h" />
+    <ClInclude Include="..\..\src\integrator\directlight.h" />
+    <ClInclude Include="..\..\src\integrator\eyelight.h" />
+    <ClInclude Include="..\..\src\integrator\lightracing.h" />
+    <ClInclude Include="..\..\src\integrator\pathtracing.h" />
+    <ClInclude Include="..\..\src\integrator\sppm.h" />
+    <ClInclude Include="..\..\src\integrator\whitted.h" />
+    <ClInclude Include="..\..\src\light\diffuse.h" />
+    <ClInclude Include="..\..\src\light\distance.h" />
+    <ClInclude Include="..\..\src\light\point.h" />
+    <ClInclude Include="..\..\src\material\glass.h" />
+    <ClInclude Include="..\..\src\material\matte.h" />
+    <ClInclude Include="..\..\src\material\mirror.h" />
+    <ClInclude Include="..\..\src\sampler\random.h" />
+    <ClInclude Include="..\..\src\sampler\uniform.h" />
+    <ClInclude Include="..\..\src\shape\rectangle.h" />
+    <ClInclude Include="..\..\src\shape\sphere.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

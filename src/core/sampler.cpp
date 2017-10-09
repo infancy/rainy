@@ -35,7 +35,7 @@ bool Sampler::next_sample()
 	//current_ArrayOffset_1D = current_ArrayOffset_2D = 0;
 
 	//若以完成当前像素的全部采样点则停止采样
-	return ++currentPixel_SampleIndex < samplesPerPixel;
+	return ++currentPixel_SampleIndex < samples_PerPixel;
 }
 
 bool Sampler::set_SampleIndex(int64_t sampleNum)
@@ -43,25 +43,25 @@ bool Sampler::set_SampleIndex(int64_t sampleNum)
 	// Reset array offsets for next pixel sample
 	//current_ArrayOffset_1D = current_ArrayOffset_2D = 0;
 	currentPixel_SampleIndex = sampleNum;
-	return currentPixel_SampleIndex < samplesPerPixel;
+	return currentPixel_SampleIndex < samples_PerPixel;
 }
 
 
 // PixelSampler Method Definitions
 
-PixelSampler::PixelSampler(int64_t samplesPerPixel, int seed, int nSampledDimensions)
-	: Sampler(samplesPerPixel), rng(seed)
+PixelSampler::PixelSampler(int64_t samples_PerPixel, int seed, int nSampledDimensions)
+	: Sampler(samples_PerPixel), rng(seed)
 {
 	for (int i = 0; i < nSampledDimensions; ++i)
 	{
-		sampleArray_1D.push_back(std::vector<Float>(samplesPerPixel));
-		sampleArray_2D.push_back(std::vector<Point2f>(samplesPerPixel));
+		sampleArray_1D.push_back(std::vector<Float>(samples_PerPixel));
+		sampleArray_2D.push_back(std::vector<Point2f>(samples_PerPixel));
 	}
 }
 
 Float PixelSampler::get_1D()
 {
-	CHECK_LT(currentPixel_SampleIndex, samplesPerPixel);
+	CHECK_LT(currentPixel_SampleIndex, samples_PerPixel);
 	if (current_ArrayOffset_1D < sampleArray_1D.size())
 		return sampleArray_1D[current_ArrayOffset_1D++][currentPixel_SampleIndex];
 	else
@@ -70,7 +70,7 @@ Float PixelSampler::get_1D()
 
 Point2f PixelSampler::get_2D()
 {
-	CHECK_LT(currentPixel_SampleIndex, samplesPerPixel);
+	CHECK_LT(currentPixel_SampleIndex, samples_PerPixel);
 	if (current_ArrayOffset_2D < sampleArray_2D.size())
 		return sampleArray_2D[current_ArrayOffset_2D++][currentPixel_SampleIndex];
 	else
@@ -124,7 +124,7 @@ void GlobalSampler::start_pixel(const Point2i& p)
 	// Compute 1D array samples for _GlobalSampler_
 	for (size_t i = 0; i < subArraySizes_1D.size(); ++i)
 	{
-		int nSamples = subArraySizes_1D[i] * samplesPerPixel;
+		int nSamples = subArraySizes_1D[i] * samples_PerPixel;
 		for (int j = 0; j < nSamples; ++j) 
 		{
 			int64_t index = get_index_for_sample(j);
@@ -137,7 +137,7 @@ void GlobalSampler::start_pixel(const Point2i& p)
 	int dim = arrayStartDim + subArraySizes_1D.size();
 	for (size_t i = 0; i < subArraySizes_2D.size(); ++i) 
 	{
-		int nSamples = subArraySizes_2D[i] * samplesPerPixel;
+		int nSamples = subArraySizes_2D[i] * samples_PerPixel;
 		for (int j = 0; j < nSamples; ++j) 
 		{
 			int64_t idx = get_index_for_sample(j);

@@ -16,8 +16,8 @@ namespace valley
 class Sampler
 {
 public:
-	Sampler(int64_t samplesPerPixel): 
-		samplesPerPixel(samplesPerPixel) {}
+	Sampler(int64_t samples_PerPixel): 
+		samples_PerPixel(samples_PerPixel) {}
 	~Sampler(){}
 
 	virtual Float   get_1D() = 0;
@@ -34,7 +34,7 @@ public:
 	virtual std::unique_ptr<Sampler> clone(int seed) = 0;
 
 public:
-	int64_t samplesPerPixel;
+	const int64_t samples_PerPixel;
 
 protected:
 	Point2i currentPixel;	//当前在哪个像素上
@@ -45,15 +45,14 @@ protected:
 	std::vector<int> subArraySizes_1D, subArraySizes_2D;	
 	
 	if (current_ArrayOffset_2D == sampleArray2D.size())
-	return nullptr;
+		return nullptr;
 
-	if( samples2DArraySizes[current_ArrayOffset_2D] == n &&
-	currentPixel_SampleIndex < samplesPerPixel)
+	if( samples2DArraySizes[current_ArrayOffset_2D] == n && currentPixel_SampleIndex < samplesPerPixel)
 	return &sampleArray2D[current_ArrayOffset_2D++][currentPixel_SampleIndex * n];
 	*/
 };
 
-//采样时以某个像素为采样空间，预先生成采样数组，而后调用该数组中的样本
+//采样时以某个像素为采样空间，提前生成采样数组，而后调用该数组中的样本
 class PixelSampler : public Sampler
 {
 public:
@@ -71,9 +70,9 @@ public:
 protected:
 	RNG rng;
 
-	int current_ArrayOffset_1D = 0, current_ArrayOffset_2D = 0;	  //当前的数组下标
-	std::vector<std::vector<Float>> sampleArray_1D;
+	std::vector<std::vector<Float>>   sampleArray_1D;
 	std::vector<std::vector<Point2f>> sampleArray_2D;
+	int current_ArrayOffset_1D = 0, current_ArrayOffset_2D = 0;	  //当前的数组下标
 };
 
 //采样时以整个 Film 为采样空间
