@@ -67,7 +67,7 @@ enum class BxDFType
 	All			 = Reflection | Transmission | Diffuse | Glossy | Specular
 };
 
-constexpr BxDFType operator&(BxDFType a, BxDFType b)
+constexpr BxDFType operator&(BxDFType a, BxDFType b)	// 应该把 constexpr 改成 inline，& 改成 &&
 {
 	return static_cast<BxDFType>(static_cast<int>(a) & static_cast<int>(b));
 }

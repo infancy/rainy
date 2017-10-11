@@ -18,15 +18,15 @@
 namespace valley
 {
 
-//均匀采样多个光源的radiance
+// 均匀采样所有光源的辐射度
 Spectrum uniform_sample_all_lights(const Interaction& it, const Scene &scene, Sampler& sampler,
 								const std::vector<int>& nLightSamples, bool handleMedia = false);
 
-//采样单个光源并除以其power_pdf，得到近似采样多个光源的结果
+// 采样单个光源并除以其功率的概率密度（power_pdf），得到近似采样所有光源的结果
 Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sampler& sampler,
 							   bool handleMedia = false, const Distribution1D* lightDistrib = nullptr);
 
-//选定一个Interaction和一个Light，使用双重重要性采样来计算直接光照的贡献
+// 选定一个Interaction和一个Light，使用双重重要性采样来计算直接光照的贡献
 Spectrum estimate_direct(const Interaction& it,    const Point2f& uScattering,
 					  const Light& light, const Point2f& uLight, 
 					  const Scene& scene, Sampler& sampler,
@@ -62,7 +62,7 @@ public:
 		Li(ray, scene, *sampler);
 	}
 
-	//计算沿光线的辐射度
+	// 计算沿这条光线的辐射度
 	virtual Spectrum Li(const Ray& ray, const Scene &scene,
 		Sampler &sampler, int depth = 0) const = 0;
 

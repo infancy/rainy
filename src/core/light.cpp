@@ -31,7 +31,7 @@ Spectrum Visibility::Tr(const Scene &scene, Sampler &sampler) const
 	{
 		SurfaceInteraction isect;
 		bool hitSurface = scene.intersect(ray, &isect);
-		// Handle opaque surface along ray's path
+		// 沿着光线的路径处理不透明的表面
 		if (hitSurface && isect.primitive->get_material() != nullptr)
 			return Spectrum(0.0f);
 
@@ -39,6 +39,7 @@ Spectrum Visibility::Tr(const Scene &scene, Sampler &sampler) const
 		//if (ray.medium) Tr *= ray.medium->Tr(ray, sampler);
 
 		// Generate next ray segment or return final transmittance
+		// 当从 p1 所处的位置生成的 ray 进行 scene.intersect(ray, &isect) 时 hit Surface 为 false，推出循环
 		if (!hitSurface) break;
 		ray = isect.generate_ray(p1);
 	}

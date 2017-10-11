@@ -55,46 +55,46 @@ Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sam
 }
 
 /*
-   prev   light
-    ----  ----
-      \    /
-    wo \  / wi
-        \/
-      ------
-      isect
+prev_isect  light
+     -----   ----
+	   ^      ^
+        \    /
+      wo \  / wi
+          \/
+        ------
+        isect
+
+	当 bsdf 呈镜面状态而光源分布较广时从 bsdf 采样较为高效
+	当 bsdf 呈漫反射分布状态而光源较小时从光源采样更高效
+	因而使用多重重要性采样（MIS）分别对 light 和 bsdf 进行采样
+	在光源上采集一个点 p 计算 Le，在 bsdf 上采样一方向 wi 计算 Li，最后 Ld = MIS(Le, Li)
+	默认不计算镜面 BSDF 项，通过继续跟踪光线来计算这一部分的贡献
 */
-//当bsdf呈镜面状态而光源分布较广时从bsdf采样较为高效
-//当光源较小而bsdf呈漫反射分布时从光源采样更高效
-//因而使用MIS分别对light和brdf进行采样
-//在光源上采集一个点p计算Le，在bsdf上采集以方向wi计算Li，最后Ld=MIS(Le, Li)
-//默认不计算镜面BSDF项
 Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)
 {
-	// Sample light source with multiple importance sampling
 	BxDFType bsdfFlags = has_specular ? BxDFType::All : BxDFType::NonSpecular;
 	Spectrum Ld(0.f);
+
+	// 从光源部分进行多重重要性采样
 	Vector3f wi;
 	Float lightPdf = 0, scatteringPdf = 0;
 	Visibility visibility;
-
-	//计算Li,wi,pdf
+	// 传入交点，在光源上选取一点，计算选到该点的概率密度，该点到交点的方向 wi、入射辐射度 Li 及可见性
 	Spectrum Li = light.sample_Li(it, uLight, &wi, &lightPdf, &visibility);
 	VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
 		<< wi << ", pdf: " << lightPdf;
 
-	//从光源部分进行采样
 	if (lightPdf > 0 && !Li.is_black()) 
 	{
-		//分段函数
-		// Compute BSDF or phase function's value for light sample
+		// 计算 BSDF（如果交点在 surface 中） 或 相位函数（如果交点在 medium 中）的值
 		Spectrum f;
 		if (it.on_surface()) 
 		{
 			// Evaluate BSDF for light sampling strategy
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
-			//计算f(p,wo,wi)cos(eta_light_isect)项
+			//计算中的 f(p, wo, wi) * cos(eta_light_isect) 项*****************************
 			//f = isect.bsdf->f(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.shading.n);
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
 			f *= AbsDot(wi, isect.shading.n);
@@ -115,8 +115,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 		*/
 		if (!f.is_black()) 
 		{
-			//可见性测试
-			// Compute effect of visibility for light source sample
+			// 考虑可见性问题
 			if (handleMedia) 
 			{
 				Li *= visibility.Tr(scene, sampler);
@@ -134,15 +133,14 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			}
 
 			// Add light's contribution to reflected radiance
-			//计算最终结果
 			if (!Li.is_black()) 
 			{
-				if (is_DeltaLight(light.flags))	//如果是delta光源，无需使用MIS
-					Ld += f * Li / lightPdf;		//对普通光源，pdf=1，对区域光源，pdf=1/area
+				if (is_DeltaLight(light.flags))	// 如果是delta光源，无需使用MIS
+					Ld += f * Li / lightPdf;		// 对普通光源，pdf=1，对区域光源，pdf=1/area
 				else 
 				{
 					Float weight =
-						power_heuristic(1, lightPdf, 1, scatteringPdf);
+						power_heuristic(1, lightPdf, 1, scatteringPdf);	// 使用功率启发式方法计算权重
 					Ld += f * Li * weight / lightPdf;
 				}
 			}
@@ -159,7 +157,8 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			// Sample scattered direction for surface interactions
 			BxDFType sampledType;
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
-			//使用采样点对bsdf进行采样，得到wi，pdf，f
+			// 传入交点，在光源上选取一点，计算选到该点的概率密度，该点到交点的方向 wi、入射辐射度 Li 及可见性
+			// 使用采样点对bsdf进行采样，得到wi，pdf，f
 			f = isect.bsdf->sample_f(isect.wo, &wi, uScattering, &scatteringPdf,
 				bsdfFlags, &sampledType);
 			f *= AbsDot(wi, isect.shading.n);
@@ -213,7 +212,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 	return Ld;
 }
 
-void check_radiance(int x, int y, Spectrum& L)
+static void check_radiance(int x, int y, Spectrum& L)
 {
 	// Issue warning if unexpected radiance value returned
 	if (L.isnan())
@@ -245,7 +244,7 @@ void SamplerIntegrator::render(const Scene &scene)
 	for (int y = 0; y < camera->film->height; ++y)
 		for (int x = 0; x < camera->film->width; ++x)
 		{
-			for(int count = 0; count < sampler->samplesPerPixel; ++count)
+			for(int count = 0; count < sampler->samples_PerPixel; ++count)
 			{ 
 				Ray ray;
 				CameraSample cs = sampler->get_CameraSample(x, y);

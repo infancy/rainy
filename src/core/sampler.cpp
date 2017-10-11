@@ -25,23 +25,16 @@ void Sampler::start_pixel(const Point2i& p)
 {
 	currentPixel = p;
 	currentPixel_SampleIndex = 0;
-	// Reset array offsets for next pixel sample
-	//current_ArrayOffset_1D = current_ArrayOffset_2D = 0;
 }
 
 bool Sampler::next_sample()
 {
-	// Reset array offsets for next pixel sample
-	//current_ArrayOffset_1D = current_ArrayOffset_2D = 0;
-
 	//若以完成当前像素的全部采样点则停止采样
 	return ++currentPixel_SampleIndex < samples_PerPixel;
 }
 
 bool Sampler::set_SampleIndex(int64_t sampleNum)
 {
-	// Reset array offsets for next pixel sample
-	//current_ArrayOffset_1D = current_ArrayOffset_2D = 0;
 	currentPixel_SampleIndex = sampleNum;
 	return currentPixel_SampleIndex < samples_PerPixel;
 }

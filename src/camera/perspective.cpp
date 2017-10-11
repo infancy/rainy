@@ -26,11 +26,10 @@ PerspectiveCamera::PerspectiveCamera(const Point3f eye, const Point3f target, co
 					0, 1, 0, 0,
 					0, 0, f / (f - n), -f * n / (f - n),
 					0, 0, 1, 0);
-	Transform camera_to_screen = Scale(cotAng / aspect, cotAng, 1) * Transform(persp);
+	Transform camera_to_screen = Scale(cotAng / aspect, cotAng, 1) * Transform(persp);	// 实际上是 camera_to_screen_to_NDC，即变换到了 NDC 空间
 
-
-	Matrix4x4 s2r(0.5 * film->width, 0,   0, 0.5 * film->width,
-				  0, -0.5 * film->height, 0, 0.5 * film->height,
+	Matrix4x4 s2r(    0.5 * film->width, 0,  0, 0.5 * film->width,
+				  0, -0.5 * film->height,    0, 0.5 * film->height,
 				  0, 0, 1, 0,
 			      0, 0, 0, 1);
 	Transform screen_to_raster(s2r);

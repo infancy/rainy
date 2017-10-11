@@ -84,9 +84,8 @@ public:
 	virtual void  pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
 						 Float *pdfDir) const = 0;
 
-	//传入Interaction，返回到达该点的incident Radiance及其的方向wi
-	//当光源是面积光源时，还需传入一个[0,1]^2范围的采样点，对光源上一点进行采样并记录概率密度值pdf
-	//Visibility用于记录阴影光线等信息
+	// 传入交点，在光源上选取一点，计算选到该点的概率密度，该点到交点的方向 wi、入射辐射度（incident Radiance） Li 及可见性
+	// 当光源是面积光源时，还需传入一个[0,1]^2范围的采样点，对面积光源上一点进行采样并记录相应**概率密度值pdf**
 	virtual Spectrum sample_Li(const Interaction& ref, const Point2f& u,
 							Vector3f* wi, Float* pdf, Visibility* vis) const = 0;
 
@@ -113,18 +112,18 @@ public:
 	Visibility(const Interaction& p0, const Interaction& p1)
 		: p0(p0), p1(p1) {}
 
-	//某些光线传输方法需要这两个点
+	// 某些光线传输方法需要这两个点
 	const Interaction& P0() const { return p0; }
 	const Interaction& P1() const { return p1; }
 
 	bool unoccluded(const Scene &scene) const;
 
-	//transmittance
-	//处理在介质中的光线与目标点之间的辐射度
+	// transmittance
+	// 处理当两点在介质中时的辐射度
 	Spectrum Tr(const Scene &scene, Sampler &sampler) const;
 
 private:
-	//交点、光源，用于构造阴影光线
+	// 交点、光源，用于构造阴影光线
 	Interaction p0, p1;
 };
 

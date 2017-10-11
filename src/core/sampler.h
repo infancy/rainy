@@ -26,7 +26,7 @@ public:
 	CameraSample get_CameraSample(int x, int y);
 	CameraSample get_CameraSample(Point2i p);
 
-	//调用 start_pixel 生成所有的一个像素中样本
+	//调用 start_pixel 生成一个像素中所有的样本
 	virtual void start_pixel(const Point2i& p);
 	virtual bool next_sample();
 	virtual bool set_SampleIndex(int64_t sampleNum);
@@ -41,14 +41,17 @@ protected:
 	int64_t currentPixel_SampleIndex;	//在该像素的第几个采样点上
 
 	/*
-	//每个子数组的大小为 n * samplesPerPixel，subArraySizes 记录的是这个 n 的大小
-	std::vector<int> subArraySizes_1D, subArraySizes_2D;	
-	
-	if (current_ArrayOffset_2D == sampleArray2D.size())
-		return nullptr;
+	//每个子数组的大小为 n * samples_PerPixel，subArraySizes 记录的是这个 n 的大小
+	vector<int> subArraySizes_1D, subArraySizes_2D;	
+	vector<vector<Float>>   sampleArray1D;
+	vector<vector<Point2f>> sampleArray2D;
 
-	if( samples2DArraySizes[current_ArrayOffset_2D] == n && currentPixel_SampleIndex < samplesPerPixel)
-	return &sampleArray2D[current_ArrayOffset_2D++][currentPixel_SampleIndex * n];
+	size_t current_ArrayOffset_1D, current_ArrayOffset_2D;
+	
+	const Point2f *Sampler::Get2DArray(int n) {
+		...
+		if( subArraySizes_2D[current_ArrayOffset_2D] == n && currentPixel_SampleIndex < samples_PerPixel)
+			return &sampleArray2D[current_ArrayOffset_2D++][currentPixel_SampleIndex * n];}
 	*/
 };
 
