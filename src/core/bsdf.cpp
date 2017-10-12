@@ -45,8 +45,7 @@ Spectrum BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 {
 	// Cosine-sample the hemisphere, flipping the direction if necessary
 	*wi = cosine_sample_hemisphere(u);
-	//if (wo.z < 0) wi->z *= -1;
-	if (wo.z < 0) wi->z *= -1;
+	if (wo.z < 0) wi->z *= -1;	// 在着色坐标系中计算 wo、wi
 	*Pdf = pdf(wo, *wi);
 	return f(wo, *wi);
 }
@@ -125,7 +124,6 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 					 const Point2f& u, Float *pdf, BxDFType type,
 					 BxDFType* sampledType) const
 {
-
 	// 选择被采样的BxDF
 	int matchingComps = components_num(type);
 	if (matchingComps == 0) 
@@ -134,16 +132,18 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 		if (sampledType) *sampledType = BxDFType(0);
 		return Spectrum(0);
 	}
-	int comp =
-		std::min((int)std::floor(u[0] * matchingComps), matchingComps - 1);
+	// 随机选取 matchingComps 中的一个，通过采样这个 BxDF 并除以相应的概率密度得到整个 BSDF 的值
+	int chosen_comp = std::min(
+		(int)std::floor(u[0] * matchingComps), 
+		matchingComps - 1);
 
 	// Get _BxDF_ pointer for chosen component
 	BxDF* bxdf = nullptr;
-	int count = comp;
+	int count = chosen_comp;
 	for (int i = 0; i < nBxDFs; ++i)
-		if (bxdfs[i]->match(type) && count-- == 0)	//选择第comp个BxDF
+		if (bxdfs[i]->match(type) && count-- == 0)	
 		{
-			bxdf = bxdfs[i].get();
+			bxdf = bxdfs[i].get();	// 取得这个随机选取的 BxDF 的指针
 			break;
 		}
 	CHECK_NOTNULL(bxdf);
@@ -154,9 +154,10 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 
 	// Remap _BxDF_ sample _u_ to $[0,1)^2$
 	//假如有两个matchingComps，那么如果选中第一个，则意味着u[0]属于[0,0.5)，所以对u[0]进行重新映射
-	Point2f uRemapped(std::min(u[0] * matchingComps - comp, OneMinusEpsilon), u[1]);
+	Point2f uRemapped(std::min(u[0] * matchingComps - chosen_comp, OneMinusEpsilon), u[1]);
 
 	// Sample chosen _BxDF_
+	// 对已选择的 BxDF 进行采样
 	Vector3f wi, wo = world_to_local(woWorld);
 	if (wo.z == 0.f) return 0.f;
 	*pdf = 0;
@@ -177,11 +178,12 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 
 	// Compute overall PDF with all matching _BxDF_s
 	//对于Specular，无需执行均值计算，因为其delta分布，pdf=1
+	// if(!has_specular(bxdf->type) && matchingComps > 1)
 	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i].get() != bxdf && bxdfs[i]->match(type))
 				*pdf += bxdfs[i]->pdf(wo, wi);
-	if (matchingComps > 1) *pdf /= matchingComps;
+	if (matchingComps > 1) *pdf /= matchingComps;	// 得到对于全部匹配 BxDF 的值
 
 	// Compute value of BSDF for sampled direction
 	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1) 
@@ -190,6 +192,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 		f = 0.;
 		for (int i = 0; i < nBxDFs; ++i)
 			if (bxdfs[i]->match(type) &&
+				// has_reflection(bxdf->type) has_transmission(bxdf->type)
 				((reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Reflection)) ||
 				(!reflect && static_cast<bool>(bxdfs[i]->type & BxDFType::Transmission))))
 				f += bxdfs[i]->f(wo, wi);

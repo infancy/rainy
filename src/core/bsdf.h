@@ -45,7 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace valley
 {
 
-//Utility Function
+// Utility Function
 inline Float CosTheta(const Vector3f &w) { return w.z; }
 inline Float AbsCosTheta(const Vector3f& w) { return std::abs(w.z); }
 inline Float Cos2Theta(const Vector3f &w) { return w.z * w.z; }
@@ -55,7 +55,7 @@ inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z 
 
 enum class BxDFType 
 {
-	//每个type至少有Re或Tr之一
+	// 每个type至少有Re或Tr之一
 	Reflection   = 1 << 0,
 	Transmission = 1 << 1,	//透射，和镜面没什么必然的联系
 
@@ -76,7 +76,12 @@ constexpr BxDFType operator|(BxDFType a, BxDFType b)
 	return static_cast<BxDFType>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-//某些光线传输算法需要对BRDF和BTDF进行区分，所以对BxDF加入type成员
+inline bool has_specular(BxDFType type)
+{
+	return static_cast<int>(type) & static_cast<int>(BxDFType::Specular);
+}
+
+// 某些光线传输算法需要对BRDF和BTDF进行区分，所以对BxDF加入type成员
 class BxDF 
 {
 public:
@@ -85,27 +90,29 @@ public:
 	
 	bool match(BxDFType t) const { return (t & type) == type; }	
 
-	//针对给定方向返回分布函数值
+	// 针对给定方向返回分布函数值 f(p, wo, wi)
 	virtual Spectrum f(const Vector3f& wo, const Vector3f& wi) const
 	{
 		LOG(ERROR) << "should'n call this function";
 		return Spectrum(0);
 	}
 
-	//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
+	// 在半球上随机选取wi方向，然后计算 f(wo,wi) 与 pdf
+	// 不同的 bsdf 有不同的选择方法，如 兰伯特透射在着色坐标下半球随机选取
+	// 菲涅尔透射则根据菲涅尔方程进行选取
 	virtual Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
 						   Float* Pdf, BxDFType* sampledType = nullptr) const;
 
-	//针对某些无法通过闭式计算反射率的BxDF，可用rho来估算（使用蒙特卡洛方法）
-	//rho_hemisphere_direction
+	// 针对某些无法通过闭式计算反射率的BxDF，可用rho来估算（使用蒙特卡洛方法）
+	// rho_hemisphere_direction
 	virtual Spectrum rho(const Vector3f& wo, int nSamples,
 					  const Point2f* samples) const;
-	//rho_hemisphere_hemisphere
+	// rho_hemisphere_hemisphere
 	virtual Spectrum rho(int nSamples, const Point2f* samples1,
 					  const Point2f* samples2) const;
 
 	virtual Float pdf(const Vector3f& wo, const Vector3f& wi) const;
-	//virtual std::string ToString() const = 0;
+	// virtual std::string ToString() const = 0;
 
 	const BxDFType type;
 };

@@ -10,17 +10,18 @@ Spectrum uniform_sample_all_lights(const Interaction& it, const Scene &scene, Sa
 	const std::vector<int> &nLightSamples, bool handleMedia)
 {
 	Spectrum L(0.f);
-	for (size_t i = 0; i < scene.lights.size(); ++i) 
+
+	// 计算所有 light 经由 it 对 it.wo 方向的贡献
+	for (size_t i = 0; i < scene.lights.size(); ++i) // for(const auto& light : scene.lights)
 	{
-		// Accumulate contribution of _j_th light to _L_
-		const std::shared_ptr<Light>& light = scene.lights[i];
+		const auto& light = scene.lights[i];
 		int nSamples = nLightSamples[i];
 
 		Spectrum Ld(0.f);
 		for (int k = 0; k < nSamples; ++k)
 			Ld += estimate_direct(it, sampler.get_2D(), *light, sampler.get_2D(), 
 				scene, sampler, handleMedia);
-		L += Ld / nSamples;	//在光源上取n个采样点，计算平均辐射度
+		L += Ld / nSamples;	// 在光源上取 n 个采样点，计算平均辐射度
 	}
 	return L;
 }
@@ -28,7 +29,6 @@ Spectrum uniform_sample_all_lights(const Interaction& it, const Scene &scene, Sa
 Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sampler& sampler,
 	bool handleMedia, const Distribution1D* lightDistrib)
 {
-	// Randomly choose a single light to sample, _light_
 	int nLights = int(scene.lights.size());
 	if (nLights == 0) return Spectrum(0.f);
 	int lightNum;
@@ -36,7 +36,6 @@ Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sam
 
 	if (lightDistrib)
 	{
-		//随机选取一个light
 		lightNum = lightDistrib->sample_discrete(sampler.get_1D(), &lightPdf);
 		if (lightPdf == 0) return Spectrum(0.f);
 	}
@@ -45,31 +44,28 @@ Spectrum uniform_sample_one_light(const Interaction& it, const Scene& scene, Sam
 		lightNum = std::min((int)(sampler.get_1D() * nLights), nLights - 1);
 		lightPdf = Float(1) / nLights;
 	}
-	const std::shared_ptr<Light> &light = scene.lights[lightNum];
-	//Point2f uLight = sampler.get_2D();
-	//Point2f uScattering = sampler.get_2D();
+	const auto& light = scene.lights[lightNum];
 
-	//最后除以lightPdf，得到一个放大的效果，近似于对所有灯光进行采样
+	// 采样单个光源，并除以其功率的概率密度（power_pdf），得到近似采样所有光源的结果
 	return estimate_direct(it, sampler.get_2D(), *light, sampler.get_2D(),
 		scene, sampler, handleMedia) / lightPdf;
 }
 
-/*
-prev_isect  light
-     -----   ----
-	   ^      ^
-        \    /
-      wo \  / wi
-          \/
-        ------
-        isect
-
-	当 bsdf 呈镜面状态而光源分布较广时从 bsdf 采样较为高效
-	当 bsdf 呈漫反射分布状态而光源较小时从光源采样更高效
-	因而使用多重重要性采样（MIS）分别对 light 和 bsdf 进行采样
-	在光源上采集一个点 p 计算 Le，在 bsdf 上采样一方向 wi 计算 Li，最后 Ld = MIS(Le, Li)
-	默认不计算镜面 BSDF 项，通过继续跟踪光线来计算这一部分的贡献
-*/
+//	计算单个 light 经由 isect 向 wo 方向发射的辐射度
+//
+//	prev_isect  light
+//		  ----  ----
+//		   ^      ^
+//	        \    /
+//	      wo \  / wi
+//			  \/
+//			------
+//			isect
+//
+//	当 bsdf 呈镜面状态而光源分布较广时从 bsdf 采样较为高效
+//	当 bsdf 呈漫反射分布状态而光源较小时从光源采样更高效
+//	因而使用多重重要性采样（MIS）分别对 light 和 bsdf 进行采样
+//	在光源上采样一点 p 计算 Le，在 bsdf 上采样一方向 wi 计算 Li，最后 Ld = MIS(Le, Li)
 Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, const Light &light,
 	const Point2f &uLight, const Scene &scene, Sampler &sampler,
 	bool handleMedia, bool has_specular)
@@ -94,7 +90,7 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 		{
 			// Evaluate BSDF for light sampling strategy
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
-			//计算中的 f(p, wo, wi) * cos(eta_light_isect) 项*****************************
+			// 计算 f(p, wo, wi) * cos(eta_light_isect) 项
 			//f = isect.bsdf->f(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.shading.n);
 			f = isect.bsdf->f(isect.wo, wi, bsdfFlags);
 			f *= AbsDot(wi, isect.shading.n);
@@ -157,12 +153,13 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 			// Sample scattered direction for surface interactions
 			BxDFType sampledType;
 			const SurfaceInteraction& isect = (const SurfaceInteraction&)it;
-			// 传入交点，在光源上选取一点，计算选到该点的概率密度，该点到交点的方向 wi、入射辐射度 Li 及可见性
-			// 使用采样点对bsdf进行采样，得到wi，pdf，f
+			// 在交点半球方向随机选取一点，计算相应的 wi、scatteringPdf 和 sampledType
+			// 并计算 f(p, wo, wi) 项
 			f = isect.bsdf->sample_f(isect.wo, &wi, uScattering, &scatteringPdf,
 				bsdfFlags, &sampledType);
+			// 计算 cos(eta_light_isect) 项
 			f *= AbsDot(wi, isect.shading.n);
-			sampledSpecular = static_cast<int>(sampledType & BxDFType::Specular) != 0;
+			sampledSpecular = static_cast<int>(sampledType & BxDFType::Specular) != 0;	// has_specular(sampledType);
 		}
 		/*
 		else 
@@ -180,32 +177,33 @@ Spectrum estimate_direct(const Interaction& it, const Point2f &uScattering, cons
 		if (!f.is_black() && scatteringPdf > 0) 
 		{
 			// Account for light contributions along sampled direction _wi_
-			//沿着wi的方向计算光源贡献
+			// 沿着wi的方向计算光源贡献
+
 			Float weight = 1;
 			if (!sampledSpecular) 
 			{
-				lightPdf = light.pdf_Li(it, wi);	//若it->wi->light,则采样到light的概率
-				if (lightPdf == 0) return Ld;		//否则从bsdf采样失败，返回Ld
+				lightPdf = light.pdf_Li(it, wi);	// it->wi->light，计算沿 wi 方向采样到 light 的概率
+				if (lightPdf == 0) return Ld;		// 如果不能采样到 light， 则从 bsdf 采样失败，返回Ld
 				weight = power_heuristic(1, scatteringPdf, 1, lightPdf);
 			}
 
-			// Find intersection and compute transmittance
+			// 计算沿 wi 方向是否与（面积）光源相交
 			SurfaceInteraction lightInteraction;
 			Ray ray = it.generate_ray(wi);
 			Spectrum Tr(1.f);
-			bool foundSurfaceInteraction =
+			bool foundSurfaceInteraction =	// 是否计算透射与光源的类型无关
 				handleMedia ? scene.intersectTr(ray, sampler, &lightInteraction, &Tr)
 				: scene.intersect(ray, &lightInteraction);
 
-			// Add light contribution from material sampling
+			// 如果 wi 与面积光源相交，则需要进一步处理，否则直接计算 light 向 ray 方向发射的辐射度
 			Spectrum Li(0.f);
 			if (foundSurfaceInteraction) 
 			{
 				if (lightInteraction.primitive->get_AreaLight() == &light)
-					Li = lightInteraction.Le(-wi);	//调用SurInteraction的Le
+					Li = lightInteraction.Le(-wi);	
 			}
 			else
-				Li = light.Le(ray);		//调用light的Le
+				Li = light.Le(ray);
 			if (!Li.is_black()) Ld += f * Li * Tr * weight / scatteringPdf;
 		}
 	}

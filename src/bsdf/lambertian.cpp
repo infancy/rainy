@@ -8,7 +8,7 @@ Spectrum LambertianTransmission::sample_f(const Vector3f& wo, Vector3f* wi,
 	const Point2f& u, Float* Pdf, BxDFType* sampledType) const 
 {
 	*wi = cosine_sample_hemisphere(u);
-	if (wo.z > 0) wi->z *= -1;
+	if (wo.z > 0) wi->z *= -1;	// 在着色坐标的下半球选取方向
 	*Pdf = pdf(wo, *wi);
 	return f(wo, *wi);
 }

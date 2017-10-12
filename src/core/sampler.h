@@ -42,10 +42,9 @@ protected:
 
 	/*
 	//每个子数组的大小为 n * samples_PerPixel，subArraySizes 记录的是这个 n 的大小
-	vector<int> subArraySizes_1D, subArraySizes_2D;	
 	vector<vector<Float>>   sampleArray1D;
 	vector<vector<Point2f>> sampleArray2D;
-
+	vector<int>  subArraySizes_1D,       subArraySizes_2D;
 	size_t current_ArrayOffset_1D, current_ArrayOffset_2D;
 	
 	const Point2f *Sampler::Get2DArray(int n) {

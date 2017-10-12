@@ -12,7 +12,7 @@ Float PointLight::pdf_Li(const Interaction&, const Vector3f &) const { return 0;
 void PointLight::pdf_Le(const Ray&, const Normal3f&, Float* pdfPos,
 	Float* pdfDir) const
 {
-	*pdfPos = 0;
+	*pdfPos = 0;	// 采样到这个点的概率为 0
 	*pdfDir = uniform_sphere_pdf();
 }
 

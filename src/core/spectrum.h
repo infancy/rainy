@@ -12,7 +12,7 @@
 
 namespace valley
 {
-//所有检查都在
+//所有检查都在 debug 版中进行
 class Spectrum
 {
 public:

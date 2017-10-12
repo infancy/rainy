@@ -80,7 +80,9 @@ public:
 	//比如当视点发出的光线与场景中物体未相交时，计算光源朝视点方向的辐射度
 	virtual Spectrum Le(const RayDifferential &r) const;
 
+	// 从 ref->wi->light 的概率
 	virtual Float pdf_Li(const Interaction& ref, const Vector3f &wi) const = 0;
+	// 传入 ray 和 light_normal，计算 pdfPos，pdfDir
 	virtual void  pdf_Le(const Ray &ray, const Normal3f &nLight, Float *pdfPos,
 						 Float *pdfDir) const = 0;
 

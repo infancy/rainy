@@ -9,11 +9,10 @@
 #include"valley.h"
 #include"light.h"
 
-
 namespace valley
 {
 
-// DistantLight Declarations
+// 有向光源
 class DistantLight : public Light 
 {
 public:

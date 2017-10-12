@@ -31,7 +31,7 @@ void DistantLight::pdf_Le(const Ray&, const Normal3f&, Float* pdfPos,
 	Float* pdfDir) const
 {
 	*pdfPos = 1 / (Pi * worldRadius * worldRadius);
-	*pdfDir = 0;
+	*pdfDir = 0;	// 采样到这个方向的概率为 0
 }
 
 Spectrum DistantLight::sample_Li(const Interaction& ref, const Point2f& u, Vector3f* wi,

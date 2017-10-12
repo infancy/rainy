@@ -25,13 +25,13 @@ struct FilmPixel
 };
 
 /*
-(0,0)_ _ _ _ _ _x 方向
-	|
-	|
-	|	film 的坐标系
-	|	
-	|           .(x,y)
-  y 方向
+(0,0)_ _ _ _ _ _ _x 方向
+	|\			  |
+	|   \	      |   
+	|      \	  |				film 的坐标系
+	|	      \	  |	
+	|_ _ _ _ _ _ \|
+  y 方向			 (width, height)
 */
 
 class Film	
