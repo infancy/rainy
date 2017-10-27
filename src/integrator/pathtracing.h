@@ -22,25 +22,21 @@ public:
 		lightDistribution = std::unique_ptr<LightDistribution>{ new PowerDistribution(scene) };
 	}
 
-	Spectrum Li(const Ray& r, const Scene &scene, Sampler &sampler, int depth) const
+	Spectrum Li(const Ray& r, const Scene& scene, Sampler& sampler, int depth) const
 	{
-		Spectrum L(0.f), beta(1.f);	//beta为 path throughput 项
+		Spectrum L(0.f), beta(1.f);	// beta 为 path throughput 项
 		Ray ray(r);
-		bool specularBounce = false;	//记录最后一个顶点是否有镜面反射
+		bool specularBounce = false;	// 记录最后一个顶点是否存在镜面材质
 		int bounces;
-		// Added after book publication: etaScale tracks the accumulated effect
-		// of radiance scaling due to rays passing through refractive
-		// boundaries (see the derivation on p. 527 of the third edition). We
-		// track this value in order to remove it from beta when we apply
-		// Russian roulette; this is worthwhile, since it lets us sometimes
-		// avoid terminating refracted rays that are about to be refracted back
-		// out of a medium and thus have their beta value increased.
-		Float etaScale = 1.f;
+		// etaScale 跟踪光线经由折射产生的累计辐射放缩效果
+		// 这样我们在应用俄罗斯轮盘赌时就可以将其从 beta 项中移除
+		// 这使我们可以避免终止被集中折射出 media 的光线以及因此引起的 beta 项的增加
+		Float etaScale = 1.f;	
 
 		for (bounces = 0;; ++bounces)
 		{
 			// Find next path vertex and accumulate contribution
-			//计算下一个顶点和累计贡献
+			// 计算下一个顶点和累计贡献
 			VLOG(2) << "Path tracer bounce " << bounces << ", current L = " << L
 				<< ", beta = " << beta;
 
@@ -49,11 +45,10 @@ public:
 			bool foundIntersection = scene.intersect(ray, &isect);
 
 			// Possibly add emitted light at intersection
-			//中间交点的Le会被上一交点的直接光照计算包含在内（但specular项不计入），
-			//因而只需要计算最初交点的或最后一个含镜面brdf交点的$L_emit$
+			// 中间交点的 Le 项会被上一交点的直接光照计算包含在内（但镜面项不计入）
+			// 因而只需要计算最初交点或最后一个含镜面 bsdf 交点的 Le
 			if (bounces == 0 || specularBounce)
 			{
-				// Add emitted light at path vertex or from the environment
 				if (foundIntersection)
 				{
 					L += beta * isect.Le(-ray.d);
@@ -67,10 +62,8 @@ public:
 				}
 			}
 
-			// Terminate path if ray escaped or _maxDepth_ was reached
 			if (!foundIntersection || bounces >= maxDepth) break;
 
-			// Compute scattering functions and skip over medium boundaries
 			isect.compute_scattering(ray, TransportMode::Importance, true);
 			if (!isect.bsdf)
 			{
@@ -96,7 +89,7 @@ public:
 				L += Ld;
 			}
 
-			// Sample BSDF to get new path direction
+			// 对 BSDF 进行采样以生成新的路径方向（即生成下一条光线）
 			Vector3f wo = -ray.d, wi;
 			Float pdf;
 			BxDFType flags;
@@ -104,7 +97,7 @@ public:
 				BxDFType::All, &flags);
 			VLOG(2) << "Sampled BSDF, f = " << f << ", pdf = " << pdf;
 			if (f.is_black() || pdf == 0.f) break;
-			//更新throughput
+			// 更新路径吞吐项
 			beta *= f * AbsDot(wi, isect.shading.n) / pdf;
 
 			VLOG(2) << "Updated beta = " << beta;
@@ -117,8 +110,8 @@ public:
 			{
 				Float eta = isect.bsdf->eta;
 				// Update the term that tracks radiance scaling for refraction
-				// depending on whether the ray is entering or leaving the
-				// medium.
+				// depending on whether the ray is entering or leaving the medium.
+				// 放大还是缩小取决于光线是进入还是离开 medium
 				etaScale *= (Dot(wo, isect.n) > 0) ? (eta * eta) : 1 / (eta * eta);
 			}
 			ray = isect.generate_ray(wi);
@@ -168,7 +161,7 @@ public:
 private:
 	//const std::string lightSampleStrategy;
 	int maxDepth;
-	const Float rrThreshold;	//Russian Roulette Threshold
+	const Float rrThreshold;	// Russian Roulette Threshold
 	std::unique_ptr<LightDistribution> lightDistribution;
 };
 

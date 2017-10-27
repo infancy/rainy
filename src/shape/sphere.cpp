@@ -100,7 +100,7 @@ bool Sphere::intersect(const Ray &r, SurfaceInteraction* isect
 			-ray.d, dpdu, dpdv, dndu, dndv, this));
 
 		// Update _tHit_ for quadric intersection
-		r.tMax = t;	////记录相交距离
+		r.tMax = t;	//记录相交距离
 		return true;
 	}
 	else

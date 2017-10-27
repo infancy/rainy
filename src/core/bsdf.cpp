@@ -39,7 +39,15 @@ namespace valley
 {
 
 // BxDF Method Definitions
-//在半球上随机选取wi方向，然后计算f(wo,wi)与pdf
+
+bool BxDF::match(BxDFType t) const { return (t & type) == type; }
+
+Spectrum BxDF::f(const Vector3f& wo, const Vector3f& wi) const
+{
+	LOG(ERROR) << "should'n call this function";
+	return Spectrum(0);
+}
+
 Spectrum BxDF::sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& u,
 					   Float* Pdf, BxDFType* sampledType) const
 {
@@ -153,7 +161,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	*/
 
 	// Remap _BxDF_ sample _u_ to $[0,1)^2$
-	//假如有两个matchingComps，那么如果选中第一个，则意味着u[0]属于[0,0.5)，所以对u[0]进行重新映射
+	// 假如有两个matchingComps，那么如果选中第一个，则意味着u[0]属于[0,0.5)，所以对u[0]进行重新映射
 	Point2f uRemapped(std::min(u[0] * matchingComps - chosen_comp, OneMinusEpsilon), u[1]);
 
 	// Sample chosen _BxDF_
@@ -177,7 +185,7 @@ Spectrum BSDF::sample_f(const Vector3f& woWorld, Vector3f* wiWorld,
 	*wiWorld = local_to_world(wi);
 
 	// Compute overall PDF with all matching _BxDF_s
-	//对于Specular，无需执行均值计算，因为其delta分布，pdf=1
+	// 对于Specular，无需执行均值计算，因为其delta分布，pdf=1
 	// if(!has_specular(bxdf->type) && matchingComps > 1)
 	if (!static_cast<bool>(bxdf->type & BxDFType::Specular) && matchingComps > 1)
 		for (int i = 0; i < nBxDFs; ++i)
@@ -238,9 +246,9 @@ Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
 			++matchingComps;
 			pdf += bxdfs[i]->pdf(wo, wi);
 		}
-	//计算均值
+	// 计算均值
 	Float v = matchingComps > 0 ? pdf / matchingComps : 0.f;
 	return v;
 }
 
-}	//namespace valley
+}	// namespace valley

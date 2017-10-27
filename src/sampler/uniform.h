@@ -39,7 +39,7 @@ public:
 
 	virtual std::unique_ptr<Sampler> clone(int seed)
 	{
-		return std::make_unique<UniformSampler>(samplesPerPixel);
+		return std::make_unique<UniformSampler>(samples_PerPixel);
 	}
 };
 

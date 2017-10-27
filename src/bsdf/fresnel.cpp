@@ -64,4 +64,4 @@ Spectrum FrConductor(Float cosThetaI, const Spectrum &etai,
 
 
 
-}	//namespace valley
+}	// namespace valley
