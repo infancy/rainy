@@ -3,7 +3,9 @@
 namespace valley
 {
 
+//
 // Sampler Method Definitions
+//
 
 CameraSample Sampler::get_CameraSample(int x, int y)
 {
@@ -29,7 +31,7 @@ void Sampler::start_pixel(const Point2i& p)
 
 bool Sampler::next_sample()
 {
-	//若以完成当前像素的全部采样点则停止采样
+	// 若以完成当前像素的全部采样点则停止采样
 	return ++currentPixel_SampleIndex < samples_PerPixel;
 }
 
@@ -39,8 +41,9 @@ bool Sampler::set_SampleIndex(int64_t sampleNum)
 	return currentPixel_SampleIndex < samples_PerPixel;
 }
 
-
+//
 // PixelSampler Method Definitions
+//
 
 PixelSampler::PixelSampler(int64_t samples_PerPixel, int seed, int nSampledDimensions)
 	: Sampler(samples_PerPixel), rng(seed)
@@ -82,8 +85,9 @@ bool PixelSampler::set_SampleIndex(int64_t sampleNum)
 	return Sampler::set_SampleIndex(sampleNum);
 }
 
-
+//
 // GlobalSampler Method Definitions
+//
 
 Float GlobalSampler::get_1D()
 {
@@ -158,4 +162,4 @@ bool GlobalSampler::set_SampleIndex(int64_t sampleNum)
 	return Sampler::set_SampleIndex(sampleNum);
 }
 
-}	//namespace valley
+}	// namespace valley

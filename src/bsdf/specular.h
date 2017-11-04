@@ -114,7 +114,7 @@ public:
 	Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
 		Float *pdf, BxDFType*sampledType) const
 	{
-		//根据反射率来确定是计算反射还是折射
+		// 根据反射率来确定是计算反射还是折射
 		Float F = FrDielectric(CosTheta(wo), etaA, etaB);
 		if (u[0] < F) 
 		{
@@ -153,7 +153,7 @@ public:
 
 	Float pdf(const Vector3f &wo, const Vector3f &wi) const { return 0; }
 
-	//std::string ToString() const;
+	// std::string ToString() const;
 
 private:
 	const Spectrum R, T;
@@ -161,7 +161,7 @@ private:
 	const TransportMode mode;
 };
 
-}	//namespace valley
+}	// namespace valley
 
 
-#endif //VALLEY_BSDF_SPECULAR_H
+#endif // VALLEY_BSDF_SPECULAR_H

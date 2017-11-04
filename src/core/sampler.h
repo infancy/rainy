@@ -13,6 +13,10 @@
 namespace valley
 {
 
+//
+// Sampler
+//
+
 class Sampler
 {
 public:
@@ -26,7 +30,7 @@ public:
 	CameraSample get_CameraSample(int x, int y);
 	CameraSample get_CameraSample(Point2i p);
 
-	//调用 start_pixel 生成一个像素中所有的样本
+	// 调用 start_pixel 生成一个像素中所有的样本
 	virtual void start_pixel(const Point2i& p);
 	virtual bool next_sample();
 	virtual bool set_SampleIndex(int64_t sampleNum);
@@ -54,18 +58,21 @@ protected:
 	*/
 };
 
-//采样时以某个像素为采样空间，提前生成采样数组，而后调用该数组中的样本
+//
+// 像素采样器，采样时以某个像素为采样空间，提前生成采样数组，而后调用该数组中的样本
+//
+
 class PixelSampler : public Sampler
 {
 public:
-	//默认准备 83 组样本
+	// 默认准备 83 组样本
 	PixelSampler(int64_t samplesPerPixel, int seed = 1234, int nSampledDimensions = 83);
 	~PixelSampler() {}
 
 	virtual Float   get_1D() override;
 	virtual Point2f get_2D() override;
 
-	//void start_pixel(const Point2i& p) 由子类实现，在其中完成初始化采样数组的工作
+	// void start_pixel(const Point2i& p) 由子类实现，在其中完成初始化采样数组的工作
 	bool next_sample();
 	bool set_SampleIndex(int64_t sampleNum);
 
@@ -77,7 +84,10 @@ protected:
 	int current_ArrayOffset_1D = 0, current_ArrayOffset_2D = 0;	  //当前的数组下标
 };
 
-//采样时以整个 Film 为采样空间
+//
+// 全局采样器，采样时以整个 Film 为采样空间
+//
+
 class GlobalSampler : public Sampler 
 {
 public:
@@ -103,8 +113,8 @@ private:
 	int arrayEndDim;
 };
 
-}	//namespace valley
+}	// namespace valley
 
 
-#endif //VALLEY_CORE_SAMPLER_H
+#endif // VALLEY_CORE_SAMPLER_H
 

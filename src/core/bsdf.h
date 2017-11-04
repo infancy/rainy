@@ -57,7 +57,7 @@ inline bool same_hemisphere(const Vector3f& w, const Vector3f& wp) { return w.z 
 inline bool same_hemisphere(const Vector3f& w, const Normal3f& wp) { return w.z * wp.z > 0; }
 
 //
-// BxDFType 用于记录一个 BSDF 的类型
+// BxDFType
 //
 
 enum class BxDFType 
@@ -104,22 +104,19 @@ public:
 	
 	bool match(BxDFType t) const;
 
-	// 针对给定方向返回分布函数值 f(p, wo, wi)
 	virtual Spectrum f(const Vector3f& wo, const Vector3f& wi) const;
 
-	// 在半球上随机选取wi方向，然后计算 f(wo,wi) 与 pdf
-	// 不同的 bsdf 有不同的选择方法，如 兰伯特透射在着色坐标下半球随机选取
-	// 菲涅尔透射则根据菲涅尔方程进行选取
-	virtual Spectrum sample_f(const Vector3f& wo, Vector3f* wi, const Point2f& sample, 
-						   Float* Pdf, BxDFType* sampledType = nullptr) const;
+	virtual Spectrum sample_f(const Vector3f& wo, Vector3f* wi, 
+							  const Point2f& sample, Float* Pdf, 
+							  BxDFType* sampledType = nullptr) const;
 
 	// 针对某些无法通过闭式计算反射率的 BxDF，可用 rho 来估算（使用蒙特卡洛方法）
 	// rho_hemisphere_direction
 	virtual Spectrum rho(const Vector3f& wo, int nSamples,
-					  const Point2f* samples) const;
+						 const Point2f* samples) const;
 	// rho_hemisphere_hemisphere
 	virtual Spectrum rho(int nSamples, const Point2f* samples1,
-					  const Point2f* samples2) const;
+					     const Point2f* samples2) const;
 
 	virtual Float pdf(const Vector3f& wo, const Vector3f& wi) const;
 	// virtual std::string ToString() const = 0;
