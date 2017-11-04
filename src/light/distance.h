@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_LIGHT_DISTANCE_H
-#define VALLEY_LIGHT_DISTANCE_H
+#ifndef RAINY_LIGHT_DISTANCE_H
+#define RAINY_LIGHT_DISTANCE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 {
 
 // 有向光源
@@ -40,7 +40,7 @@ private:
 	Float worldRadius;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_LIGHT_DISTANCE_H
+#endif //RAINY_LIGHT_DISTANCE_H

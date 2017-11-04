@@ -1,7 +1,7 @@
 #include"Rectangle.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 // Rectangle Method Definitions
@@ -112,4 +112,4 @@ Interaction Rectangle::sample(const Point2f &u, Float *pdf) const
 	return it;
 }
 
-}	//namespace valley
+}	//namespace rainy

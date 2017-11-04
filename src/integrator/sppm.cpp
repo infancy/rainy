@@ -1,6 +1,6 @@
 #include"sppm.h"
 
-namespace valley
+namespace rainy
 {
 
 struct SPPMPixel 
@@ -402,4 +402,4 @@ void SPPM::render(const Scene &scene)
 	}
 }
 
-}	//namespace valley
+}	//namespace rainy

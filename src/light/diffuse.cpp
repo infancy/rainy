@@ -3,7 +3,7 @@
 #include"rng.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 // DiffuseAreaLight Method Definitions
@@ -97,4 +97,4 @@ void DiffuseAreaLight::pdf_Le(const Ray &ray, const Normal3f &n, Float *pdfPos,
 		: cosine_hemisphere_pdf(Dot(n, ray.d));
 }
 
-}	//namespace valley
+}	//namespace rainy

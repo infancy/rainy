@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_FILTER_H
-#define VALLEY_CORE_FILTER_H
+#ifndef RAINY_CORE_FILTER_H
+#define RAINY_CORE_FILTER_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 
-namespace valley
+namespace rainy
 {
 
 class Filter 
@@ -91,8 +91,8 @@ private:
 	const Float tau;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_FILTER_H
+#endif //RAINY_CORE_FILTER_H
 

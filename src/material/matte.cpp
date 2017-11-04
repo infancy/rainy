@@ -2,7 +2,7 @@
 //#include"bsdf.h"
 #include"bsdf/lambertian.h"
 
-namespace valley
+namespace rainy
 {
 
 Matte::Matte(const std::shared_ptr<Texture<Spectrum>>& kd,
@@ -29,4 +29,4 @@ void Matte::compute_scattering(SurfaceInteraction* si, TransportMode mode,
 	}
 }
 
-}	//namespace valley
+}	//namespace rainy

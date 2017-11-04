@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_LIGHT_DIFFUSE_H
-#define VALLEY_LIGHT_DIFFUSE_H
+#ifndef RAINY_LIGHT_DIFFUSE_H
+#define RAINY_LIGHT_DIFFUSE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 {
 
 class DiffuseAreaLight : public AreaLight
@@ -50,7 +50,7 @@ protected:
 	const Float area;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_LIGHT_DIFFUSE_H
+#endif //RAINY_LIGHT_DIFFUSE_H

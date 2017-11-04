@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_LIGHT_POINT_H
-#define VALLEY_LIGHT_POINT_H
+#ifndef RAINY_LIGHT_POINT_H
+#define RAINY_LIGHT_POINT_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 {
 
 class PointLight : public Light 
@@ -38,7 +38,7 @@ private:
 	const Spectrum intensity;	//the amount of power per unit solid angle
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_LIGHT_POINT_H
+#endif //RAINY_LIGHT_POINT_H

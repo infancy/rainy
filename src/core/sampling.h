@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_SAMPLING_H
-#define VALLEY_CORE_SAMPLING_H
+#ifndef RAINY_CORE_SAMPLING_H
+#define RAINY_CORE_SAMPLING_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 
-namespace valley
+namespace rainy
 {
 
 Vector3f uniform_sample_sphere(const Point2f &u);
@@ -131,7 +131,7 @@ struct Distribution1D
 	}
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_SAMPLING_H
+#endif //RAINY_CORE_SAMPLING_H

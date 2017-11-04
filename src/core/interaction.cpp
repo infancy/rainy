@@ -4,7 +4,7 @@
 #include"spectrum.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 { 
 
 // Intersection Method Definitions

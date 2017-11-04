@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include"shape.h"
 #include"transform.h"
 
-namespace valley
+namespace rainy
 {
 
 // Shape Method Definitions
@@ -122,4 +122,4 @@ Float Shape::solid_angle(const Point3f &p, int nSamples) const
 	return solidAngle / nSamples;
 }
 
-}	//namespace valley
+}	//namespace rainy

@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_SAMPLER_H
-#define VALLEY_CORE_SAMPLER_H
+#ifndef RAINY_CORE_SAMPLER_H
+#define RAINY_CORE_SAMPLER_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"rng.h"
 #include"camera.h"
 
-namespace valley
+namespace rainy
 {
 
 //
@@ -113,8 +113,8 @@ private:
 	int arrayEndDim;
 };
 
-}	// namespace valley
+}	// namespace rainy
 
 
-#endif // VALLEY_CORE_SAMPLER_H
+#endif // RAINY_CORE_SAMPLER_H
 

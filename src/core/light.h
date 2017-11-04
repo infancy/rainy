@@ -35,15 +35,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_LIGHT_H
-#define VALLEY_CORE_LIGHT_H
+#ifndef RAINY_CORE_LIGHT_H
+#define RAINY_CORE_LIGHT_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"transform.h"
 #include"interaction.h"
 #include"spectrum.h"
 
-namespace valley
+namespace rainy
 {
 
 enum class LightType
@@ -141,7 +141,7 @@ public:
 	virtual Spectrum L(const Interaction& intr, const Vector3f& w) const = 0;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_LIGHT_H
+#endif //RAINY_CORE_LIGHT_H

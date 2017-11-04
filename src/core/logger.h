@@ -3,12 +3,12 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_LOGGER_H
-#define VALLEY_CORE_LOGGER_H
+#ifndef RAINY_CORE_LOGGER_H
+#define RAINY_CORE_LOGGER_H
 
-#include"valley.h"
+#include"rainy.h"
 
-namespace valley
+namespace rainy
 {
 
 #ifdef _DEBUG
@@ -17,7 +17,7 @@ namespace valley
 #define Log(format,...)  
 #endif  
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_LOGGER_H
+#endif //RAINY_CORE_LOGGER_H

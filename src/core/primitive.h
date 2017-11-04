@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_PRIMITIVE_H
-#define VALLEY_CORE_PRIMITIVE_H
+#ifndef RAINY_CORE_PRIMITIVE_H
+#define RAINY_CORE_PRIMITIVE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"material.h"
 
-namespace valley
+namespace rainy
 {
 
 class Primitive 
@@ -123,7 +123,7 @@ private:
 	Bounds3f bounds;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_PRIMITIVE_H
+#endif //RAINY_CORE_PRIMITIVE_H

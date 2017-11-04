@@ -1,6 +1,6 @@
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 Vector3f uniform_sample_sphere(const Point2f &u)
@@ -40,4 +40,4 @@ Point2f concentric_sample_disk(const Point2f& u)
 	return r * Point2f(std::cos(theta), std::sin(theta));
 }
 
-}	//namespace valley
+}	//namespace rainy

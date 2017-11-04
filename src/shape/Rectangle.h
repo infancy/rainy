@@ -3,12 +3,12 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_RECTANGLE_H
-#define VALLEY_CORE_RECTANGLE_H
+#ifndef RAINY_CORE_RECTANGLE_H
+#define RAINY_CORE_RECTANGLE_H
 
 #include"shape.h"
 
-namespace valley
+namespace rainy
 {
 
 class Rectangle : public Shape
@@ -37,7 +37,7 @@ private:
 	Normal3f        normal;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_RECTANGLE_H
+#endif //RAINY_CORE_RECTANGLE_H

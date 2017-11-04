@@ -46,7 +46,7 @@
 
 //namespace pbrt
 
-namespace valley
+namespace rainy
 {
 
 // Matrix4x4 Declarations

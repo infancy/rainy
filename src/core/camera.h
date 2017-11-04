@@ -3,15 +3,15 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_CAMERA_H
-#define VALLEY_CORE_CAMERA_H
+#ifndef RAINY_CORE_CAMERA_H
+#define RAINY_CORE_CAMERA_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"transform.h"
 #include"film.h"
 
-namespace valley
+namespace rainy
 {
 
 struct CameraSample	//生成光线所需的采样值
@@ -39,7 +39,7 @@ public:
 	std::shared_ptr<Film> film;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_CAMERA_H
+#endif //RAINY_CORE_CAMERA_H

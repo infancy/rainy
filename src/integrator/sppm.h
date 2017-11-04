@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_SPPM_H
-#define VALLEY_INTEGRATOR_SPPM_H
+#ifndef RAINY_INTEGRATOR_SPPM_H
+#define RAINY_INTEGRATOR_SPPM_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"integrator.h"
 
-namespace valley
+namespace rainy
 {
 
 class SPPM : public Integrator
@@ -37,7 +37,7 @@ private:
 	const int writeFrequency;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_INTEGRATOR_SPPM_H
+#endif //RAINY_INTEGRATOR_SPPM_H

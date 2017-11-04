@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_BSDF_SPECULAR_H
-#define VALLEY_BSDF_SPECULAR_H
+#ifndef RAINY_BSDF_SPECULAR_H
+#define RAINY_BSDF_SPECULAR_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"bsdf.h"
 #include"fresnel.h"
 
-namespace valley
+namespace rainy
 {
 
 inline Vector3f Reflect(const Vector3f &wo, const Vector3f &n) {
@@ -161,7 +161,7 @@ private:
 	const TransportMode mode;
 };
 
-}	// namespace valley
+}	// namespace rainy
 
 
-#endif // VALLEY_BSDF_SPECULAR_H
+#endif // RAINY_BSDF_SPECULAR_H

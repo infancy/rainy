@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_MATERIAL_MATTE_H
-#define VALLEY_MATERIAL_MATTE_H
+#ifndef RAINY_MATERIAL_MATTE_H
+#define RAINY_MATERIAL_MATTE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"material.h"
 
-namespace valley
+namespace rainy
 {
 
 //ÑÆ¹â²ÄÖÊ
@@ -30,7 +30,7 @@ private:
 	std::shared_ptr<Texture<Float>> bumpMap;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_MATERIAL_MATTE_H
+#endif //RAINY_MATERIAL_MATTE_H

@@ -34,15 +34,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_SHAPE_H
-#define VALLEY_CORE_SHAPE_H
+#ifndef RAINY_CORE_SHAPE_H
+#define RAINY_CORE_SHAPE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"interaction.h"
 #include"transform.h"
 
-namespace valley
+namespace rainy
 {
 
 class Shape 
@@ -86,7 +86,7 @@ public:
 	const bool transformSwapsHandedness;    //转换坐标系（左手or右手？）
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_SHAPE_H
+#endif //RAINY_CORE_SHAPE_H

@@ -3,16 +3,16 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_LIGHTDISTRIB_H
-#define VALLEY_CORE_LIGHTDISTRIB_H
+#ifndef RAINY_CORE_LIGHTDISTRIB_H
+#define RAINY_CORE_LIGHTDISTRIB_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"integrator.h"
 #include"sampling.h"
 #include"scene.h"
 
-namespace valley
+namespace rainy
 {
 
 // LightDistribution defines a general interface for classes that provide
@@ -78,8 +78,8 @@ private:
 	std::shared_ptr<Distribution1D> distrib;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_LIGHTDISTRIB_H
+#endif //RAINY_CORE_LIGHTDISTRIB_H
 

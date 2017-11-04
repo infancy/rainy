@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 	//FLAGS_logtostderr = true;
 	//FLAGS_stderrthreshold = 0;
 	//FLAGS_v = 2;
-	valley::valley_render();
+	rainy::rainy_render();
 
 	return 0;
 }

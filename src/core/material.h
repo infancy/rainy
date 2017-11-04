@@ -35,14 +35,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_MATERIAL_H
-#define VALLEY_CORE_MATERIAL_H
+#ifndef RAINY_CORE_MATERIAL_H
+#define RAINY_CORE_MATERIAL_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"texture.h"
 #include"interaction.h"
 
-namespace valley
+namespace rainy
 {
 
 class Material 
@@ -58,7 +58,7 @@ public:
 	//static void bump(const std::shared_ptr<Texture<Float>>& d, SurfaceInteraction* si);
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_MATERIAL_H
+#endif //RAINY_CORE_MATERIAL_H

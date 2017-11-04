@@ -3,19 +3,19 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_T_T_H
-#define VALLEY_CORE_T_T_H
+#ifndef RAINY_CORE_T_T_H
+#define RAINY_CORE_T_T_H
 
-#include "valley.h"
+#include "rainy.h"
 
-namespace valley
+namespace rainy
 {
 
 
 
-}	// namespace valley
+}	// namespace rainy
 
 
-#endif // VALLEY_CORE_T_T_H
+#endif // RAINY_CORE_T_T_H
 
 

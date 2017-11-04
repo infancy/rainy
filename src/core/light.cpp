@@ -3,7 +3,7 @@
 #include"spectrum.h"
 #include"scene.h"
 
-namespace valley
+namespace rainy
 {
 
 // Light Method Definitions
@@ -55,4 +55,4 @@ AreaLight::AreaLight(const Transform& LightToWorld,
 	//medium, 
 	nSamples) {}
 
-}	//namespace valley
+}	//namespace rainy

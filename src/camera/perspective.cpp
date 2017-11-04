@@ -3,7 +3,7 @@
 #include"interaction.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 {
 
 PerspectiveCamera::PerspectiveCamera(const Point3f eye, const Point3f target, const Vector3f up,
@@ -169,4 +169,4 @@ Spectrum PerspectiveCamera::sample_Wi(const Interaction& ref, const Point2f& u,
 	return We(lensIntr.generate_ray(-*wi), pRaster);
 }
 
-}	//namespace valley
+}	//namespace rainy

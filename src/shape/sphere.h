@@ -3,12 +3,12 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_SPHERE_H
-#define VALLEY_CORE_SPHERE_H
+#ifndef RAINY_CORE_SPHERE_H
+#define RAINY_CORE_SPHERE_H
 
 #include"shape.h"
 
-namespace valley
+namespace rainy
 {
 
 class Sphere : public Shape
@@ -42,7 +42,7 @@ private:
 	Float radius;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_SPHERE_H
+#endif //RAINY_CORE_SPHERE_H

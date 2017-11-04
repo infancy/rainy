@@ -3,8 +3,8 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_API_H
-#define VALLEY_CORE_API_H
+#ifndef RAINY_CORE_API_H
+#define RAINY_CORE_API_H
 
 #include"camera.h"
 #include"film.h"
@@ -35,7 +35,7 @@
 
 using namespace std;
 
-namespace valley
+namespace rainy
 {
 
 enum class Intetrator_type
@@ -43,15 +43,15 @@ enum class Intetrator_type
 
 };
 
-void valley_render();
+void rainy_render();
 
 
-shared_ptr<Scene> valley_create_scene();
+shared_ptr<Scene> rainy_create_scene();
 
-Integrator* valley_create_integrator(const Scene& scene);
+Integrator* rainy_create_integrator(const Scene& scene);
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_API_H
+#endif //RAINY_CORE_API_H
 

@@ -3,25 +3,31 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_VALLEY_H
-#define VALLEY_CORE_VALLEY_H
+#ifndef RAINY_CORE_RAINY_H
+#define RAINY_CORE_RAINY_H
 
 #include"platform.h"
 
 // Global Include Files
-#include <unordered_map>
-#include <type_traits>
-#include <algorithm>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <string>
-#include <vector>
+#include <cassert>
 #include <cinttypes>
 #include <cmath>
-#include <cassert>
+#include <cstdint>
 #include <cstring>
-#ifdef VALLEY_HAVE_MALLOC_H
+
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <string>
+#include <type_traits>
+#include <unordered_map>
+#include <vector>
+#ifdef RAINY_HAVE_MALLOC_H
 #include <malloc.h>  // for _alloca, memalign
 #endif
 
@@ -29,7 +35,7 @@
 
 // Platform-specific definitions
 #include <stdint.h>
-#if defined(VALLEY_IN_MSVC)
+#if defined(RAINY_IN_MSVC)
 #include <float.h>
 #include <intrin.h>
 #pragma warning(disable : 4267)  // size_t -> int conversion
@@ -38,18 +44,18 @@
 #pragma warning(disable : 4843)  // double -> float conversion
 #endif
 
-namespace valley
+namespace rainy
 {
 
-//#define VALLEY_FLOAT_AS_DOUBLE
-#ifdef VALLEY_FLOAT_AS_DOUBLE
+//#define RAINY_FLOAT_AS_DOUBLE
+#ifdef RAINY_FLOAT_AS_DOUBLE
 	using Float = double;
 #else
 	using Float = float;
 #endif  
 
-//#define VALLEY_USE_EMBREE
-#ifdef VALLEY_USE_EMBREE
+//#define RAINY_USE_EMBREE
+#ifdef RAINY_USE_EMBREE
 	//
 #endif
 
@@ -120,7 +126,7 @@ struct Options
     std::string imageFile;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
-#endif //VALLEY_CORE_VALLEY_H
+#endif //RAINY_CORE_RAINY_H
 

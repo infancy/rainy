@@ -34,14 +34,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_MATERIALS_GLASS_H
-#define VALLEY_MATERIALS_GLASS_H
+#ifndef RAINY_MATERIALS_GLASS_H
+#define RAINY_MATERIALS_GLASS_H
 
 // materials/glass.h*
-#include"valley.h"
+#include"rainy.h"
 #include"material.h"
 
-namespace valley 
+namespace rainy 
 {
 
 class GlassMaterial : public Material
@@ -74,6 +74,6 @@ private:
 	bool remapRoughness;
 };
 
-}  // namespace valley
+}  // namespace rainy
 
-#endif  // VALLEY_MATERIALS_GLASS_H
+#endif  // RAINY_MATERIALS_GLASS_H

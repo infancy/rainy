@@ -39,14 +39,14 @@
 #define PBRT_CORE_GEOMETRY_H
 
 // core/geometry.h*
-#include"valley.h"
+#include"rainy.h"
 #include "pbrt.h"
 //#include "stringprint.h"
 #include <iterator>
 
 //namespace pbrt
 
-namespace valley
+namespace rainy
 {
 
 template <typename T>
@@ -1473,7 +1473,7 @@ inline bool Bounds3<T>::IntersectP(const Ray &ray, const Vector3f &invDir,
 inline Point3f offset_ray_origin(const Point3f &p, const Vector3f &pError,
                                const Normal3f &n, const Vector3f &w) {
     Float d = Dot(Abs(n), pError);
-#ifdef VALLEY_FLOAT_AS_DOUBLE
+#ifdef RAINY_FLOAT_AS_DOUBLE
     // We have tons of precision; for now bump up the offset a bunch just
     // to be extra sure that we start on the right side of the surface
     // (In case of any bugs in the epsilons code...)

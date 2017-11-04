@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_LIGHTTRACING_H
-#define VALLEY_INTEGRATOR_LIGHTTRACING_H
+#ifndef RAINY_INTEGRATOR_LIGHTTRACING_H
+#define RAINY_INTEGRATOR_LIGHTTRACING_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"integrator.h"
 
-namespace valley
+namespace rainy
 {
 
 class LightTracing : public Integrator
@@ -17,7 +17,7 @@ class LightTracing : public Integrator
 
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_INTEGRATOR_LIGHTTRACING_H
+#endif //RAINY_INTEGRATOR_LIGHTTRACING_H

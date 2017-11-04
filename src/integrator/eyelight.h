@@ -3,12 +3,12 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_EYELIGHT_H
-#define VALLEY_INTEGRATOR_EYELIGHT_H
+#ifndef RAINY_INTEGRATOR_EYELIGHT_H
+#define RAINY_INTEGRATOR_EYELIGHT_H
 
 #include"integrator.h"
 
-namespace valley
+namespace rainy
 {
 
 class EyeLight : public SamplerIntegrator
@@ -37,7 +37,7 @@ public:
 	}
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_INTEGRATOR_EYELIGHT_H
+#endif //RAINY_INTEGRATOR_EYELIGHT_H

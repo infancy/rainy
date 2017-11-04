@@ -3,12 +3,12 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_IMAGE_H
-#define VALLEY_CORE_IMAGE_H
+#ifndef RAINY_CORE_IMAGE_H
+#define RAINY_CORE_IMAGE_H
 
-#include "valley.h"
+#include "rainy.h"
 
-namespace valley
+namespace rainy
 {
 
 void save_ppm(std::string filename, const Float* pixel,
@@ -17,7 +17,7 @@ void save_ppm(std::string filename, const Float* pixel,
 void save_ppm(std::string filename, const Spectrum* pixel,
 	int width, int height, bool red = false);
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_IMAGE_H
+#endif //RAINY_CORE_IMAGE_H

@@ -2,7 +2,7 @@
 #include"spectrum.h"
 #include<fstream>
 
-namespace valley
+namespace rainy
 {
 
 void save_ppm(std::string filename, const Float* pixel,
@@ -69,4 +69,4 @@ void save_ppm(std::string filename, const Spectrum* pixel,
 	}
 }
 
-}	//namespace valley
+}	//namespace rainy

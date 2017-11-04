@@ -38,11 +38,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef PBRT_CORE_PBRT_H
 #define PBRT_CORE_PBRT_H
 
-#include "valley.h"
+#include "rainy.h"
 
 //namespace pbrt
 
-namespace valley
+namespace rainy
 {
 
 // Global Constants
@@ -61,7 +61,7 @@ static constexpr Float PiOver2 = 1.57079632679489661923;
 static constexpr Float PiOver4 = 0.78539816339744830961;
 static constexpr Float Sqrt2 = 1.41421356237309504880;
 
-#if defined(VALLEY_IN_MSVC)
+#if defined(RAINY_IN_MSVC)
 #define alloca _alloca
 #endif
 
@@ -183,7 +183,7 @@ inline Float Log2(Float x) {
 }
 
 inline int Log2Int(uint32_t v) {
-#if defined(VALLEY_IN_MSVC)
+#if defined(RAINY_IN_MSVC)
 	unsigned long lz = 0;
 	if (_BitScanReverse(&lz, v)) return lz;
 	return 0;
@@ -195,7 +195,7 @@ inline int Log2Int(uint32_t v) {
 inline int Log2Int(int32_t v) { return Log2Int((uint32_t)v); }
 
 inline int Log2Int(uint64_t v) {
-#if defined(VALLEY_IN_MSVC)
+#if defined(RAINY_IN_MSVC)
 	unsigned long lz = 0;
 #if defined(_WIN64)
 	_BitScanReverse64(&lz, v);
@@ -240,7 +240,7 @@ inline int64_t RoundUpPow2(int64_t v) {
 }
 
 inline int CountTrailingZeros(uint32_t v) {
-#if defined(VALLEY_IN_MSVC)
+#if defined(RAINY_IN_MSVC)
 	unsigned long index;
 	if (_BitScanForward(&index, v))
 		return index;

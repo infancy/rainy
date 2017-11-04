@@ -1,7 +1,7 @@
 #include"point.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 // PointLight Method Definitions
@@ -35,4 +35,4 @@ Spectrum PointLight::sample_Le(const Point2f& u1, const Point2f& u2, Ray* ray,
 	return intensity;
 }
 
-}	//namespace valley
+}	//namespace rainy

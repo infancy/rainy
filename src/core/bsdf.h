@@ -34,15 +34,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_BSDF_H
-#define VALLEY_CORE_BSDF_H
+#ifndef RAINY_CORE_BSDF_H
+#define RAINY_CORE_BSDF_H
 
-#include "valley.h"
+#include "rainy.h"
 #include "geometry.h"
 #include "spectrum.h"
 //#include "interaction.h"
 
-namespace valley
+namespace rainy
 {
 
 //
@@ -194,7 +194,7 @@ inline Vector3f BSDF::local_to_world(const Vector3f &v) const
 					ss.z * v.x + ts.z * v.y + ns.z * v.z);
 }
 
-}	// namespace valley
+}	// namespace rainy
 
 
-#endif //VALLEY_CORE_BSDF_H
+#endif //RAINY_CORE_BSDF_H

@@ -1,12 +1,12 @@
 #include"api.h"
 
-namespace valley
+namespace rainy
 {
 
 //什么时候用指针 && 指针or智能指针
 //破坏封装
 
-void valley_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
+void rainy_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
 {
 	int x = 0, y = 0;
 
@@ -21,28 +21,28 @@ void valley_interactive(shared_ptr<Integrator>& ior, const Scene& scene)
 			std::cout << "error,should't call position out of film\n";
 }
 
-void valley_render()
+void rainy_render()
 {
-	shared_ptr<Scene> scene = valley_create_scene();
-	//shared_ptr<Integrator> integrator = valley_create_integrator(); 不接受等号的重载
-	shared_ptr<Integrator> integrator(valley_create_integrator(*scene));
+	shared_ptr<Scene> scene = rainy_create_scene();
+	//shared_ptr<Integrator> integrator = rainy_create_integrator(); 不接受等号的重载
+	shared_ptr<Integrator> integrator(rainy_create_integrator(*scene));
 	
-//#define VALLEY_INTERACTIVE_MODE
-//#define VALLEY_STDERR_LOG
+//#define RAINY_INTERACTIVE_MODE
+//#define RAINY_STDERR_LOG
 
-#if defined VALLEY_STDERR_LOG
+#if defined RAINY_STDERR_LOG
 	FLAGS_v = 2;
 	FLAGS_logtostderr = true;
 #endif
 
-#if defined VALLEY_INTERACTIVE_MODE //_DEBUG
-	valley_interactive(integrator, *scene);
+#if defined RAINY_INTERACTIVE_MODE //_DEBUG
+	rainy_interactive(integrator, *scene);
 #else
 	integrator->render(*scene);
 #endif
 };
-//valley_CornellBox_integrator
-Integrator* valley_create_integrator(const Scene& scene)
+//rainy_CornellBox_integrator
+Integrator* rainy_create_integrator(const Scene& scene)
 {
 	//Film* film{ new Film(128, 128, new BoxFilter) };
 	Film* film{ new Film(512, 512, new BoxFilter) };
@@ -51,8 +51,8 @@ Integrator* valley_create_integrator(const Scene& scene)
 	Vector3f up(0, 1, 0);
 	auto camera{ make_shared<PerspectiveCamera>(eye, tar, up, 60, film) };
 
-//#define VALLEY_FIXED_RANDOM
-#if defined VALLEY_FIXED_RANDOM
+//#define RAINY_FIXED_RANDOM
+#if defined RAINY_FIXED_RANDOM
 	auto sampler{ make_shared<RandomSampler>(16, 1234) };
 #else
 	srand(time(nullptr));
@@ -64,8 +64,8 @@ Integrator* valley_create_integrator(const Scene& scene)
 	return new SPPM(scene, camera, sampler, 64, 100000, 3, 0.5);
 	//return new PathTracing(scene, camera, sampler);
 }
-//valley_CornellBox_scene
-shared_ptr<Scene> valley_create_scene()
+//rainy_CornellBox_scene
+shared_ptr<Scene> rainy_create_scene()
 {
 	//material
 
@@ -165,4 +165,4 @@ shared_ptr<Scene> valley_create_scene()
 	return  make_shared<Scene>(new Accelerator(primitive), lights);
 }
 
-}	//namespace valley
+}	//namespace rainy

@@ -35,7 +35,7 @@
 #include "material/mirror.h"
 #include"bsdf/specular.h"
 
-namespace valley 
+namespace rainy 
 {
 
 // MirrorMaterial Method Definitions

@@ -3,15 +3,15 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_INTERSECTION_H
-#define VALLEY_CORE_INTERSECTION_H
+#ifndef RAINY_CORE_INTERSECTION_H
+#define RAINY_CORE_INTERSECTION_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"material.h"
 #include"bsdf.h"
 
-namespace valley
+namespace rainy
 {
 
 class Interaction
@@ -145,7 +145,7 @@ public:
 	};
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_INTERSECTION_H
+#endif //RAINY_CORE_INTERSECTION_H

@@ -35,7 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include"sampling.h"
 #include"interaction.h"
 
-namespace valley
+namespace rainy
 {
 
 // BxDF Method Definitions
@@ -251,4 +251,4 @@ Float BSDF::pdf(const Vector3f &woWorld, const Vector3f &wiWorld,
 	return v;
 }
 
-}	// namespace valley
+}	// namespace rainy

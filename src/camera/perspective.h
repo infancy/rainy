@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CAMERA_PERSPECTIVE_H
-#define VALLEY_CAMERA_PERSPECTIVE_H
+#ifndef RAINY_CAMERA_PERSPECTIVE_H
+#define RAINY_CAMERA_PERSPECTIVE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"camera.h"
 
-namespace valley
+namespace rainy
 {
 
 /*								   |
@@ -51,7 +51,7 @@ private:
 	Float Area;	//胶片实际大小
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CAMERA_PERSPECTIVE_H
+#endif //RAINY_CAMERA_PERSPECTIVE_H

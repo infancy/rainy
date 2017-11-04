@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_LAMBERTIAN_H
-#define VALLEY_CORE_LAMBERTIAN_H
+#ifndef RAINY_CORE_LAMBERTIAN_H
+#define RAINY_CORE_LAMBERTIAN_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"bsdf.h"
 #include"spectrum.h"
 
-namespace valley
+namespace rainy
 {
 
 class LambertianReflection : public BxDF 
@@ -50,7 +50,7 @@ private:
 	Spectrum T;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_LAMBERTIAN_H
+#endif //RAINY_CORE_LAMBERTIAN_H

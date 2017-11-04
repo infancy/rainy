@@ -2,7 +2,7 @@
 #include"scene.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 // DistantLight Method Definitions
@@ -64,4 +64,4 @@ Spectrum DistantLight::sample_Le(const Point2f& u1, const Point2f& u2, Ray* ray,
 	return L;
 }
 
-}	//namespace valley
+}	//namespace rainy

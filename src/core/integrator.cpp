@@ -1,7 +1,7 @@
 #include"integrator.h"
 #include"sampler.h"
 
-namespace valley
+namespace rainy
 {
 
 // Integrator Utility Functions
@@ -357,4 +357,4 @@ Spectrum SamplerIntegrator::specular_transmit(const Ray& ray, const SurfaceInter
 	return L;
 }
 
-}	//namespace valley
+}	//namespace rainy

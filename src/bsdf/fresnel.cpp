@@ -1,6 +1,6 @@
 #include"fresnel.h"
 
-namespace valley
+namespace rainy
 {
 
 // Fresnel Utility Functions
@@ -64,4 +64,4 @@ Spectrum FrConductor(Float cosThetaI, const Spectrum &etai,
 
 
 
-}	// namespace valley
+}	// namespace rainy

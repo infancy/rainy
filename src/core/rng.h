@@ -3,20 +3,21 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_RNG_H
-#define VALLEY_CORE_RNG_H
+#ifndef RAINY_CORE_RNG_H
+#define RAINY_CORE_RNG_H
 
-#include"valley.h"
-#include"geometry.h"
 #include <random>
 
-namespace valley
+#include "geometry.h"
+#include "rainy.h"
+
+namespace rainy
 {
 
 static const double DoubleOneMinusEpsilon = 0.99999999999999989;
 static const float FloatOneMinusEpsilon = 0.99999994;
 
-#ifdef VALLEY_FLOAT_AS_DOUBLE
+#ifdef RAINY_FLOAT_AS_DOUBLE
 static const Float OneMinusEpsilon = DoubleOneMinusEpsilon;
 #else
 static const Float OneMinusEpsilon = FloatOneMinusEpsilon;
@@ -43,7 +44,7 @@ private:
 	std::uniform_real_distribution<Float>     Float_distr;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_RNG_H
+#endif //RAINY_CORE_RNG_H

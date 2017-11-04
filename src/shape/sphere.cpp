@@ -1,7 +1,7 @@
 #include"sphere.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 // Sphere Method Definitions
@@ -233,4 +233,4 @@ Float Sphere::solid_angle(const Point3f &p, int nSamples) const
 	return (2 * Pi * (1 - cosTheta));
 }
 
-}	//namespace valley
+}	//namespace rainy

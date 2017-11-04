@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_SCENE_H
-#define VALLEY_CORE_SCENE_H
+#ifndef RAINY_CORE_SCENE_H
+#define RAINY_CORE_SCENE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"primitive.h"
 #include"light.h"
 
-namespace valley
+namespace rainy
 {
 
 class Scene 
@@ -49,7 +49,7 @@ private:
 	Bounds3f worldBound;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_SCENE_H
+#endif //RAINY_CORE_SCENE_H

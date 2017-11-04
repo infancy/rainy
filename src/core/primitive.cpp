@@ -2,7 +2,7 @@
 #include"interaction.h"
 #include"shape.h"
 
-namespace valley
+namespace rainy
 {
 
 // GeometricPrimitive Method Definitions
@@ -100,4 +100,4 @@ bool Accelerator::intersectP(const Ray& r) const
 	return false;
 }
 
-}	//namespace valley
+}	//namespace rainy

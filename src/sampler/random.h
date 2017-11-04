@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_SAMPLER_RANDOM_H
-#define VALLEY_SAMPLER_RANDOM_H
+#ifndef RAINY_SAMPLER_RANDOM_H
+#define RAINY_SAMPLER_RANDOM_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"sampler.h"
 
-namespace valley
+namespace rainy
 {
 
 class RandomSampler : public Sampler
@@ -46,7 +46,7 @@ public:
 	RNG rng;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_SAMPLER_RANDOM_H
+#endif //RAINY_SAMPLER_RANDOM_H

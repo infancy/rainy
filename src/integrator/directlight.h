@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_DIRECTLIGHT_H
-#define VALLEY_INTEGRATOR_DIRECTLIGHT_H
+#ifndef RAINY_INTEGRATOR_DIRECTLIGHT_H
+#define RAINY_INTEGRATOR_DIRECTLIGHT_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"integrator.h"
 
-namespace valley
+namespace rainy
 {
 
 class DirectLight : public SamplerIntegrator
@@ -77,7 +77,7 @@ private:
 	std::vector<int> nLightSamples;	//记录对每个light的采样数量，用于uniform_sample_all_lights
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_INTEGRATOR_DIRECTLIGHT_H
+#endif //RAINY_INTEGRATOR_DIRECTLIGHT_H

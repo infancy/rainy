@@ -35,7 +35,7 @@
 #include "material/glass.h"
 #include"bsdf/specular.h"
 
-namespace valley
+namespace rainy
 {
 
 // GlassMaterial Method Definitions

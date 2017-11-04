@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_INTEGRATOR_PAHT_H
-#define VALLEY_INTEGRATOR_PATH_H
+#ifndef RAINY_INTEGRATOR_PAHT_H
+#define RAINY_INTEGRATOR_PATH_H
 
-//#include"valley.h"
+//#include"rainy.h"
 #include"integrator.h"
 
-namespace valley
+namespace rainy
 {
 
 class PathTracing : public SamplerIntegrator
@@ -165,7 +165,7 @@ private:
 	std::unique_ptr<LightDistribution> lightDistribution;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_INTEGRATOR_PATH_H
+#endif //RAINY_INTEGRATOR_PATH_H

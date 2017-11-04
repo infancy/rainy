@@ -1,6 +1,6 @@
 #include"sampler.h"
 
-namespace valley
+namespace rainy
 {
 
 //
@@ -162,4 +162,4 @@ bool GlobalSampler::set_SampleIndex(int64_t sampleNum)
 	return Sampler::set_SampleIndex(sampleNum);
 }
 
-}	// namespace valley
+}	// namespace rainy

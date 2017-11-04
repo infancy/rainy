@@ -3,13 +3,13 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_SAMPLER_UNIFORM_H
-#define VALLEY_SAMPLER_UNIFORM_H
+#ifndef RAINY_SAMPLER_UNIFORM_H
+#define RAINY_SAMPLER_UNIFORM_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"sampler.h"
 
-namespace valley
+namespace rainy
 {
 
 class UniformSampler : public Sampler
@@ -43,7 +43,7 @@ public:
 	}
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_SAMPLER_UNIFORM_H
+#endif //RAINY_SAMPLER_UNIFORM_H

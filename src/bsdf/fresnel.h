@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_BSDF_FOURIER_H
-#define VALLEY_BSDF_FOURIER_H
+#ifndef RAINY_BSDF_FOURIER_H
+#define RAINY_BSDF_FOURIER_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"bsdf.h"
 #include"spectrum.h"
 
-namespace valley
+namespace rainy
 {
 
 Float FrDielectric(Float cosThetaI, Float etaI, Float etaT);
@@ -64,7 +64,7 @@ public:
 	//std::string ToString() const { return "[ FresnelNoOp ]"; }
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_BSDF_FOURIER_H
+#endif //RAINY_BSDF_FOURIER_H

@@ -206,9 +206,6 @@
     <ClInclude Include="..\..\src\core\transform.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\core\valley.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\integrator\directlight.h">
       <Filter>integrator</Filter>
     </ClInclude>
@@ -256,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\shape\rectangle.h">
       <Filter>shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\rainy.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

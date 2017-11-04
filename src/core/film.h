@@ -3,16 +3,16 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_FILM_H
-#define VALLEY_CORE_FILM_H
+#ifndef RAINY_CORE_FILM_H
+#define RAINY_CORE_FILM_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"spectrum.h"
 #include"geometry.h"
 #include"image.h"
 #include"filter.h"
 
-namespace valley
+namespace rainy
 {
 
 struct FilmPixel
@@ -38,7 +38,7 @@ class Film
 {
 public:
 	Film(int width = 800, int height = 600, Filter* filter = nullptr, 
-		 const std::string& filename = std::string("C:/Users/wyh32/Desktop/valley/"),
+		 const std::string& filename = std::string("C:/Users/wyh32/Desktop/rainy/"),
 		 bool save_type = false) 
 		: width(width), height(height), 
 		bounds(Point2i(0, 0), Point2i(width, height)),
@@ -221,7 +221,7 @@ private:
 };
 
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_FILM_H
+#endif //RAINY_CORE_FILM_H

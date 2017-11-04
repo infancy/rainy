@@ -35,14 +35,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_MATERIAL_MIRROR_H
-#define VALLEY_MATERIAL_MIRROR_H
+#ifndef RAINY_MATERIAL_MIRROR_H
+#define RAINY_MATERIAL_MIRROR_H
 
 // materials/mirror.h*
-#include"valley.h"
+#include"rainy.h"
 #include"material.h"
 
-namespace valley
+namespace rainy
 {
 
 // MirrorMaterial Declarations
@@ -67,6 +67,6 @@ class MirrorMaterial : public Material
 
 //MirrorMaterial *CreateMirrorMaterial(const TextureParams &mp);
 
-}  // namespace valley
+}  // namespace rainy
 
-#endif  // VALLEY_MATERIAL_MIRROR_H
+#endif  // RAINY_MATERIAL_MIRROR_H

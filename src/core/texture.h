@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_TEXTURE_H
-#define VALLEY_CORE_TEXTURE_H
+#ifndef RAINY_CORE_TEXTURE_H
+#define RAINY_CORE_TEXTURE_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"geometry.h"
 #include"spectrum.h"
 
-namespace valley
+namespace rainy
 {
 
 template <typename T>
@@ -36,7 +36,7 @@ private:
 //using constant = Texture<Float>;
 //using Spectrum4 = Texture<Spectrum>;
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_TEXTURE_H
+#endif //RAINY_CORE_TEXTURE_H

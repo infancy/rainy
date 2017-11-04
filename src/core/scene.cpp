@@ -3,7 +3,7 @@
 #include"spectrum.h"
 #include"interaction.h"
 
-namespace valley
+namespace rainy
 {
 
 // Scene Method Definitions
@@ -35,4 +35,4 @@ bool Scene::intersectTr(Ray ray, Sampler& sampler, SurfaceInteraction* isect, Sp
 	}
 }
 
-}	//namespace valley
+}	//namespace rainy

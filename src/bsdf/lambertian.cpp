@@ -1,7 +1,7 @@
 #include"lambertian.h"
 #include"sampling.h"
 
-namespace valley
+namespace rainy
 {
 
 Spectrum LambertianTransmission::sample_f(const Vector3f& wo, Vector3f* wi,
@@ -18,4 +18,4 @@ Float LambertianTransmission::pdf(const Vector3f& wo, const Vector3f& wi) const
 	return !same_hemisphere(wo, wi) ? AbsCosTheta(wi) * InvPi : 0;
 }
 
-}	//namespace valley
+}	//namespace rainy

@@ -3,10 +3,10 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_INTEGTATOR_H
-#define VALLEY_CORE_INTEGTATOR_H
+#ifndef RAINY_CORE_INTEGTATOR_H
+#define RAINY_CORE_INTEGTATOR_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"spectrum.h"
 #include"geometry.h"
 #include"interaction.h"
@@ -15,7 +15,7 @@
 #include"sampler.h"
 #include"scene.h"
 
-namespace valley
+namespace rainy
 {
 
 // 均匀采样所有光源的辐射度
@@ -72,7 +72,7 @@ public:
 						   const Scene &scene, Sampler &sampler, int depth) const;
 };
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_INTEGTATOR_H
+#endif //RAINY_CORE_INTEGTATOR_H

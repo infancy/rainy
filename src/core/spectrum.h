@@ -3,14 +3,14 @@
 #pragma once
 #endif
 
-#ifndef VALLEY_CORE_COLOR_H
-#define VALLEY_CORE_COLOR_H
+#ifndef RAINY_CORE_COLOR_H
+#define RAINY_CORE_COLOR_H
 
-#include"valley.h"
+#include"rainy.h"
 #include"pbrt.h"
 //#include"geometry.h"
 
-namespace valley
+namespace rainy
 {
 //所有检查都在 debug 版中进行
 class Spectrum
@@ -120,7 +120,7 @@ inline std::ostream &operator<<(std::ostream &os, const Spectrum& c)
 	return os;
 }
 
-}	//namespace valley
+}	//namespace rainy
 
 
-#endif //VALLEY_CORE_COLOR_H
+#endif //RAINY_CORE_COLOR_H
