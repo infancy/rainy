@@ -1,1 +1,1 @@
-# kari is a ray tracer
+# ikary is a ray tracer
