@@ -1,1 +1,1 @@
-# ikary is a ray tracer
+# a ray tracing renderer
